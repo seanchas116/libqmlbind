@@ -1,12 +1,11 @@
-#ifndef QMLBIND_GLOBAL_H
-#define QMLBIND_GLOBAL_H
+#pragma once
 
-#include <QtCore/qglobal.h>
-
-#if defined(QMLBIND_LIBRARY)
-#  define QMLBINDSHARED_EXPORT Q_DECL_EXPORT
-#else
-#  define QMLBINDSHARED_EXPORT Q_DECL_IMPORT
-#endif
-
-#endif // QMLBIND_GLOBAL_H
+# if defined(_WIN32) || defined(_WIN64)
+#   ifdef QMLBIND_LIBRARY
+#     define QMLBIND_API __declspec(dllexport)
+#   else
+#     define QMLBIND_API __declspec(dllimport)
+#   endif
+# else
+#   define QMLBIND_API
+# endif

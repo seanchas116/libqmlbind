@@ -1,11 +1,13 @@
-#ifndef VALUE_H
-#define VALUE_H
-
+#pragma once
 #include "qmlbind_global.h"
+#include <time.h>
+#include <stdlib.h>
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 
-struct qmlbind_value;
+typedef struct qmlbind_value_s qmlbind_value;
 
 typedef enum {
     QMLBIND_VALUE_UNDEFINED,
@@ -20,45 +22,42 @@ typedef enum {
 
 /* basic */
 
-qmlbind_value *qmlbind_value_new();
-void qmlbind_value_delete(qmlbind_value *value);
+QMLBIND_API qmlbind_value *qmlbind_value_new_undefined();
+QMLBIND_API qmlbind_value *qmlbind_value_new_null();
+QMLBIND_API void qmlbind_value_delete(qmlbind_value *self);
 
-qmlbind_value_type qmlbind_value_get_type(qmlbind_value *value);
-
-/* collections */
-
-int *qmlbind_value_length(qmlbind_value *value);
+QMLBIND_API qmlbind_value_type qmlbind_value_get_type(qmlbind_value *self);
+QMLBIND_API qmlbind_value *qmlbind_value_get(qmlbind_value *self, const char *key);
+QMLBIND_API void qmlbind_value_set(qmlbind_value *self, const char *key, qmlbind_value *value);
 
 /* integer */
 
-qmlbind_value *qmlbind_value_new_number(double x);
-double qmlbind_value_get_number(qmlbind_value *value);
+QMLBIND_API qmlbind_value *qmlbind_value_new_number(double x);
+QMLBIND_API double qmlbind_value_get_number(qmlbind_value *self);
 
 /* string */
 
-qmlbind_value *qmlbind_value_new_string(const char *str);
-char *qmlbind_value_get_string(qmlbind_value *value);
+QMLBIND_API qmlbind_value *qmlbind_value_new_string(const char *str);
+QMLBIND_API char *qmlbind_value_get_string(qmlbind_value *self);
 
 /* array */
 
-qmlbind_value *qmlbind_value_new_array(size_t count, qmlbind_value **values);
-qmlbind_value **qmlbind_value_get_array(qmlbind_value *value);
+QMLBIND_API qmlbind_value *qmlbind_value_new_array(size_t count);
 
 /* object */
 
-qmlbind_value *qmlbind_value_new_object(size_t count, const char **keys, qmlbind_value **values);
-void qmlbind_value_get_object(qmlbind_value *value, qmlbind_value ***where_keys, qmlbind_value ***where_values);
+QMLBIND_API qmlbind_value *qmlbind_value_new_object(size_t count);
 
 /* date */
 
-qmlbind_value *qmlbind_value_new_date_time(time_t time, time_t utc_offset);
-void *qmlbind_value_get_date_time(qmlbind_value *value, time_t time, time_t utc_offset);
+QMLBIND_API qmlbind_value *qmlbind_value_new_date_time(time_t time, time_t utc_offset);
+QMLBIND_API void *qmlbind_value_get_date_time(qmlbind_value *self, time_t time, time_t utc_offset);
 
 /* function */
 
-qmlbind_value *qmlbind_value_call(qmlbind_value *value, size_t argc, qmlbind_value **argv);
-qmlbind_value *qmlbind_value_call_with_this(qmlbind_value *value, qmlbind_value *this_value, size_t argc, qmlbind_value **argv);
+QMLBIND_API qmlbind_value *qmlbind_value_call(qmlbind_value *self, size_t argc, qmlbind_value **argv);
+QMLBIND_API qmlbind_value *qmlbind_value_call_with_this(qmlbind_value *self, qmlbind_value *target, size_t argc, qmlbind_value **argv);
 
+#ifdef __cplusplus
 }
-
-#endif // VALUE_H
+#endif
