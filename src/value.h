@@ -8,6 +8,7 @@ extern "C" {
 #endif
 
 typedef struct qmlbind_value_s qmlbind_value;
+typedef struct qmlbind_string_s qmlbind_string;
 
 /* basic */
 
@@ -21,7 +22,7 @@ QMLBIND_API int qmlbind_value_is_number(qmlbind_value *self);
 QMLBIND_API int qmlbind_value_is_string(qmlbind_value *self);
 QMLBIND_API int qmlbind_value_is_object(qmlbind_value *self);
 
-/* integer */
+/* number */
 
 QMLBIND_API qmlbind_value *qmlbind_value_new_number(double x);
 QMLBIND_API double qmlbind_value_get_number(qmlbind_value *self);
@@ -29,7 +30,10 @@ QMLBIND_API double qmlbind_value_get_number(qmlbind_value *self);
 /* string */
 
 QMLBIND_API qmlbind_value *qmlbind_value_new_string(const char *str);
-QMLBIND_API char *qmlbind_value_get_string(qmlbind_value *self);
+QMLBIND_API qmlbind_string *qmlbind_value_get_string(qmlbind_value *self);
+
+QMLBIND_API char *qmlbind_string_get(qmlbind_string *str);
+QMLBIND_API void qmlbind_string_delete(qmlbind_string *str);
 
 /* array */
 
