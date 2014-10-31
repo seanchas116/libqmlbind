@@ -25,4 +25,20 @@ void qmlbind_value_delete(qmlbind_value *self) {
     delete self;
 }
 
+int qmlbind_value_is_undefined(qmlbind_value *self) {
+    return self->d.isUndefined();
+}
+int qmlbind_value_is_null(qmlbind_value *self) {
+    return self->d.isNull();
+}
+int qmlbind_value_is_number(qmlbind_value *self) {
+    return self->d.isNumber();
+}
+int qmlbind_value_is_string(qmlbind_value *self) {
+    return self->d.isString();
+}
+int qmlbind_value_is_object(qmlbind_value *self) {
+    return self->d.isObject();
+}
+
 }

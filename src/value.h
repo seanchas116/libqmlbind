@@ -9,26 +9,17 @@ extern "C" {
 
 typedef struct qmlbind_value_s qmlbind_value;
 
-typedef enum {
-    QMLBIND_VALUE_UNDEFINED,
-    QMLBIND_VALUE_NULL,
-    QMLBIND_VALUE_NUMBER,
-    QMLBIND_VALUE_STRING,
-    QMLBIND_VALUE_ARRAY,
-    QMLBIND_VALUE_OBJECT,
-    QMLBIND_VALUE_DATE,
-    QMLBIND_VALUE_FUNCTION
-} qmlbind_value_type;
-
 /* basic */
 
 QMLBIND_API qmlbind_value *qmlbind_value_new_undefined();
 QMLBIND_API qmlbind_value *qmlbind_value_new_null();
 QMLBIND_API void qmlbind_value_delete(qmlbind_value *self);
 
-QMLBIND_API qmlbind_value_type qmlbind_value_get_type(qmlbind_value *self);
-QMLBIND_API qmlbind_value *qmlbind_value_get(qmlbind_value *self, const char *key);
-QMLBIND_API void qmlbind_value_set(qmlbind_value *self, const char *key, qmlbind_value *value);
+QMLBIND_API int qmlbind_value_is_undefined(qmlbind_value *self);
+QMLBIND_API int qmlbind_value_is_null(qmlbind_value *self);
+QMLBIND_API int qmlbind_value_is_number(qmlbind_value *self);
+QMLBIND_API int qmlbind_value_is_string(qmlbind_value *self);
+QMLBIND_API int qmlbind_value_is_object(qmlbind_value *self);
 
 /* integer */
 
@@ -47,6 +38,9 @@ QMLBIND_API qmlbind_value *qmlbind_value_new_array(size_t count);
 /* object */
 
 QMLBIND_API qmlbind_value *qmlbind_value_new_object(size_t count);
+
+QMLBIND_API qmlbind_value *qmlbind_value_get(qmlbind_value *self, const char *key);
+QMLBIND_API void qmlbind_value_set(qmlbind_value *self, const char *key, qmlbind_value *value);
 
 /* date */
 
