@@ -2,35 +2,14 @@
 #include "util_p.h"
 #include <QJSValue>
 
-typedef struct qmlbind_value_s {
-    QJSValue d;
-} qmlbind_value;
-
-typedef struct qmlbind_string_s {
-    QByteArray d;
-} qmlbind_string;
-
-namespace qmlbind {
-
-qmlbind_value *value_from_QJSValue(const QJSValue &value) {
-    qmlbind_value *self = new qmlbind_value();
-    self->d = value;
-    return self;
-}
-
-}
-
-using namespace qmlbind;
-
 extern "C" {
 
 qmlbind_value *qmlbind_value_new_undefined() {
-    qmlbind_value *self = new qmlbind_value();
-    return self;
+    return new QJSValue(QJSValue::UndefinedValue);
 }
 
 qmlbind_value *qmlbind_value_new_null() {
-    return value_from_QJSValue(QJSValue::NullValue);
+    return new QJSValue(QJSValue::NullValue);
 }
 
 void qmlbind_value_delete(qmlbind_value *self) {
@@ -38,53 +17,51 @@ void qmlbind_value_delete(qmlbind_value *self) {
 }
 
 int qmlbind_value_is_equal(qmlbind_value *value1, qmlbind_value *value2) {
-    return value1->d.strictlyEquals(value2->d);
+    return value1->strictlyEquals(*value2);
 }
 
 int qmlbind_value_is_undefined(qmlbind_value *self) {
-    return self->d.isUndefined();
+    return self->isUndefined();
 }
 int qmlbind_value_is_null(qmlbind_value *self) {
-    return self->d.isNull();
+    return self->isNull();
 }
 int qmlbind_value_is_number(qmlbind_value *self) {
-    return self->d.isNumber();
+    return self->isNumber();
 }
 int qmlbind_value_is_string(qmlbind_value *self) {
-    return self->d.isString();
+    return self->isString();
 }
 int qmlbind_value_is_object(qmlbind_value *self) {
-    return self->d.isObject();
+    return self->isObject();
 }
 
 int qmlbind_value_is_array(qmlbind_value *self) {
-    return self->d.isArray();
+    return self->isArray();
 }
 
 int qmlbind_value_is_function(qmlbind_value *self) {
-    return self->d.isCallable();
+    return self->isCallable();
 }
 
 qmlbind_value *qmlbind_value_new_number(double x) {
-    return value_from_QJSValue(x);
+    return new QJSValue(x);
 }
 
 double qmlbind_value_get_number(qmlbind_value *self) {
-    return self->d.toNumber();
+    return self->toNumber();
 }
 
 qmlbind_value *qmlbind_value_new_string(const char *str) {
-    return value_from_QJSValue(QString::fromUtf8(str));
+    return new QJSValue(QString::fromUtf8(str));
 }
 
 qmlbind_string *qmlbind_value_get_string(qmlbind_value *self) {
-    qmlbind_string *str = new qmlbind_string();
-    str->d = self->d.toString().toUtf8();
-    return str;
+    return new QByteArray(self->toString().toUtf8());
 }
 
 char *qmlbind_string_get(qmlbind_string *str) {
-    return str->d.data();
+    return str->data();
 }
 
 void qmlbind_string_delete(qmlbind_string *str) {
@@ -92,11 +69,11 @@ void qmlbind_string_delete(qmlbind_string *str) {
 }
 
 qmlbind_value *qmlbind_value_get(qmlbind_value *self, const char *key) {
-    return value_from_QJSValue(self->d.property(QString::fromUtf8(key)));
+    return new QJSValue(self->property(QString::fromUtf8(key)));
 }
 
 void qmlbind_value_set(qmlbind_value *self, const char *key, qmlbind_value *value) {
-    self->d.setProperty(QString::fromUtf8(key), value->d);
+    self->setProperty(QString::fromUtf8(key), *value);
 }
 
 

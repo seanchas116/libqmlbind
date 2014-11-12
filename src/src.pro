@@ -26,4 +26,4 @@ unix {
     INSTALLS += target
 }
 
-QMAKE_CXXFLAGS += "-std=c++03"
+QMAKE_CXXFLAGS += "-std=c++03 -Wno-mismatched-tags"

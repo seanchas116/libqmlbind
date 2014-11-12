@@ -3,18 +3,11 @@
 
 extern "C" {
 
-typedef struct qmlbind_application_s {
-    QApplication *d;
-} qmlbind_application;
-
 qmlbind_application *qmlbind_application_new(int argc, char **argv) {
-    qmlbind_application *app = new qmlbind_application();
-    app->d = new QApplication(argc, argv);
-    return app;
+    return new QApplication(argc, argv);
 }
 
 void qmlbind_application_delete(qmlbind_application *app) {
-    delete app->d;
     delete app;
 }
 
