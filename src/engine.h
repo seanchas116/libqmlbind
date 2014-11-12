@@ -15,8 +15,6 @@ QMLBIND_API qmlbind_value *qmlbind_engine_get_global_object(qmlbind_engine *engi
 QMLBIND_API qmlbind_value *qmlbind_engine_new_object(qmlbind_engine *engine);
 QMLBIND_API qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *engine, unsigned length);
 
-QMLBIND_API qmlbind_context *qmlbind_engine_get_root_context(qmlbind_engine *engine);
-
 #ifdef __cplusplus
 }
 #endif

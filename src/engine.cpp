@@ -31,8 +31,4 @@ qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *engine, unsigned length)
     return new QJSValue(engine->newArray(length));
 }
 
-qmlbind_context *qmlbind_engine_get_root_context(qmlbind_engine *engine) {
-    return engine->rootContext();
-}
-
 }
