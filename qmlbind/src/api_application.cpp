@@ -1,4 +1,4 @@
-#include "application.h"
+#include "qmlbind/application.h"
 #include <QApplication>
 
 extern "C" {

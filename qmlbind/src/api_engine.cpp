@@ -1,8 +1,8 @@
-#include "engine.h"
-#include "value_p.h"
+#include "qmlbind/engine.h"
+#include "object.h"
 #include <QQmlEngine>
 
-using namespace qmlbind;
+using namespace QmlBind;
 
 extern "C" {
 
@@ -29,6 +29,13 @@ qmlbind_value *qmlbind_engine_new_object(qmlbind_engine *engine) {
 
 qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *engine, unsigned length) {
     return new QJSValue(engine->newArray(length));
+}
+
+qmlbind_value *qmlbind_engine_new_wrapper(qmlbind_engine *engine, qmlbind_metaobject *metaobj, void *handle, void (*delete_handle)(void *)) {
+    Object *obj = new Object(metaobj, handle, delete_handle);
+
+    QQmlEngine::setObjectOwnership(obj, QQmlEngine::JavaScriptOwnership);
+    return new QJSValue(engine->newQObject(obj));
 }
 
 }

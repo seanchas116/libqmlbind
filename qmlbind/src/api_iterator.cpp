@@ -1,0 +1,1 @@
+#include "qmlbind/iterator.h"

@@ -1,6 +1,8 @@
-#include "value.h"
-#include "util_p.h"
+#include "qmlbind/value.h"
+#include "object.h"
 #include <QJSValue>
+
+using namespace QmlBind;
 
 extern "C" {
 
@@ -39,9 +41,12 @@ int qmlbind_value_is_object(qmlbind_value *self) {
 int qmlbind_value_is_array(qmlbind_value *self) {
     return self->isArray();
 }
-
 int qmlbind_value_is_function(qmlbind_value *self) {
     return self->isCallable();
+}
+
+int qmlbind_value_is_wrapper(qmlbind_value *self) {
+    return qmlbind_value_get_handle(self) != 0;
 }
 
 qmlbind_value *qmlbind_value_new_number(double x) {
@@ -76,6 +81,28 @@ void qmlbind_value_set(qmlbind_value *self, const char *key, qmlbind_value *valu
     self->setProperty(QString::fromUtf8(key), *value);
 }
 
+void *qmlbind_value_get_handle(qmlbind_value *self) {
+    Object *obj = dynamic_cast<Object *>(self->toQObject());
+    if (!obj) {
+        return 0;
+    }
+    return obj->handle();
+}
 
+static QJSValueList pack_args(int argc, qmlbind_value **argv) {
+    QJSValueList args;
+    for (int i = 0; i < argc; ++i) {
+        args << *argv[i];
+    }
+    return args;
+}
+
+qmlbind_value *qmlbind_value_call(qmlbind_value *self, size_t argc, qmlbind_value **argv) {
+    return new QJSValue(self->call(pack_args(argc, argv)));
+}
+
+qmlbind_value *qmlbind_value_call_with_instance(qmlbind_value *self, qmlbind_value *instance, size_t argc, qmlbind_value **argv) {
+    return new QJSValue(self->callWithInstance(*instance, pack_args(argc, argv)));
+}
 
 }

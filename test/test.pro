@@ -1,12 +1,20 @@
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
-CONFIG -= qt
+CONFIG += c++11
 
-SOURCES += main.c
+SOURCES += \
+    api.c \
+    main.cpp \
+    test_value.cpp \
+    test_engine.cpp \
+    test_interface.cpp
 
 QMAKE_CFLAGS += "-std=c89"
 
-LIBS += -L$$PWD/../src/ -lqmlbind
-INCLUDEPATH += $$PWD/../src
-DEPENDPATH += $$PWD/../src
+LIBS += -L$$PWD/../qmlbind/ -lqmlbind
+INCLUDEPATH += $$PWD/../qmlbind/headers $$PWD/lib/Catch/include
+DEPENDPATH += $$PWD/../qmlbind
+
+HEADERS += \
+    test_helper.h
