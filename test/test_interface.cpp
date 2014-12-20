@@ -13,33 +13,40 @@ typedef qmlbind_value *(*method_func)(void *, int, qmlbind_value **);
 typedef qmlbind_value *(*getter_func)(void *);
 typedef void (*setter_func)(void *, qmlbind_value *);
 
-static qmlbind_value *invoke_method(void *obj, void *method, int argc, qmlbind_value **argv) {
+static qmlbind_value *invoke_method(void *obj, void *method, int argc, qmlbind_value **argv)
+{
     return ((method_func)method)(obj, argc, argv);
 }
 
-static qmlbind_value *invoke_getter(void *obj, void *getter) {
+static qmlbind_value *invoke_getter(void *obj, void *getter)
+{
     return ((getter_func)getter)(obj);
 }
 
-static void invoke_setter(void *obj, void *setter, qmlbind_value *value) {
+static void invoke_setter(void *obj, void *setter, qmlbind_value *value)
+{
     ((setter_func)setter)(obj, value);
 }
 
-static qmlbind_value *double_increment_by(void *self, int argc, qmlbind_value **argv) {
+static qmlbind_value *double_increment_by(void *self, int argc, qmlbind_value **argv)
+{
     REQUIRE(argc == 1);
     *(double *)self += qmlbind_value_get_number(argv[0]);
     return qmlbind_value_new_undefined();
 }
 
-static void double_set_value(void *self, qmlbind_value *value) {
+static void double_set_value(void *self, qmlbind_value *value)
+{
     *(double *)self = qmlbind_value_get_number(value);
 }
 
-static qmlbind_value *double_get_value(void *self) {
+static qmlbind_value *double_get_value(void *self)
+{
     return qmlbind_value_new_number(*(double *)self);
 }
 
-static void double_delete(void *self) {
+static void double_delete(void *self)
+{
     *(double *)self = -1;
 }
 

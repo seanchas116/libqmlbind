@@ -52,8 +52,18 @@ QMLBIND_API void qmlbind_value_set(qmlbind_value *self, const char *key, qmlbind
 
 /* function */
 
-QMLBIND_API qmlbind_value *qmlbind_value_call(qmlbind_value *self, size_t argc, qmlbind_value **argv);
-QMLBIND_API qmlbind_value *qmlbind_value_call_with_instance(qmlbind_value *self, qmlbind_value *instance, size_t argc, qmlbind_value **argv);
+QMLBIND_API qmlbind_value *qmlbind_value_call(
+    qmlbind_value *self,
+    size_t argc,
+    qmlbind_value **argv
+);
+
+QMLBIND_API qmlbind_value *qmlbind_value_call_with_instance(
+    qmlbind_value *self,
+    qmlbind_value *instance,
+    size_t argc,
+    qmlbind_value **argv
+);
 
 /* wrapper */
 

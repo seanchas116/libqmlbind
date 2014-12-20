@@ -5,29 +5,25 @@
 extern "C" {
 #endif
 
-QMLBIND_API
-qmlbind_interface *qmlbind_interface_new(
+QMLBIND_API qmlbind_interface *qmlbind_interface_new(
     const char *className,
     qmlbind_interface_handlers handlers
 );
 
-QMLBIND_API
-int qmlbind_interface_add_method(
+QMLBIND_API int qmlbind_interface_add_method(
     qmlbind_interface *exporter,
     void *handle,
     const char *name,
     int arity
 );
 
-QMLBIND_API
-int qmlbind_interface_add_signal(
+QMLBIND_API int qmlbind_interface_add_signal(
     qmlbind_interface *exporter,
     const char *name,
     int arity
 );
 
-QMLBIND_API
-int qmlbind_interface_add_property(
+QMLBIND_API int qmlbind_interface_add_property(
     qmlbind_interface *exporter,
     void *getterHandle,
     void *setterHandle,
