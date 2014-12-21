@@ -9,6 +9,7 @@
 namespace QmlBind {
 
 MetaObject::MetaObject(Interface *interface) :
+    mInterface(interface),
     mHandlers(interface->handlers()),
     mMethods(interface->methodMap()),
     mProperties(interface->propertyMap()),

@@ -2,6 +2,7 @@
 
 #include "qmlbind/qmlbind_global.h"
 #include "interface.h"
+#include <QScopedPointer>
 #include <private/qobject_p.h>
 
 namespace QmlBind {
@@ -18,6 +19,7 @@ public:
 
 private:
 
+    QScopedPointer<Interface> mInterface;
     qmlbind_interface_handlers mHandlers;
     QHash<int, Interface::Method> mMethods;
     QHash<int, Interface::Property> mProperties;
