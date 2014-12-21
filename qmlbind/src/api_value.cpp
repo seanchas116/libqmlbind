@@ -24,6 +24,11 @@ void qmlbind_value_delete(qmlbind_value *self)
 
 int qmlbind_value_is_equal(qmlbind_value *value1, qmlbind_value *value2)
 {
+    return value1->equals(*value2);
+}
+
+int qmlbind_value_is_identical(qmlbind_value *value1, qmlbind_value *value2)
+{
     return value1->strictlyEquals(*value2);
 }
 
@@ -105,6 +110,16 @@ qmlbind_value *qmlbind_value_get_property(qmlbind_value *self, const char *key)
 void qmlbind_value_set_property(qmlbind_value *self, const char *key, qmlbind_value *value)
 {
     self->setProperty(QString::fromUtf8(key), *value);
+}
+
+qmlbind_value *qmlbind_value_get_prototype(qmlbind_value *value)
+{
+    return new QJSValue(value->prototype());
+}
+
+void qmlbind_value_set_prototype(qmlbind_value *value, qmlbind_value *proto)
+{
+    value->setPrototype(*proto);
 }
 
 qmlbind_value *qmlbind_value_get_array_item(qmlbind_value *value, int index)

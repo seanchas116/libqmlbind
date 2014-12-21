@@ -20,6 +20,7 @@ QMLBIND_API qmlbind_value *qmlbind_value_new_null();
 QMLBIND_API void qmlbind_value_delete(qmlbind_value *self);
 
 QMLBIND_API int qmlbind_value_is_equal(qmlbind_value *value1, qmlbind_value *value2);
+QMLBIND_API int qmlbind_value_is_identical(qmlbind_value *value1, qmlbind_value *value2);
 
 QMLBIND_API int qmlbind_value_is_undefined(qmlbind_value *self);
 QMLBIND_API int qmlbind_value_is_null(qmlbind_value *self);
@@ -49,6 +50,9 @@ QMLBIND_API void qmlbind_string_delete(qmlbind_string *str);
 
 QMLBIND_API qmlbind_value *qmlbind_value_get_property(qmlbind_value *self, const char *key);
 QMLBIND_API void qmlbind_value_set_property(qmlbind_value *self, const char *key, qmlbind_value *value);
+
+QMLBIND_API qmlbind_value *qmlbind_value_get_prototype(qmlbind_value *value);
+QMLBIND_API void qmlbind_value_set_prototype(qmlbind_value *value, qmlbind_value *proto);
 
 /* array */
 

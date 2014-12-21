@@ -116,5 +116,32 @@ TEST_CASE("value")
         qmlbind_value_delete(array);
     }
 
+    SECTION("set / get prototype")
+    {
+        auto proto = qmlbind_engine_new_object(engine);
+
+        {
+            auto prop = qmlbind_value_new_number(123);
+            qmlbind_value_set_property(proto, "prop", prop);
+            qmlbind_value_delete(prop);
+        }
+
+        auto obj = qmlbind_engine_new_object(engine);
+        qmlbind_value_set_prototype(obj, proto);
+
+        {
+            auto prop = qmlbind_value_get_property(obj, "prop");
+            REQUIRE(qmlbind_value_get_number(prop) == 123);
+            qmlbind_value_delete(prop);
+        }
+
+        auto gotProto = qmlbind_value_get_prototype(obj);
+        REQUIRE(qmlbind_value_is_identical(proto, gotProto));
+
+        qmlbind_value_delete(obj);
+        qmlbind_value_delete(proto);
+        qmlbind_value_delete(gotProto);
+    }
+
     qmlbind_value_delete(global);
 }
