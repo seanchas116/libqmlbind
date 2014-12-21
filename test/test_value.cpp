@@ -49,10 +49,10 @@ TEST_CASE("value")
         REQUIRE(qmlbind_value_is_object(value));
 
         auto prop = qmlbind_value_new_number(123);
-        qmlbind_value_set(value, "prop", prop);
+        qmlbind_value_set_property(value, "prop", prop);
         qmlbind_value_delete(prop);
 
-        prop = qmlbind_value_get(value, "prop");
+        prop = qmlbind_value_get_property(value, "prop");
         REQUIRE(qmlbind_value_get_number(prop) == 123);
         qmlbind_value_delete(prop);
 
@@ -61,7 +61,7 @@ TEST_CASE("value")
 
     SECTION("function")
     {
-        auto parseInt = qmlbind_value_get(global, "parseInt");
+        auto parseInt = qmlbind_value_get_property(global, "parseInt");
 
         REQUIRE(qmlbind_value_is_function(parseInt));
 
@@ -77,7 +77,7 @@ TEST_CASE("value")
 
     SECTION("construtor")
     {
-        auto arrayConstructor = qmlbind_value_get(global, "Array");
+        auto arrayConstructor = qmlbind_value_get_property(global, "Array");
         auto len = qmlbind_value_new_number(10);
 
         auto array = qmlbind_value_call_constructor(arrayConstructor, 1, &len);
@@ -85,7 +85,7 @@ TEST_CASE("value")
 
         REQUIRE(qmlbind_value_is_array(array));
 
-        len = qmlbind_value_get(array, "length");
+        len = qmlbind_value_get_property(array, "length");
         REQUIRE(qmlbind_value_get_number(len) == 10);
 
         qmlbind_value_delete(array);
@@ -101,14 +101,14 @@ TEST_CASE("value")
 
         for (auto i = 0; i < count; ++i) {
             auto value =  qmlbind_value_new_number(i);
-            qmlbind_value_set_index(array, i, value);
+            qmlbind_value_set_array_item(array, i, value);
             qmlbind_value_delete(value);
         }
 
         REQUIRE(qmlbind_value_is_array(array));
 
         for (auto i = 0; i < count; ++i) {
-            auto value = qmlbind_value_get_index(array, i);
+            auto value = qmlbind_value_get_array_item(array, i);
             REQUIRE(qmlbind_value_get_number(value) == i);
             qmlbind_value_delete(value);
         }

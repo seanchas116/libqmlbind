@@ -47,13 +47,13 @@ QMLBIND_API void qmlbind_string_delete(qmlbind_string *str);
 
 /* object (see also: engine.h) */
 
-QMLBIND_API qmlbind_value *qmlbind_value_get(qmlbind_value *self, const char *key);
-QMLBIND_API void qmlbind_value_set(qmlbind_value *self, const char *key, qmlbind_value *value);
+QMLBIND_API qmlbind_value *qmlbind_value_get_property(qmlbind_value *self, const char *key);
+QMLBIND_API void qmlbind_value_set_property(qmlbind_value *self, const char *key, qmlbind_value *value);
 
 /* array */
 
-QMLBIND_API qmlbind_value *qmlbind_value_get_index(qmlbind_value *value, int index);
-QMLBIND_API void qmlbind_value_set_index(qmlbind_value *value, int index, qmlbind_value *property);
+QMLBIND_API qmlbind_value *qmlbind_value_get_array_item(qmlbind_value *value, int index);
+QMLBIND_API void qmlbind_value_set_array_item(qmlbind_value *value, int index, qmlbind_value *property);
 
 /* function */
 

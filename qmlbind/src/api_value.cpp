@@ -2,7 +2,6 @@
 #include "object.h"
 #include <QJSValue>
 #include <QJSEngine>
-#include <private/qv4arraydata_p.h>
 
 using namespace QmlBind;
 
@@ -98,22 +97,22 @@ void qmlbind_string_delete(qmlbind_string *str)
     delete str;
 }
 
-qmlbind_value *qmlbind_value_get(qmlbind_value *self, const char *key)
+qmlbind_value *qmlbind_value_get_property(qmlbind_value *self, const char *key)
 {
     return new QJSValue(self->property(QString::fromUtf8(key)));
 }
 
-void qmlbind_value_set(qmlbind_value *self, const char *key, qmlbind_value *value)
+void qmlbind_value_set_property(qmlbind_value *self, const char *key, qmlbind_value *value)
 {
     self->setProperty(QString::fromUtf8(key), *value);
 }
 
-qmlbind_value *qmlbind_value_get_index(qmlbind_value *value, int index)
+qmlbind_value *qmlbind_value_get_array_item(qmlbind_value *value, int index)
 {
     return new QJSValue(value->property(index));
 }
 
-void qmlbind_value_set_index(qmlbind_value *value, int index, qmlbind_value *property)
+void qmlbind_value_set_array_item(qmlbind_value *value, int index, qmlbind_value *property)
 {
     value->setProperty(index, *property);
 }

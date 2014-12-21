@@ -21,7 +21,7 @@ TEST_CASE("engine")
         SECTION("returns global object")
         {
             auto global = qmlbind_engine_get_global_object(engine);
-            auto arrayClass = qmlbind_value_get(global, "Array");
+            auto arrayClass = qmlbind_value_get_property(global, "Array");
 
             REQUIRE(qmlbind_value_is_function(arrayClass));
 
@@ -51,7 +51,7 @@ TEST_CASE("engine")
 
             REQUIRE(qmlbind_value_is_array(array));
 
-            auto length = qmlbind_value_get(array, "length");
+            auto length = qmlbind_value_get_property(array, "length");
 
             REQUIRE(qmlbind_value_get_number(length) == 10);
 

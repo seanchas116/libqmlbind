@@ -109,7 +109,7 @@ TEST_CASE("metaobject_exporter")
 
         SECTION("getter")
         {
-            auto prop = qmlbind_value_get(value, "value");
+            auto prop = qmlbind_value_get_property(value, "value");
             REQUIRE(qmlbind_value_get_number(prop) == 123);
             qmlbind_value_delete(prop);
         }
@@ -117,7 +117,7 @@ TEST_CASE("metaobject_exporter")
         SECTION("setter")
         {
             auto prop = qmlbind_value_new_number(234);
-            qmlbind_value_set(value, "value", prop);
+            qmlbind_value_set_property(value, "value", prop);
             REQUIRE(self == 234);
             qmlbind_value_delete(prop);
         }
@@ -125,7 +125,7 @@ TEST_CASE("metaobject_exporter")
         SECTION("method")
         {
             auto offset = qmlbind_value_new_number(100);
-            auto func = qmlbind_value_get(value, "incrementBy");
+            auto func = qmlbind_value_get_property(value, "incrementBy");
             auto result = qmlbind_value_call_with_instance(func, value, 1, &offset);
 
             REQUIRE(self == 223);
