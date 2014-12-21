@@ -8,6 +8,28 @@ TEST_CASE("value")
     auto engine = qmlbind_engine_new();
     auto global = qmlbind_engine_get_global_object(engine);
 
+    SECTION("comparison")
+    {
+        auto one1 = qmlbind_value_new_number(1);
+        auto one2 = qmlbind_value_new_number(1);
+        auto strOne = qmlbind_value_new_string("1");
+
+        SECTION("is_equal")
+        {
+            REQUIRE(qmlbind_value_is_equal(one1, strOne));
+        }
+
+        SECTION("is_identical")
+        {
+            REQUIRE(!qmlbind_value_is_identical(one1, strOne));
+            REQUIRE(qmlbind_value_is_identical(one1, one2));
+        }
+
+        qmlbind_value_delete(one1);
+        qmlbind_value_delete(one2);
+        qmlbind_value_delete(strOne);
+    }
+
     SECTION("undefined")
     {
         auto value = qmlbind_value_new_undefined();
