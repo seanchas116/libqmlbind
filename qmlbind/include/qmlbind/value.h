@@ -30,6 +30,7 @@ QMLBIND_API int qmlbind_value_is_object(qmlbind_value *self);
 
 QMLBIND_API int qmlbind_value_is_array(qmlbind_value *self);
 QMLBIND_API int qmlbind_value_is_function(qmlbind_value *self);
+QMLBIND_API int qmlbind_value_is_error(qmlbind_value *self);
 
 QMLBIND_API int qmlbind_value_is_wrapper(qmlbind_value *self);
 

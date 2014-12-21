@@ -67,6 +67,11 @@ int qmlbind_value_is_function(qmlbind_value *self)
     return self->isCallable();
 }
 
+int qmlbind_value_is_error(qmlbind_value *self)
+{
+    return self->isError();
+}
+
 int qmlbind_value_is_wrapper(qmlbind_value *self)
 {
     return qmlbind_value_get_handle(self) != 0;

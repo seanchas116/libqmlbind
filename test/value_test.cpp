@@ -165,5 +165,13 @@ TEST_CASE("value")
         qmlbind_value_delete(gotProto);
     }
 
+    SECTION("error")
+    {
+        auto value = qmlbind_engine_eval(engine, "throw new Error('hoge')", "file", 1);
+        REQUIRE(qmlbind_value_is_error(value));
+        qmlbind_value_delete(value);
+    }
+
     qmlbind_value_delete(global);
+    qmlbind_engine_delete(engine);
 }
