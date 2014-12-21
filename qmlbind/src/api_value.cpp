@@ -1,5 +1,5 @@
 #include "qmlbind/value.h"
-#include "object.h"
+#include "wrapper.h"
 #include <QJSValue>
 #include <QJSEngine>
 
@@ -134,7 +134,7 @@ void qmlbind_value_set_array_item(qmlbind_value *value, int index, qmlbind_value
 
 void *qmlbind_value_get_handle(qmlbind_value *self)
 {
-    Object *obj = dynamic_cast<Object *>(self->toQObject());
+    Wrapper *obj = dynamic_cast<Wrapper *>(self->toQObject());
     if (!obj) {
         return 0;
     }

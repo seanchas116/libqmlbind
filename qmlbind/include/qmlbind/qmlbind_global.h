@@ -16,7 +16,6 @@ namespace QmlBind {
 
 class MetaObject;
 class Interface;
-class Object;
 
 }
 
@@ -31,7 +30,6 @@ typedef class QJSValue qmlbind_value;
 typedef class QJSValueIterator qmlbind_iterator;
 typedef class QByteArray qmlbind_string;
 
-typedef QmlBind::Object qmlbind_object;
 typedef QmlBind::MetaObject qmlbind_metaobject;
 typedef QmlBind::Interface qmlbind_interface;
 

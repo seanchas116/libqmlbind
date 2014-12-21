@@ -7,11 +7,11 @@ namespace QmlBind {
 
 class MetaObject;
 
-class Object : public QObject
+class Wrapper : public QObject
 {
 public:
-    Object(MetaObject *metaObject, void *handle, void (*deleteHandle)(void *));
-    ~Object();
+    Wrapper(MetaObject *metaObject, void *handle, void (*deleteHandle)(void *));
+    ~Wrapper();
 
     const QMetaObject *metaObject() const Q_DECL_OVERRIDE;
     int qt_metacall(QMetaObject::Call call, int index, void **argv) Q_DECL_OVERRIDE;

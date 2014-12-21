@@ -20,10 +20,10 @@ SOURCES += \
     src/api_iterator.cpp \
     src/api_value.cpp \
     src/metaobject.cpp \
-    src/object.cpp \
     src/interface.cpp \
     src/api_metaobject.cpp \
-    src/api_interface.cpp
+    src/api_interface.cpp \
+    src/wrapper.cpp
 
 HEADERS += \
     include/qmlbind/application.h \
@@ -32,7 +32,7 @@ HEADERS += \
     include/qmlbind/qmlbind_global.h \
     include/qmlbind/value.h \
     src/metaobject.h \
-    src/object.h \
     src/interface.h \
     include/qmlbind/interface.h \
-    include/qmlbind/metaobject.h
+    include/qmlbind/metaobject.h \
+    src/wrapper.h

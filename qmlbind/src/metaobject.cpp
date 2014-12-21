@@ -1,6 +1,6 @@
 #include "metaobject.h"
 #include "interface.h"
-#include "object.h"
+#include "wrapper.h"
 #include <QJSValue>
 #include <QMetaMethod>
 #include <QDebug>
@@ -33,7 +33,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
         return index;
     }
 
-    void *objectHandle = static_cast<Object *>(object)->handle();
+    void *objectHandle = static_cast<Wrapper *>(object)->handle();
 
     switch(call) {
     case QMetaObject::ReadProperty:
