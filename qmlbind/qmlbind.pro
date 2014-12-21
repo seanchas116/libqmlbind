@@ -5,7 +5,7 @@ TEMPLATE = lib
 
 DEFINES += QMLBIND_LIBRARY
 
-INCLUDEPATH += $$PWD/headers
+INCLUDEPATH += $$PWD/include
 
 unix {
     target.path = /usr/lib
@@ -26,13 +26,13 @@ SOURCES += \
     src/api_interface.cpp
 
 HEADERS += \
-    headers/qmlbind/application.h \
-    headers/qmlbind/engine.h \
-    headers/qmlbind/iterator.h \
-    headers/qmlbind/qmlbind_global.h \
-    headers/qmlbind/value.h \
+    include/qmlbind/application.h \
+    include/qmlbind/engine.h \
+    include/qmlbind/iterator.h \
+    include/qmlbind/qmlbind_global.h \
+    include/qmlbind/value.h \
     src/metaobject.h \
     src/object.h \
     src/interface.h \
-    headers/qmlbind/interface.h \
-    headers/qmlbind/metaobject.h
+    include/qmlbind/interface.h \
+    include/qmlbind/metaobject.h
