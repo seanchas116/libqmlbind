@@ -20,6 +20,8 @@ class Object;
 
 }
 
+template <typename T> class QList;
+
 typedef class QApplication qmlbind_application;
 
 typedef class QQmlEngine qmlbind_engine;

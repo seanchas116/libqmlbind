@@ -50,10 +50,21 @@ QMLBIND_API void qmlbind_string_delete(qmlbind_string *str);
 QMLBIND_API qmlbind_value *qmlbind_value_get(qmlbind_value *self, const char *key);
 QMLBIND_API void qmlbind_value_set(qmlbind_value *self, const char *key, qmlbind_value *value);
 
+/* array */
+
+QMLBIND_API qmlbind_value *qmlbind_value_get_index(qmlbind_value *value, int index);
+QMLBIND_API void qmlbind_value_set_index(qmlbind_value *value, int index, qmlbind_value *property);
+
 /* function */
 
 QMLBIND_API qmlbind_value *qmlbind_value_call(
     qmlbind_value *self,
+    size_t argc,
+    qmlbind_value **argv
+);
+
+QMLBIND_API qmlbind_value *qmlbind_value_call_constructor(
+    qmlbind_value *function,
     size_t argc,
     qmlbind_value **argv
 );
