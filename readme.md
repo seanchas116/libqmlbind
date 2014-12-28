@@ -1,8 +1,8 @@
 # libqmlbind
 
-** This project is in early development **
-
 libqmlbind is a C library for creating QML bindings for other languages easily through exporting objects and classes to QML.
+
+[![Build Status](https://travis-ci.org/seanchas116/libqmlbind.svg?branch=master)](https://travis-ci.org/seanchas116/libqmlbind)
 
 ## Features
 
