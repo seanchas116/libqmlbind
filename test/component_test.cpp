@@ -4,11 +4,10 @@
 TEST_CASE("component")
 {
     auto engine = qmlbind_engine_new();
+    auto component = qmlbind_component_new(engine);
 
     SECTION("#create")
     {
-        auto component = qmlbind_component_new(engine);
-
         SECTION("with data")
         {
             auto data = R"QML(
@@ -26,7 +25,6 @@ TEST_CASE("component")
         }
 
         auto obj = qmlbind_component_create(component);
-        qmlbind_component_delete(component);
 
         auto foo = qmlbind_value_get_property(obj, "foo");
         REQUIRE(qmlbind_value_get_number(foo) == 123);
@@ -35,5 +33,22 @@ TEST_CASE("component")
         qmlbind_value_delete(obj);
     }
 
+    SECTION("#get_error_string")
+    {
+        auto data = R"QML(
+            import WRONGMODULE 1.0
+            QtObject {
+                property int foo: 123
+            }
+        )QML";
+        qmlbind_component_set_data(component, data, "");
+        auto str = qmlbind_component_get_error_string(component);
+
+        REQUIRE(strlen(qmlbind_string_get(str)) > 0);
+
+        qmlbind_string_delete(str);
+    }
+
+    qmlbind_component_delete(component);
     qmlbind_engine_delete(engine);
 }

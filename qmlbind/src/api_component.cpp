@@ -25,6 +25,11 @@ void qmlbind_component_set_data(qmlbind_component *component, const char *data, 
     component->setData(data, QUrl::fromLocalFile(path));
 }
 
+qmlbind_string *qmlbind_component_get_error_string(qmlbind_component *component)
+{
+    return new QByteArray(component->errorString().toUtf8());
+}
+
 qmlbind_value *qmlbind_component_create(qmlbind_component *component)
 {
     QObject *object = component->create();
