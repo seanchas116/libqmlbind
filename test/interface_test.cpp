@@ -5,6 +5,7 @@
 #include <QMetaMethod>
 #include <QByteArray>
 #include <QDebug>
+#include <string.h>
 
 typedef qmlbind_value *(*method_func)(void *, int, qmlbind_value **);
 typedef qmlbind_value *(*getter_func)(void *);

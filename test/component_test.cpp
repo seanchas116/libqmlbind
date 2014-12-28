@@ -1,5 +1,6 @@
 #include "test_helper.h"
 #include <qmlbind.h>
+#include <string.h>
 
 TEST_CASE("component")
 {
