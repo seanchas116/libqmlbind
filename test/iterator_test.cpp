@@ -3,6 +3,7 @@
 #include <qmlbind/iterator.h>
 #include <qmlbind/value.h>
 #include <qmlbind/engine.h>
+#include <qmlbind/string.h>
 #include <QList>
 
 TEST_CASE("iterator")

@@ -23,7 +23,10 @@ SOURCES += \
     src/interface.cpp \
     src/api_metaobject.cpp \
     src/api_interface.cpp \
-    src/wrapper.cpp
+    src/wrapper.cpp \
+    src/api_string.cpp \
+    src/api_component.cpp \
+    src/api_context.cpp
 
 HEADERS += \
     include/qmlbind/application.h \
@@ -35,4 +38,7 @@ HEADERS += \
     src/interface.h \
     include/qmlbind/interface.h \
     include/qmlbind/metaobject.h \
-    src/wrapper.h
+    src/wrapper.h \
+    include/qmlbind/string.h \
+    include/qmlbind/context.h \
+    include/qmlbind/component.h
