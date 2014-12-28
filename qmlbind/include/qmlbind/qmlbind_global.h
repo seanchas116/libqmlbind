@@ -29,7 +29,6 @@ typedef class QQmlComponent qmlbind_component;
 typedef class QJSValue qmlbind_value;
 typedef class QJSValueIterator qmlbind_iterator;
 typedef class QByteArray qmlbind_string;
-typedef class QList<QByteArray> qmlbind_string_list;
 
 typedef QmlBind::MetaObject qmlbind_metaobject;
 typedef QmlBind::Interface qmlbind_interface;
@@ -44,7 +43,6 @@ typedef struct qmlbind_component_s qmlbind_component;
 typedef struct qmlbind_value_s qmlbind_value;
 typedef struct qmlbind_iterator_s qmlbind_iterator;
 typedef struct qmlbind_string_s qmlbind_string;
-typedef struct qmlbind_string_list_s qmlbind_string_list;
 
 typedef struct qmlbind_object_s qmlbind_object;
 typedef struct qmlbind_metaobject_s qmlbind_metaobject;
