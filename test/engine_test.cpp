@@ -1,4 +1,4 @@
-#include <catch.hpp>
+#include "test_helper.h"
 #include <qmlbind.h>
 
 TEST_CASE("engine")
@@ -57,6 +57,29 @@ TEST_CASE("engine")
             qmlbind_value_delete(length);
             qmlbind_value_delete(array);
         }
+    }
+
+    SECTION("#add_import_path")
+    {
+        qmlbind_engine_add_import_path(engine, "./fixtures");
+
+        auto data = R"QML(
+            import QtQuick 2.0
+            import testmodule 1.0
+            Test {}
+        )QML";
+
+        auto component = qmlbind_component_new(engine);
+        qmlbind_component_set_data(component, data, "./fixtures/test.qml");
+
+        auto obj = qmlbind_component_create(component);
+        qmlbind_component_delete(component);
+
+        auto foo = qmlbind_value_get_property(obj, "foo");
+        REQUIRE(qmlbind_value_get_number(foo) == 456);
+
+        qmlbind_value_delete(foo);
+        qmlbind_value_delete(obj);
     }
 
     qmlbind_engine_delete(engine);

@@ -45,4 +45,9 @@ qmlbind_value *qmlbind_engine_new_wrapper(qmlbind_engine *engine, qmlbind_metaob
     return new QJSValue(engine->newQObject(obj));
 }
 
+void qmlbind_engine_add_import_path(qmlbind_engine *engine, const char *path)
+{
+    engine->addImportPath(path);
+}
+
 }

@@ -33,6 +33,9 @@ qmlbind_string *qmlbind_component_get_error_string(qmlbind_component *component)
 qmlbind_value *qmlbind_component_create(qmlbind_component *component)
 {
     QObject *object = component->create();
+    if (!object) {
+        return new QJSValue(QJSValue::UndefinedValue);
+    }
     QQmlEngine::setObjectOwnership(object, QQmlEngine::JavaScriptOwnership);
     return new QJSValue(QQmlEngine::contextForObject(object)->engine()->newQObject(object));
 }
