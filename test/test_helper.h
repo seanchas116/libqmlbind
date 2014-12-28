@@ -1,5 +1,4 @@
-#ifndef TEST_HELPER_H
-#define TEST_HELPER_H
+#pragma once
 
 #include <QByteArray>
 #include <QString>
@@ -14,6 +13,3 @@ inline std::ostream &operator<<(std::ostream &stream, const QString &str)
 {
     return stream << str.toUtf8();
 }
-
-#endif // TEST_HELPER_H
-
