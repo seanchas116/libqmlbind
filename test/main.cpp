@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
-#include <qmlbind/application.h>
+#include <qmlbind.h>
 
 int main(int argc, char **argv)
 {

@@ -1,6 +1,5 @@
 #include <catch.hpp>
-#include <qmlbind/value.h>
-#include <qmlbind/engine.h>
+#include <qmlbind.h>
 
 TEST_CASE("engine")
 {

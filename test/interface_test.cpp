@@ -1,9 +1,6 @@
 #include "test_helper.h"
 #include <catch.hpp>
-#include <qmlbind/engine.h>
-#include <qmlbind/interface.h>
-#include <qmlbind/metaobject.h>
-#include <qmlbind/value.h>
+#include <qmlbind.h>
 #include <QMetaObject>
 #include <QMetaMethod>
 #include <QByteArray>

@@ -1,7 +1,5 @@
 #include "test_helper.h"
-#include <qmlbind/component.h>
-#include <qmlbind/engine.h>
-#include <qmlbind/value.h>
+#include <qmlbind.h>
 #include <catch.hpp>
 
 TEST_CASE("component")

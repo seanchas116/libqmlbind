@@ -41,4 +41,5 @@ HEADERS += \
     src/wrapper.h \
     include/qmlbind/string.h \
     include/qmlbind/context.h \
-    include/qmlbind/component.h
+    include/qmlbind/component.h \
+    include/qmlbind.h

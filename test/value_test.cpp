@@ -1,7 +1,5 @@
 #include <catch.hpp>
-#include <qmlbind/value.h>
-#include <qmlbind/engine.h>
-#include <qmlbind/string.h>
+#include <qmlbind.h>
 #include <array>
 
 TEST_CASE("value")
