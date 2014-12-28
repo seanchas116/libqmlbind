@@ -2,7 +2,6 @@
 
 #include "qmlbind/application.h"
 #include "qmlbind/component.h"
-#include "qmlbind/context.h"
 #include "qmlbind/engine.h"
 #include "qmlbind/interface.h"
 #include "qmlbind/iterator.h"

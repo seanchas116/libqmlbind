@@ -24,7 +24,6 @@ template <typename T> class QList;
 typedef class QApplication qmlbind_application;
 
 typedef class QQmlEngine qmlbind_engine;
-typedef class QQmlContext qmlbind_context;
 typedef class QQmlComponent qmlbind_component;
 
 typedef class QJSValue qmlbind_value;
@@ -40,7 +39,6 @@ typedef QmlBind::Interface qmlbind_interface;
 typedef struct qmlbind_application_s qmlbind_application;
 
 typedef struct qmlbind_engine_s qmlbind_engine;
-typedef struct qmlbind_context_s qmlbind_context;
 typedef struct qmlbind_component_s qmlbind_component;
 
 typedef struct qmlbind_value_s qmlbind_value;
