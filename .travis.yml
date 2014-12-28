@@ -11,4 +11,4 @@ script:
   - export LD_LIBRARY_PATH=$PWD
   - cd ../test
   - make
-  - ./test
+  - ./test -platform offscreen
