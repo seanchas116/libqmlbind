@@ -6,75 +6,100 @@
 #include <QByteArray>
 #include <QDebug>
 #include <string.h>
+#include <functional>
 
-typedef qmlbind_value *(*method_func)(void *, int, qmlbind_value **);
-typedef qmlbind_value *(*getter_func)(void *);
-typedef void (*setter_func)(void *, qmlbind_value *);
-
-static void *new_obj(void *klass)
+class Test
 {
-    // for test purpose returns class (double value) as instance
-    *((double *)klass) = 1;
-    return klass;
-}
+public:
 
-static qmlbind_value *invoke_method(void *obj, void *method, int argc, qmlbind_value **argv)
-{
-    return ((method_func)method)(obj, argc, argv);
-}
+    Test(std::function<void ()> onDestroy) :
+        m_value(1),
+        m_onDestroy(onDestroy)
+    {
+    }
 
-static qmlbind_value *invoke_getter(void *obj, void *getter)
-{
-    return ((getter_func)getter)(obj);
-}
+    void incrementBy(double diff)
+    {
+        m_value += diff;
+    }
 
-static void invoke_setter(void *obj, void *setter, qmlbind_value *value)
-{
-    ((setter_func)setter)(obj, value);
-}
+    double value()
+    {
+        return m_value;
+    }
 
-static qmlbind_value *double_increment_by(void *self, int argc, qmlbind_value **argv)
-{
-    REQUIRE(argc == 1);
-    *(double *)self += qmlbind_value_get_number(argv[0]);
-    return qmlbind_value_new_undefined();
-}
+    void setValue(double val)
+    {
+        m_value = val;
+    }
 
-static void double_set_value(void *self, qmlbind_value *value)
-{
-    *(double *)self = qmlbind_value_get_number(value);
-}
+private:
+    double m_value;
+    std::function<void ()> m_onDestroy;
+};
 
-static qmlbind_value *double_get_value(void *self)
-{
-    return qmlbind_value_new_number(*(double *)self);
-}
+namespace Handlers {
 
-static void delete_obj(void *self)
-{
-    *(double *)self = -1;
+    void *newObject(void *klass)
+    {
+        std::string name = static_cast<char *>(klass);
+        REQUIRE(name == "class:Test");
+        return new Test([] {});
+    }
+
+    qmlbind_value *invokeMethod(void *obj, void *method, int argc, qmlbind_value **argv)
+    {
+        std::string name = static_cast<char *>(method);
+        REQUIRE(name == "method:incrementBy");
+        REQUIRE(argc == 1);
+
+        auto test = static_cast<Test *>(obj);
+        test->incrementBy(qmlbind_value_get_number(argv[0]));
+
+        return qmlbind_value_new_number(test->value());
+    }
+
+    qmlbind_value *invokeGetter(void *obj, void *getter)
+    {
+        std::string name = static_cast<char *>(getter);
+        REQUIRE(name == "getter:value");
+
+        auto test = static_cast<Test *>(obj);
+        return qmlbind_value_new_number(test->value());
+    }
+
+    void invokeSetter(void *obj, void *setter, qmlbind_value *value)
+    {
+        std::string name = static_cast<char *>(setter);
+        REQUIRE(name == "setter:value");
+
+        auto test = static_cast<Test *>(obj);
+        test->setValue(qmlbind_value_get_number(value));
+    }
+
+    void deleteObject(void *obj)
+    {
+        delete static_cast<Test *>(obj);
+    }
 }
 
 TEST_CASE("metaobject_exporter")
 {
     auto engine = qmlbind_engine_new();
 
-    auto self = 123.0;
-
     qmlbind_interface_handlers handlers;
 
-    handlers.new_object = new_obj;
-    handlers.call_method = invoke_method;
-    handlers.set_property = invoke_setter;
-    handlers.get_property = invoke_getter;
-    handlers.delete_object = delete_obj;
+    handlers.new_object = &Handlers::newObject;
+    handlers.call_method = &Handlers::invokeMethod;
+    handlers.set_property = &Handlers::invokeSetter;
+    handlers.get_property = &Handlers::invokeGetter;
+    handlers.delete_object = &Handlers::deleteObject;
 
-    auto interface = qmlbind_interface_new(&self, "Test", handlers);
+    auto interface = qmlbind_interface_new((void *)"class:Test", "Test", handlers);
 
     auto notifierIndex = qmlbind_interface_add_signal(interface, "valueChanged", 1);
-    auto methodIndex = qmlbind_interface_add_method(interface, (void *)double_increment_by, "incrementBy", 1);
-
-    auto propertyIndex = qmlbind_interface_add_property(interface, (void *)double_get_value, (void *)double_set_value, "value", notifierIndex);
+    auto methodIndex = qmlbind_interface_add_method(interface, (void *)"method:incrementBy", "incrementBy", 1);
+    auto propertyIndex = qmlbind_interface_add_property(interface, (void *)"getter:value", (void *)"setter:value", "value", notifierIndex);
 
     auto metaobject = qmlbind_metaobject_new(interface);
 
@@ -85,7 +110,7 @@ TEST_CASE("metaobject_exporter")
         auto methodCount = metaobj->methodCount() - metaobj->methodOffset();
         auto propertyCount = metaobj->propertyCount() - metaobj->propertyOffset();
 
-        REQUIRE(strcmp(metaobj->className(),"Test") == 0);
+        REQUIRE(QByteArray(metaobj->className()) == "Test");
         REQUIRE(methodCount == 2);
         REQUIRE(propertyCount == 1);
 
@@ -112,11 +137,16 @@ TEST_CASE("metaobject_exporter")
 
     SECTION("created wrapper")
     {
-        auto value = qmlbind_engine_new_wrapper(engine, metaobject, &self);
+        bool destroyed = false;
+        Test test([&] {
+            destroyed = true;
+        });
+
+        auto value = qmlbind_engine_new_wrapper(engine, metaobject, &test);
 
         REQUIRE(qmlbind_value_is_wrapper(value));
 
-        self = 123;
+        test.setValue(123);
 
         SECTION("getter")
         {
@@ -129,7 +159,7 @@ TEST_CASE("metaobject_exporter")
         {
             auto prop = qmlbind_value_new_number(234);
             qmlbind_value_set_property(value, "value", prop);
-            REQUIRE(self == 234);
+            REQUIRE(test.value() == 234);
             qmlbind_value_delete(prop);
         }
 
@@ -139,7 +169,7 @@ TEST_CASE("metaobject_exporter")
             auto func = qmlbind_value_get_property(value, "incrementBy");
             auto result = qmlbind_value_call_with_instance(func, value, 1, &offset);
 
-            REQUIRE(self == 223);
+            REQUIRE(test.value() == 223);
 
             qmlbind_value_delete(offset);
             qmlbind_value_delete(func);
@@ -147,6 +177,8 @@ TEST_CASE("metaobject_exporter")
         }
 
         qmlbind_value_delete(value);
+
+        //REQUIRE(destroyed);
     }
 
     SECTION("register type")
@@ -184,7 +216,9 @@ TEST_CASE("metaobject_exporter")
             auto func = qmlbind_value_get_property(obj, "incrementBy");
             auto result = qmlbind_value_call_with_instance(func, obj, 1, &offset);
 
-            REQUIRE(self == 101);
+            auto test = static_cast<Test *>(qmlbind_value_get_handle(obj));
+            REQUIRE(test != nullptr);
+            REQUIRE(test->value() == 101);
 
             qmlbind_value_delete(offset);
             qmlbind_value_delete(func);
