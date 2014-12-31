@@ -7,9 +7,9 @@ using namespace QmlBind;
 
 extern "C" {
 
-qmlbind_interface *qmlbind_interface_new(const char *className, qmlbind_interface_handlers handlers)
+qmlbind_interface *qmlbind_interface_new(void *classHandle, const char *className, qmlbind_interface_handlers handlers)
 {
-    return new Interface(className, handlers);
+    return new Interface(className, classHandle, handlers);
 }
 
 void qmlbind_interface_delete(qmlbind_interface *interface)

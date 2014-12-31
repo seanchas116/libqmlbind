@@ -22,8 +22,7 @@ QMLBIND_API qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *engine, int 
 QMLBIND_API qmlbind_value *qmlbind_engine_new_wrapper(
     qmlbind_engine *engine,
     qmlbind_metaobject *metaobj,
-    void *handle,
-    void (*delete_handle)(void *)
+    void *handle
 );
 
 QMLBIND_API void qmlbind_engine_add_import_path(qmlbind_engine *engine, const char *path);

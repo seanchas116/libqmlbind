@@ -1,19 +1,17 @@
 #include "wrapper.h"
 #include "metaobject.h"
-#include <private/qobject_p.h>
 
 namespace QmlBind {
 
-Wrapper::Wrapper(MetaObject *metaObject, void *handle, void (*deleteHandle)(void *)) :
+Wrapper::Wrapper(const MetaObject *metaObject, void *handle) :
     mMetaObject(metaObject),
-    mHandle(handle),
-    mDeleteHandle(deleteHandle)
+    mHandle(handle)
 {
 }
 
 Wrapper::~Wrapper()
 {
-    mDeleteHandle(mHandle);
+    mMetaObject->interface()->handlers().delete_object(mHandle);
 }
 
 const QMetaObject *Wrapper::metaObject() const

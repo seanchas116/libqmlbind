@@ -3,7 +3,8 @@
 
 namespace QmlBind {
 
-Interface::Interface(const char *className, qmlbind_interface_handlers handlers) :
+Interface::Interface(const char *className, void *classHandle, qmlbind_interface_handlers handlers) :
+    mClassHandle(classHandle),
     mHandlers(handlers)
 {
     mBuilder.setClassName(className);
@@ -56,6 +57,11 @@ QMetaPropertyBuilder Interface::addProperty(void *getterHandle, void *setterHand
     mPropertyMap[property.index()] = propertyInfo;
 
     return property;
+}
+
+void *Interface::classHandle() const
+{
+    return mClassHandle;
 }
 
 const QMetaObjectBuilder *Interface::metaObjectBuilder() const

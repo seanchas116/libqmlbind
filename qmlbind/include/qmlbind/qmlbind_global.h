@@ -51,6 +51,8 @@ typedef struct qmlbind_interface_s qmlbind_interface;
 #endif
 
 typedef struct {
+    void *(*new_object)(void *classHandle);
+    void (*delete_object)(void *objHandle);
     qmlbind_value *(*call_method)(void *objHandle, void *methodHandle, int argc, qmlbind_value **argv);
     qmlbind_value *(*get_property)(void *objHandle, void *getterHandle);
     void (*set_property)(void *objHandle, void *setterHandle, qmlbind_value *value);

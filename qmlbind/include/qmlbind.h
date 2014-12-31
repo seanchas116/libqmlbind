@@ -8,3 +8,4 @@
 #include "qmlbind/metaobject.h"
 #include "qmlbind/string.h"
 #include "qmlbind/value.h"
+#include "qmlbind/register.h"

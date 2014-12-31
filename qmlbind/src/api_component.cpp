@@ -27,7 +27,14 @@ void qmlbind_component_set_data(qmlbind_component *component, const char *data, 
 
 qmlbind_string *qmlbind_component_get_error_string(qmlbind_component *component)
 {
-    return new QByteArray(component->errorString().toUtf8());
+    QString str = component->errorString();
+
+    if (str.isEmpty()) {
+        return 0;
+    }
+    else {
+        return new QByteArray(str.toUtf8());
+    }
 }
 
 qmlbind_value *qmlbind_component_create(qmlbind_component *component)

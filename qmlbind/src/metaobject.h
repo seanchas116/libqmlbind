@@ -8,6 +8,7 @@
 namespace QmlBind {
 
 class Interface;
+class Wrapper;
 
 class MetaObject : public QMetaObject
 {
@@ -15,6 +16,7 @@ public:
     MetaObject(Interface *interface);
     ~MetaObject();
 
+    const Interface *interface() const { return mInterface.data(); }
     int metaCall(QObject *object, Call call, int index, void **argv) const;
 
 private:

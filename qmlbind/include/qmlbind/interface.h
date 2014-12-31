@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 QMLBIND_API qmlbind_interface *qmlbind_interface_new(
+    void *classHandle,
     const char *className,
     qmlbind_interface_handlers handlers
 );

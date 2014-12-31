@@ -12,8 +12,6 @@ unix {
     INSTALLS += target
 }
 
-QMAKE_CXXFLAGS += "-std=c++03"
-
 SOURCES += \
     src/api_application.cpp \
     src/api_engine.cpp \
@@ -25,7 +23,9 @@ SOURCES += \
     src/api_interface.cpp \
     src/wrapper.cpp \
     src/api_string.cpp \
-    src/api_component.cpp
+    src/api_component.cpp \
+    src/typeregisterer.cpp \
+    src/api_register.cpp
 
 HEADERS += \
     include/qmlbind/application.h \
@@ -40,4 +40,6 @@ HEADERS += \
     src/wrapper.h \
     include/qmlbind/string.h \
     include/qmlbind/component.h \
-    include/qmlbind.h
+    include/qmlbind.h \
+    src/typeregisterer.h \
+    include/qmlbind/register.h

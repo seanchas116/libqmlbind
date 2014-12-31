@@ -19,13 +19,14 @@ public:
         void *getterHandle;
     };
 
-    Interface(const char *className, qmlbind_interface_handlers handlers);
+    Interface(const char *className, void *classHandle, qmlbind_interface_handlers handlers);
 
     QMetaMethodBuilder addMethod(void *handle, const char *name, int arity);
     QMetaMethodBuilder addSignal(const char *name, int arity);
     QMetaPropertyBuilder addProperty(void *getterHandle, void *setterHandle,
                                      const char *name, int notifySignalIndex);
 
+    void *classHandle() const;
     const QMetaObjectBuilder *metaObjectBuilder() const;
     qmlbind_interface_handlers handlers() const;
     QHash<int, Method> methodMap() const;
@@ -33,6 +34,7 @@ public:
 
 private:
 
+    void *mClassHandle;
     qmlbind_interface_handlers mHandlers;
     QHash<int, Method> mMethodMap;
     QHash<int, Property> mPropertyMap;

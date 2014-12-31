@@ -10,7 +10,7 @@ class MetaObject;
 class Wrapper : public QObject
 {
 public:
-    Wrapper(MetaObject *metaObject, void *handle, void (*deleteHandle)(void *));
+    Wrapper(const MetaObject *metaObject, void *handle);
     ~Wrapper();
 
     const QMetaObject *metaObject() const Q_DECL_OVERRIDE;
@@ -22,7 +22,6 @@ private:
 
     const MetaObject *mMetaObject;
     void *mHandle;
-    void (*mDeleteHandle)(void *);
 };
 
 } // namespace QmlBind

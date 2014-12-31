@@ -1,4 +1,5 @@
 #include "qmlbind/engine.h"
+#include "metaobject.h"
 #include "wrapper.h"
 #include <QQmlEngine>
 
@@ -37,9 +38,9 @@ qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *engine, int length)
     return new QJSValue(engine->newArray(length));
 }
 
-qmlbind_value *qmlbind_engine_new_wrapper(qmlbind_engine *engine, qmlbind_metaobject *metaobj, void *handle, void (*delete_handle)(void *))
+qmlbind_value *qmlbind_engine_new_wrapper(qmlbind_engine *engine, qmlbind_metaobject *metaobj, void *handle)
 {
-    Wrapper *obj = new Wrapper(metaobj, handle, delete_handle);
+    Wrapper *obj = new Wrapper(metaobj, handle);
 
     QQmlEngine::setObjectOwnership(obj, QQmlEngine::JavaScriptOwnership);
     return new QJSValue(engine->newQObject(obj));
