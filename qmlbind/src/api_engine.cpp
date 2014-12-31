@@ -2,6 +2,7 @@
 #include "metaobject.h"
 #include "wrapper.h"
 #include <QQmlEngine>
+#include <QDebug>
 
 using namespace QmlBind;
 
@@ -49,6 +50,11 @@ qmlbind_value *qmlbind_engine_new_wrapper(qmlbind_engine *engine, qmlbind_metaob
 void qmlbind_engine_add_import_path(qmlbind_engine *engine, const char *path)
 {
     engine->addImportPath(path);
+}
+
+void qmlbind_engine_collect_garbage(qmlbind_engine *engine)
+{
+    engine->collectGarbage();
 }
 
 }

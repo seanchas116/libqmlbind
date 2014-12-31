@@ -9,7 +9,7 @@ extern "C" {
 QMLBIND_API qmlbind_application *qmlbind_application_new(int argc, char **argv);
 QMLBIND_API void qmlbind_application_delete(qmlbind_application *app);
 
-QMLBIND_API void qmlbind_application_process_events(qmlbind_application *app);
+QMLBIND_API void qmlbind_process_events();
 
 #ifdef __cplusplus
 }

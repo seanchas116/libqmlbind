@@ -18,6 +18,11 @@ public:
     {
     }
 
+    ~Test()
+    {
+        m_onDestroy();
+    }
+
     void incrementBy(double diff)
     {
         m_value += diff;
@@ -138,15 +143,15 @@ TEST_CASE("metaobject_exporter")
     SECTION("created wrapper")
     {
         bool destroyed = false;
-        Test test([&] {
+        auto test = new Test([&] {
             destroyed = true;
         });
 
-        auto value = qmlbind_engine_new_wrapper(engine, metaobject, &test);
+        auto value = qmlbind_engine_new_wrapper(engine, metaobject, test);
 
         REQUIRE(qmlbind_value_is_wrapper(value));
 
-        test.setValue(123);
+        test->setValue(123);
 
         SECTION("getter")
         {
@@ -159,7 +164,7 @@ TEST_CASE("metaobject_exporter")
         {
             auto prop = qmlbind_value_new_number(234);
             qmlbind_value_set_property(value, "value", prop);
-            REQUIRE(test.value() == 234);
+            REQUIRE(test->value() == 234);
             qmlbind_value_delete(prop);
         }
 
@@ -169,7 +174,7 @@ TEST_CASE("metaobject_exporter")
             auto func = qmlbind_value_get_property(value, "incrementBy");
             auto result = qmlbind_value_call_with_instance(func, value, 1, &offset);
 
-            REQUIRE(test.value() == 223);
+            REQUIRE(test->value() == 223);
 
             qmlbind_value_delete(offset);
             qmlbind_value_delete(func);
@@ -178,7 +183,12 @@ TEST_CASE("metaobject_exporter")
 
         qmlbind_value_delete(value);
 
-        //REQUIRE(destroyed);
+        qmlbind_engine_collect_garbage(engine);
+
+        // process deferred delete events
+        qmlbind_process_events();
+
+        REQUIRE(destroyed);
     }
 
     SECTION("register type")

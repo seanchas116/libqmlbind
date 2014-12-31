@@ -27,6 +27,8 @@ QMLBIND_API qmlbind_value *qmlbind_engine_new_wrapper(
 
 QMLBIND_API void qmlbind_engine_add_import_path(qmlbind_engine *engine, const char *path);
 
+QMLBIND_API void qmlbind_engine_collect_garbage(qmlbind_engine *engine);
+
 #ifdef __cplusplus
 }
 #endif
