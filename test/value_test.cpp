@@ -166,6 +166,47 @@ TEST_CASE("value")
         qmlbind_value_delete(gotProto);
     }
 
+    SECTION("property manipulation")
+    {
+        auto proto = qmlbind_engine_new_object(engine);
+
+        {
+            auto prop = qmlbind_value_new_number(123);
+            qmlbind_value_set_property(proto, "inherited", prop);
+            qmlbind_value_delete(prop);
+        }
+
+        auto obj = qmlbind_engine_new_object(engine);
+        qmlbind_value_set_prototype(obj, proto);
+
+        {
+            auto prop = qmlbind_value_new_number(456);
+            qmlbind_value_set_property(obj, "own", prop);
+            qmlbind_value_delete(prop);
+        }
+
+        SECTION("#has_own_property")
+        {
+            REQUIRE(qmlbind_value_has_own_property(obj, "own"));
+            REQUIRE(!qmlbind_value_has_own_property(obj, "inherited"));
+        }
+
+        SECTION("#has_property")
+        {
+            REQUIRE(qmlbind_value_has_property(obj, "own"));
+            REQUIRE(qmlbind_value_has_property(obj, "inherited"));
+        }
+
+        SECTION("#delete_property")
+        {
+            REQUIRE(qmlbind_value_delete_property(obj, "own"));
+            REQUIRE(!qmlbind_value_has_property(obj, "own"));
+        }
+
+        qmlbind_value_delete(obj);
+        qmlbind_value_delete(proto);
+    }
+
     SECTION("error")
     {
         auto value = qmlbind_engine_eval(engine, "throw new Error('hoge')", "file", 1);

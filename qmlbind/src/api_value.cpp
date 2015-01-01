@@ -107,6 +107,21 @@ void qmlbind_value_set_property(qmlbind_value self, const char *key, qmlbind_val
     self->setProperty(QString::fromUtf8(key), *value);
 }
 
+int qmlbind_value_delete_property(qmlbind_value value, const char *key)
+{
+    return value->deleteProperty(key);
+}
+
+int qmlbind_value_has_property(qmlbind_value value, const char *key)
+{
+    return value->hasProperty(key);
+}
+
+int qmlbind_value_has_own_property(qmlbind_value value, const char *key)
+{
+    return value->hasOwnProperty(key);
+}
+
 qmlbind_value qmlbind_value_get_prototype(qmlbind_value value)
 {
     return new QJSValue(value->prototype());
