@@ -54,12 +54,13 @@ TEST_CASE("value")
 
     SECTION("string")
     {
-        auto str = "ほげ";
+        auto str = "hoge";
         auto value = qmlbind_value_new_string(str);
         auto result = qmlbind_value_get_string(value);
 
         REQUIRE(qmlbind_value_is_string(value));
-        REQUIRE(strcmp(qmlbind_string_get(result), str) == 0);
+        REQUIRE(std::string(qmlbind_string_get_chars(result)) == str);
+        REQUIRE(qmlbind_string_get_length(result) == 4);
 
         qmlbind_string_delete(result);
         qmlbind_value_delete(value);

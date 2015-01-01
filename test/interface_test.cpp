@@ -208,7 +208,7 @@ TEST_CASE("metaobject_exporter")
 
         auto error = qmlbind_component_get_error_string(component);
         if (error) {
-            qDebug() << qmlbind_string_get(error);
+            qDebug() << qmlbind_string_get_chars(error);
             qmlbind_string_delete(error);
         }
 

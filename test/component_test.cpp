@@ -47,7 +47,7 @@ TEST_CASE("component")
         auto str = qmlbind_component_get_error_string(component);
 
         REQUIRE(str != nullptr);
-        REQUIRE(strlen(qmlbind_string_get(str)) > 0);
+        REQUIRE(qmlbind_string_get_length(str) > 0);
 
         qmlbind_string_delete(str);
     }

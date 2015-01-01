@@ -24,7 +24,7 @@ TEST_CASE("iterator")
         qmlbind_iterator_get_key(iterator);
         auto key = qmlbind_iterator_get_key(iterator);
         auto value = qmlbind_iterator_get_value(iterator);
-        REQUIRE(std::string(qmlbind_string_get(key)) == std::to_string(i));
+        REQUIRE(std::string(qmlbind_string_get_chars(key)) == std::to_string(i));
         REQUIRE(qmlbind_value_get_number(value) == i);
 
         qmlbind_string_delete(key);
