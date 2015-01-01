@@ -61,20 +61,20 @@ QMLBIND_API void qmlbind_value_set_array_item(qmlbind_value value, int index, qm
 
 QMLBIND_API qmlbind_value qmlbind_value_call(
     qmlbind_value self,
-    size_t argc,
+    int argc,
     qmlbind_value *argv
 );
 
 QMLBIND_API qmlbind_value qmlbind_value_call_constructor(
     qmlbind_value function,
-    size_t argc,
+    int argc,
     qmlbind_value *argv
 );
 
 QMLBIND_API qmlbind_value qmlbind_value_call_with_instance(
     qmlbind_value self,
     qmlbind_value instance,
-    size_t argc,
+    int argc,
     qmlbind_value *argv
 );
 

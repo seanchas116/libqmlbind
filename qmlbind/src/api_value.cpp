@@ -145,17 +145,17 @@ static QJSValueList pack_args(int argc, qmlbind_value *argv)
     return args;
 }
 
-qmlbind_value qmlbind_value_call(qmlbind_value self, size_t argc, qmlbind_value *argv)
+qmlbind_value qmlbind_value_call(qmlbind_value self, int argc, qmlbind_value *argv)
 {
     return new QJSValue(self->call(pack_args(argc, argv)));
 }
 
-qmlbind_value qmlbind_value_call_constructor(qmlbind_value function, size_t argc, qmlbind_value *argv)
+qmlbind_value qmlbind_value_call_constructor(qmlbind_value function, int argc, qmlbind_value *argv)
 {
     return new QJSValue(function->callAsConstructor(pack_args(argc, argv)));
 }
 
-qmlbind_value qmlbind_value_call_with_instance(qmlbind_value self, qmlbind_value instance, size_t argc, qmlbind_value *argv)
+qmlbind_value qmlbind_value_call_with_instance(qmlbind_value self, qmlbind_value instance, int argc, qmlbind_value *argv)
 {
     return new QJSValue(self->callWithInstance(*instance, pack_args(argc, argv)));
 }
