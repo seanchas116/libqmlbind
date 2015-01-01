@@ -45,46 +45,47 @@ private:
 
 namespace Handlers {
 
-    void *newObject(void *klass)
+    qmlbind_object_handle newObject(qmlbind_class_handle klass)
     {
-        std::string name = static_cast<char *>(klass);
+        std::string name = (char *)klass;
         REQUIRE(name == "class:Test");
-        return new Test([] {});
+        auto test = new Test([] {});
+        return (qmlbind_object_handle)test;
     }
 
-    qmlbind_value *invokeMethod(void *obj, void *method, int argc, qmlbind_value **argv)
+    qmlbind_value invokeMethod(qmlbind_object_handle obj, qmlbind_method_handle method, int argc, qmlbind_value *argv)
     {
-        std::string name = static_cast<char *>(method);
+        std::string name = (char *)method;
         REQUIRE(name == "method:incrementBy");
         REQUIRE(argc == 1);
 
-        auto test = static_cast<Test *>(obj);
+        auto test = (Test *)obj;
         test->incrementBy(qmlbind_value_get_number(argv[0]));
 
         return qmlbind_value_new_number(test->value());
     }
 
-    qmlbind_value *invokeGetter(void *obj, void *getter)
+    qmlbind_value invokeGetter(qmlbind_object_handle obj, qmlbind_getter_handle getter)
     {
-        std::string name = static_cast<char *>(getter);
+        std::string name = (char *)getter;
         REQUIRE(name == "getter:value");
 
-        auto test = static_cast<Test *>(obj);
+        auto test = (Test *)obj;
         return qmlbind_value_new_number(test->value());
     }
 
-    void invokeSetter(void *obj, void *setter, qmlbind_value *value)
+    void invokeSetter(qmlbind_object_handle obj, qmlbind_setter_handle setter, qmlbind_value value)
     {
-        std::string name = static_cast<char *>(setter);
+        std::string name = (char *)setter;
         REQUIRE(name == "setter:value");
 
-        auto test = static_cast<Test *>(obj);
+        auto test = (Test *)obj;
         test->setValue(qmlbind_value_get_number(value));
     }
 
-    void deleteObject(void *obj)
+    void deleteObject(qmlbind_object_handle obj)
     {
-        delete static_cast<Test *>(obj);
+        delete (Test *)obj;
     }
 }
 
@@ -100,11 +101,11 @@ TEST_CASE("metaobject_exporter")
     handlers.get_property = &Handlers::invokeGetter;
     handlers.delete_object = &Handlers::deleteObject;
 
-    auto interface = qmlbind_interface_new((void *)"class:Test", "Test", handlers);
+    auto interface = qmlbind_interface_new((qmlbind_class_handle)"class:Test", "Test", handlers);
 
     auto notifierIndex = qmlbind_interface_add_signal(interface, "valueChanged", 1);
-    auto methodIndex = qmlbind_interface_add_method(interface, (void *)"method:incrementBy", "incrementBy", 1);
-    auto propertyIndex = qmlbind_interface_add_property(interface, (void *)"getter:value", (void *)"setter:value", "value", notifierIndex);
+    auto methodIndex = qmlbind_interface_add_method(interface, (qmlbind_method_handle)"method:incrementBy", "incrementBy", 1);
+    auto propertyIndex = qmlbind_interface_add_property(interface, (qmlbind_getter_handle)"getter:value", (qmlbind_setter_handle)"setter:value", "value", notifierIndex);
 
     auto metaobject = qmlbind_metaobject_new(interface);
 
@@ -147,7 +148,7 @@ TEST_CASE("metaobject_exporter")
             destroyed = true;
         });
 
-        auto value = qmlbind_engine_new_wrapper(engine, metaobject, test);
+        auto value = qmlbind_engine_new_wrapper(engine, metaobject, (qmlbind_object_handle)test);
 
         REQUIRE(qmlbind_value_is_wrapper(value));
 
@@ -226,7 +227,7 @@ TEST_CASE("metaobject_exporter")
             auto func = qmlbind_value_get_property(obj, "incrementBy");
             auto result = qmlbind_value_call_with_instance(func, obj, 1, &offset);
 
-            auto test = static_cast<Test *>(qmlbind_value_get_handle(obj));
+            auto test = (Test *)qmlbind_value_get_handle(obj);
             REQUIRE(test != nullptr);
             REQUIRE(test->value() == 101);
 

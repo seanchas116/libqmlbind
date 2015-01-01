@@ -13,7 +13,7 @@ void TypeRegisterer::create(void *memory)
 {
     MetaObject *metaobj = TypeRegisterer::instance()->mMetaObjects[Index];
     const Interface *interface = metaobj->interface();
-    void *handle = interface->handlers().new_object(interface->classHandle());
+    qmlbind_object_handle handle = interface->handlers().new_object(interface->classHandle());
 
     new (memory) Wrapper(metaobj, handle);
 }

@@ -7,19 +7,19 @@ using namespace QmlBind;
 
 extern "C" {
 
-qmlbind_interface *qmlbind_interface_new(void *classHandle, const char *className, qmlbind_interface_handlers handlers)
+qmlbind_interface qmlbind_interface_new(qmlbind_class_handle classHandle, const char *className, qmlbind_interface_handlers handlers)
 {
     return new Interface(className, classHandle, handlers);
 }
 
-void qmlbind_interface_delete(qmlbind_interface *interface)
+void qmlbind_interface_delete(qmlbind_interface interface)
 {
     delete interface;
 }
 
 int qmlbind_interface_add_method(
-    qmlbind_interface *interface,
-    void *handle,
+    qmlbind_interface interface,
+    qmlbind_method_handle handle,
     const char *name,
     int arity
 )
@@ -28,7 +28,7 @@ int qmlbind_interface_add_method(
 }
 
 int qmlbind_interface_add_signal(
-    qmlbind_interface *interface,
+    qmlbind_interface interface,
     const char *name,
     int arity
 )
@@ -37,9 +37,9 @@ int qmlbind_interface_add_signal(
 }
 
 int qmlbind_interface_add_property(
-    qmlbind_interface *interface,
-    void *getterHandle,
-    void *setterHandle,
+    qmlbind_interface interface,
+    qmlbind_getter_handle getterHandle,
+    qmlbind_setter_handle setterHandle,
     const char *name,
     int notifierSignalIndex
 )

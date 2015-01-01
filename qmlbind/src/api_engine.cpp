@@ -8,38 +8,38 @@ using namespace QmlBind;
 
 extern "C" {
 
-qmlbind_engine *qmlbind_engine_new()
+qmlbind_engine qmlbind_engine_new()
 {
     return new QQmlEngine();
 }
 
-void qmlbind_engine_delete(qmlbind_engine *engine)
+void qmlbind_engine_delete(qmlbind_engine engine)
 {
     engine->deleteLater();
 }
 
-qmlbind_value *qmlbind_engine_eval(qmlbind_engine *engine, const char *str, const char *file, int lineNumber)
+qmlbind_value qmlbind_engine_eval(qmlbind_engine engine, const char *str, const char *file, int lineNumber)
 {
     QJSValue value = engine->evaluate(QString::fromUtf8(str), QString::fromUtf8(file), lineNumber);
     return new QJSValue(value);
 }
 
-qmlbind_value *qmlbind_engine_get_global_object(qmlbind_engine *engine)
+qmlbind_value qmlbind_engine_get_global_object(qmlbind_engine engine)
 {
     return new QJSValue(engine->globalObject());
 }
 
-qmlbind_value *qmlbind_engine_new_object(qmlbind_engine *engine)
+qmlbind_value qmlbind_engine_new_object(qmlbind_engine engine)
 {
     return new QJSValue(engine->newObject());
 }
 
-qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *engine, int length)
+qmlbind_value qmlbind_engine_new_array(qmlbind_engine engine, int length)
 {
     return new QJSValue(engine->newArray(length));
 }
 
-qmlbind_value *qmlbind_engine_new_wrapper(qmlbind_engine *engine, qmlbind_metaobject *metaobj, void *handle)
+qmlbind_value qmlbind_engine_new_wrapper(qmlbind_engine engine, qmlbind_metaobject metaobj, qmlbind_object_handle handle)
 {
     Wrapper *obj = new Wrapper(metaobj, handle);
 
@@ -47,12 +47,12 @@ qmlbind_value *qmlbind_engine_new_wrapper(qmlbind_engine *engine, qmlbind_metaob
     return new QJSValue(engine->newQObject(obj));
 }
 
-void qmlbind_engine_add_import_path(qmlbind_engine *engine, const char *path)
+void qmlbind_engine_add_import_path(qmlbind_engine engine, const char *path)
 {
     engine->addImportPath(path);
 }
 
-void qmlbind_engine_collect_garbage(qmlbind_engine *engine)
+void qmlbind_engine_collect_garbage(qmlbind_engine engine)
 {
     engine->collectGarbage();
 }

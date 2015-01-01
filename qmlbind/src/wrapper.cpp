@@ -3,7 +3,7 @@
 
 namespace QmlBind {
 
-Wrapper::Wrapper(const MetaObject *metaObject, void *handle) :
+Wrapper::Wrapper(const MetaObject *metaObject, qmlbind_object_handle handle) :
     mMetaObject(metaObject),
     mHandle(handle)
 {
@@ -24,7 +24,7 @@ int Wrapper::qt_metacall(QMetaObject::Call call, int index, void **argv)
     return mMetaObject->metaCall(this, call, index, argv);
 }
 
-void *Wrapper::handle() const
+qmlbind_object_handle Wrapper::handle() const
 {
     return mHandle;
 }

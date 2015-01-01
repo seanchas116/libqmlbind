@@ -4,7 +4,6 @@
 #include <QJSValue>
 #include <QMetaMethod>
 #include <QDebug>
-#include <stdexcept>
 
 namespace QmlBind {
 
@@ -15,9 +14,16 @@ MetaObject::MetaObject(Interface *interface) :
     mProperties(interface->propertyMap()),
     mPrototype(interface->metaObjectBuilder()->toMetaObject())
 {
-    if (!(mHandlers.call_method && mHandlers.set_property && mHandlers.get_property)) {
-        throw std::runtime_error("Handlers not specified");
+    if (!mHandlers.call_method) {
+        qFatal("qmlbind: call_method handler not specified");
     }
+    if (!mHandlers.set_property) {
+        qFatal("qmlbind: set_property handler not specified");
+    }
+    if (!mHandlers.get_property) {
+        qFatal("qmlbind: get_property handler not specified");
+    }
+
     d = mPrototype->d;
 }
 
@@ -33,7 +39,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
         return index;
     }
 
-    void *objectHandle = static_cast<Wrapper *>(object)->handle();
+    qmlbind_object_handle objectHandle = static_cast<Wrapper *>(object)->handle();
 
     switch(call) {
     case QMetaObject::ReadProperty:

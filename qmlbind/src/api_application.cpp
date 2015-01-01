@@ -3,12 +3,12 @@
 
 extern "C" {
 
-qmlbind_application *qmlbind_application_new(int argc, char **argv)
+qmlbind_application qmlbind_application_new(int argc, char **argv)
 {
     return new QApplication(argc, argv);
 }
 
-void qmlbind_application_delete(qmlbind_application *app)
+void qmlbind_application_delete(qmlbind_application app)
 {
     delete app;
 }

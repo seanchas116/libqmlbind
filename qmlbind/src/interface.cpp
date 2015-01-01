@@ -3,7 +3,7 @@
 
 namespace QmlBind {
 
-Interface::Interface(const char *className, void *classHandle, qmlbind_interface_handlers handlers) :
+Interface::Interface(const char *className, qmlbind_class_handle classHandle, qmlbind_interface_handlers handlers) :
     mClassHandle(classHandle),
     mHandlers(handlers)
 {
@@ -25,7 +25,7 @@ static QByteArray methodSignature(const char *name, int arity)
     return sig;
 }
 
-QMetaMethodBuilder Interface::addMethod(void *handle, const char *name, int arity)
+QMetaMethodBuilder Interface::addMethod(qmlbind_method_handle handle, const char *name, int arity)
 {
     QMetaMethodBuilder method = mBuilder.addMethod(methodSignature(name, arity), "QJSValue");
 
@@ -43,7 +43,7 @@ QMetaMethodBuilder Interface::addSignal(const char *name, int arity)
     return mBuilder.addSignal(methodSignature(name, arity));
 }
 
-QMetaPropertyBuilder Interface::addProperty(void *getterHandle, void *setterHandle, const char *name, int notifySignalIndex)
+QMetaPropertyBuilder Interface::addProperty(qmlbind_getter_handle getterHandle, qmlbind_setter_handle setterHandle, const char *name, int notifySignalIndex)
 {
     QMetaPropertyBuilder property = mBuilder.addProperty(name, "QJSValue", notifySignalIndex);
 
@@ -59,7 +59,7 @@ QMetaPropertyBuilder Interface::addProperty(void *getterHandle, void *setterHand
     return property;
 }
 
-void *Interface::classHandle() const
+qmlbind_class_handle Interface::classHandle() const
 {
     return mClassHandle;
 }
