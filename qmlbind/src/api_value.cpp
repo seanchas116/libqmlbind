@@ -87,7 +87,12 @@ double qmlbind_value_get_number(qmlbind_value self)
     return self->toNumber();
 }
 
-qmlbind_value qmlbind_value_new_string(const char *str)
+qmlbind_value qmlbind_value_new_string(int len, const char *str)
+{
+    return new QJSValue(QString::fromUtf8(str, len));
+}
+
+qmlbind_value qmlbind_value_new_string_cstr(const char *str)
 {
     return new QJSValue(QString::fromUtf8(str));
 }

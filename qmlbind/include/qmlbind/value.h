@@ -41,7 +41,8 @@ QMLBIND_API double qmlbind_value_get_number(qmlbind_value self);
 
 /* string */
 
-QMLBIND_API qmlbind_value qmlbind_value_new_string(const char *str);
+QMLBIND_API qmlbind_value qmlbind_value_new_string(int len, const char *str);
+QMLBIND_API qmlbind_value qmlbind_value_new_string_cstr(const char *str);
 QMLBIND_API qmlbind_string qmlbind_value_get_string(qmlbind_value self);
 
 /* object (see also: engine.h) */

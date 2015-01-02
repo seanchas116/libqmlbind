@@ -12,7 +12,7 @@ TEST_CASE("value")
     {
         auto one1 = qmlbind_value_new_number(1);
         auto one2 = qmlbind_value_new_number(1);
-        auto strOne = qmlbind_value_new_string("1");
+        auto strOne = qmlbind_value_new_string_cstr("1");
 
         SECTION("is_equal")
         {
@@ -55,12 +55,12 @@ TEST_CASE("value")
     SECTION("string")
     {
         auto str = "hoge";
-        auto value = qmlbind_value_new_string(str);
+        auto value = qmlbind_value_new_string(strlen(str), str);
         auto result = qmlbind_value_get_string(value);
 
         REQUIRE(qmlbind_value_is_string(value));
         REQUIRE(std::string(qmlbind_string_get_chars(result)) == str);
-        REQUIRE(qmlbind_string_get_length(result) == 4);
+        REQUIRE(qmlbind_string_get_length(result) == strlen(str));
 
         qmlbind_string_release(result);
         qmlbind_value_release(value);
@@ -88,7 +88,7 @@ TEST_CASE("value")
 
         REQUIRE(qmlbind_value_is_function(parseInt));
 
-        auto str = qmlbind_value_new_string("123");
+        auto str = qmlbind_value_new_string_cstr("123");
         auto parsed = qmlbind_value_call(parseInt, 1, &str);
 
         REQUIRE(qmlbind_value_get_number(parsed) == 123);
