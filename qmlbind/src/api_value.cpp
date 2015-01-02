@@ -22,6 +22,11 @@ void qmlbind_value_release(qmlbind_value self)
     delete self;
 }
 
+qmlbind_value qmlbind_value_clone(qmlbind_value self)
+{
+    return new QJSValue(*self);
+}
+
 int qmlbind_value_is_equal(qmlbind_value value1, qmlbind_value value2)
 {
     return value1->equals(*value2);

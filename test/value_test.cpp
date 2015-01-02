@@ -8,6 +8,17 @@ TEST_CASE("value")
     auto engine = qmlbind_engine_new();
     auto global = qmlbind_engine_get_global_object(engine);
 
+    SECTION("clone")
+    {
+        auto value = qmlbind_value_new_number(3.14);
+        auto clone = qmlbind_value_clone(value);
+
+        REQUIRE(qmlbind_value_get_number(clone) == 3.14);
+
+        qmlbind_value_release(clone);
+        qmlbind_value_release(value);
+    }
+
     SECTION("comparison")
     {
         auto one1 = qmlbind_value_new_number(1);
