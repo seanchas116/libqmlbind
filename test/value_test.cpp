@@ -44,6 +44,22 @@ TEST_CASE("value")
         qmlbind_value_release(value);
     }
 
+    SECTION("true")
+    {
+        auto value = qmlbind_value_new_boolean(true);
+        REQUIRE(qmlbind_value_is_boolean(value));
+        REQUIRE(qmlbind_value_get_boolean(value));
+        qmlbind_value_release(value);
+    }
+
+    SECTION("false")
+    {
+        auto value = qmlbind_value_new_boolean(false);
+        REQUIRE(qmlbind_value_is_boolean(value));
+        REQUIRE(!qmlbind_value_get_boolean(value));
+        qmlbind_value_release(value);
+    }
+
     SECTION("number")
     {
         auto value = qmlbind_value_new_number(3.14);

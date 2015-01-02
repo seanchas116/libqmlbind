@@ -42,6 +42,11 @@ int qmlbind_value_is_null(qmlbind_value self)
     return self->isNull();
 }
 
+int qmlbind_value_is_boolean(qmlbind_value self)
+{
+    return self->isBool();
+}
+
 int qmlbind_value_is_number(qmlbind_value self)
 {
     return self->isNumber();
@@ -75,6 +80,16 @@ int qmlbind_value_is_error(qmlbind_value self)
 int qmlbind_value_is_wrapper(qmlbind_value self)
 {
     return qmlbind_value_get_handle(self) != 0;
+}
+
+qmlbind_value qmlbind_value_new_boolean(int x)
+{
+    return new QJSValue(bool(x));
+}
+
+int qmlbind_value_get_boolean(qmlbind_value self)
+{
+    return self->toBool();
 }
 
 qmlbind_value qmlbind_value_new_number(double x)

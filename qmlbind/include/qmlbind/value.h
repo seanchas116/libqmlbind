@@ -24,6 +24,7 @@ QMLBIND_API int qmlbind_value_is_identical(qmlbind_value value1, qmlbind_value v
 
 QMLBIND_API int qmlbind_value_is_undefined(qmlbind_value self);
 QMLBIND_API int qmlbind_value_is_null(qmlbind_value self);
+QMLBIND_API int qmlbind_value_is_boolean(qmlbind_value self);
 QMLBIND_API int qmlbind_value_is_number(qmlbind_value self);
 QMLBIND_API int qmlbind_value_is_string(qmlbind_value self);
 QMLBIND_API int qmlbind_value_is_object(qmlbind_value self);
@@ -33,6 +34,11 @@ QMLBIND_API int qmlbind_value_is_function(qmlbind_value self);
 QMLBIND_API int qmlbind_value_is_error(qmlbind_value self);
 
 QMLBIND_API int qmlbind_value_is_wrapper(qmlbind_value self);
+
+/* boolean */
+
+QMLBIND_API qmlbind_value qmlbind_value_new_boolean(int x);
+QMLBIND_API int qmlbind_value_get_boolean(qmlbind_value self);
 
 /* number */
 
