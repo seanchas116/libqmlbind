@@ -17,7 +17,7 @@ qmlbind_value qmlbind_value_new_null()
     return new QJSValue(QJSValue::NullValue);
 }
 
-void qmlbind_value_delete(qmlbind_value self)
+void qmlbind_value_release(qmlbind_value self)
 {
     delete self;
 }

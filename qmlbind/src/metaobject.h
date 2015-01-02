@@ -3,6 +3,7 @@
 #include "qmlbind/qmlbind_global.h"
 #include "interface.h"
 #include <QScopedPointer>
+#include <QSharedPointer>
 #include <private/qobject_p.h>
 
 namespace QmlBind {
@@ -13,19 +14,19 @@ class Wrapper;
 class MetaObject : public QMetaObject
 {
 public:
-    MetaObject(Interface *interface);
+    MetaObject(const QSharedPointer<const Interface> &interface);
     ~MetaObject();
 
-    const Interface *interface() const { return mInterface.data(); }
+    QSharedPointer<const Interface> interface() const { return mInterface; }
     int metaCall(QObject *object, Call call, int index, void **argv) const;
 
 private:
 
-    QScopedPointer<Interface> mInterface;
+    QSharedPointer<const Interface> mInterface;
     qmlbind_interface_handlers mHandlers;
     QHash<int, Interface::Method> mMethods;
     QHash<int, Interface::Property> mProperties;
-    QMetaObject *mPrototype;
+    QScopedPointer<QMetaObject, QScopedPointerPodDeleter> mPrototype;
 };
 
 } // namespace QmlBind

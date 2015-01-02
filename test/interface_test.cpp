@@ -5,6 +5,7 @@
 #include <QMetaMethod>
 #include <QByteArray>
 #include <QDebug>
+#include <QSharedPointer>
 #include <string.h>
 #include <functional>
 
@@ -108,10 +109,11 @@ TEST_CASE("metaobject_exporter")
     auto propertyIndex = qmlbind_interface_add_property(interface, (qmlbind_getter_handle)"getter:value", (qmlbind_setter_handle)"setter:value", "value", notifierIndex);
 
     auto metaobject = qmlbind_metaobject_new(interface);
+    qmlbind_interface_release(interface);
 
     SECTION("generated metaobject")
     {
-        auto metaobj = reinterpret_cast<QMetaObject *>(metaobject);
+        auto metaobj = *reinterpret_cast<QSharedPointer<QMetaObject> *>(metaobject);
 
         auto methodCount = metaobj->methodCount() - metaobj->methodOffset();
         auto propertyCount = metaobj->propertyCount() - metaobj->propertyOffset();
@@ -158,7 +160,7 @@ TEST_CASE("metaobject_exporter")
         {
             auto prop = qmlbind_value_get_property(value, "value");
             REQUIRE(qmlbind_value_get_number(prop) == 123);
-            qmlbind_value_delete(prop);
+            qmlbind_value_release(prop);
         }
 
         SECTION("setter")
@@ -166,7 +168,7 @@ TEST_CASE("metaobject_exporter")
             auto prop = qmlbind_value_new_number(234);
             qmlbind_value_set_property(value, "value", prop);
             REQUIRE(test->value() == 234);
-            qmlbind_value_delete(prop);
+            qmlbind_value_release(prop);
         }
 
         SECTION("method")
@@ -177,12 +179,12 @@ TEST_CASE("metaobject_exporter")
 
             REQUIRE(test->value() == 223);
 
-            qmlbind_value_delete(offset);
-            qmlbind_value_delete(func);
-            qmlbind_value_delete(result);
+            qmlbind_value_release(offset);
+            qmlbind_value_release(func);
+            qmlbind_value_release(result);
         }
 
-        qmlbind_value_delete(value);
+        qmlbind_value_release(value);
 
         qmlbind_engine_collect_garbage(engine);
 
@@ -209,7 +211,7 @@ TEST_CASE("metaobject_exporter")
         auto error = qmlbind_component_get_error_string(component);
         if (error) {
             qDebug() << qmlbind_string_get_chars(error);
-            qmlbind_string_delete(error);
+            qmlbind_string_release(error);
         }
 
         auto obj = qmlbind_component_create(component);
@@ -219,7 +221,7 @@ TEST_CASE("metaobject_exporter")
 
             REQUIRE(qmlbind_value_get_number(value) == 1);
 
-            qmlbind_value_delete(value);
+            qmlbind_value_release(value);
         }
 
         {
@@ -231,16 +233,16 @@ TEST_CASE("metaobject_exporter")
             REQUIRE(test != nullptr);
             REQUIRE(test->value() == 101);
 
-            qmlbind_value_delete(offset);
-            qmlbind_value_delete(func);
-            qmlbind_value_delete(result);
+            qmlbind_value_release(offset);
+            qmlbind_value_release(func);
+            qmlbind_value_release(result);
         }
 
-        qmlbind_value_delete(obj);
+        qmlbind_value_release(obj);
 
-        qmlbind_component_delete(component);
+        qmlbind_component_release(component);
     }
 
-    qmlbind_metaobject_delete(metaobject);
-    qmlbind_engine_delete(engine);
+    qmlbind_metaobject_release(metaobject);
+    qmlbind_engine_release(engine);
 }

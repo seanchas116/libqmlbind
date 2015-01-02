@@ -3,7 +3,7 @@
 
 namespace QmlBind {
 
-Wrapper::Wrapper(const MetaObject *metaObject, qmlbind_object_handle handle) :
+Wrapper::Wrapper(const QSharedPointer<const MetaObject> &metaObject, qmlbind_object_handle handle) :
     mMetaObject(metaObject),
     mHandle(handle)
 {
@@ -16,7 +16,7 @@ Wrapper::~Wrapper()
 
 const QMetaObject *Wrapper::metaObject() const
 {
-    return mMetaObject;
+    return mMetaObject.data();
 }
 
 int Wrapper::qt_metacall(QMetaObject::Call call, int index, void **argv)

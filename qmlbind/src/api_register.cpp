@@ -11,7 +11,7 @@ int qmlbind_register_type(
     int versionMajor, int versionMinor,
     const char *qmlName)
 {
-    return TypeRegisterer::instance()->registerType(metaobject, uri, versionMajor, versionMinor, qmlName);
+    return TypeRegisterer::instance().registerType(*metaobject, uri, versionMajor, versionMinor, qmlName);
 }
 
 }

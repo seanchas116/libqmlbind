@@ -11,6 +11,8 @@ QMLBIND_API qmlbind_interface qmlbind_interface_new(
     qmlbind_interface_handlers handlers
 );
 
+QMLBIND_API void qmlbind_interface_release(qmlbind_interface interface);
+
 QMLBIND_API int qmlbind_interface_add_method(
     qmlbind_interface interface,
     qmlbind_method_handle handle,

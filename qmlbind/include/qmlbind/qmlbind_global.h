@@ -12,6 +12,14 @@
 
 #ifdef QMLBIND_LIBRARY
 
+template <typename T> class QSharedPointer;
+class QApplication;
+class QQmlEngine;
+class QQmlComponent;
+class QJSValue;
+class QJSValueIterator;
+class QByteArray;
+
 namespace QmlBind {
 
 class MetaObject;
@@ -19,19 +27,17 @@ class Interface;
 
 }
 
-template <typename T> class QList;
+typedef QSharedPointer<QApplication> *qmlbind_application;
 
-typedef class QApplication *qmlbind_application;
+typedef QSharedPointer<QQmlEngine> *qmlbind_engine;
+typedef QSharedPointer<QQmlComponent> *qmlbind_component;
 
-typedef class QQmlEngine *qmlbind_engine;
-typedef class QQmlComponent *qmlbind_component;
+typedef QJSValue *qmlbind_value;
+typedef QJSValueIterator *qmlbind_iterator;
+typedef QByteArray *qmlbind_string;
 
-typedef class QJSValue *qmlbind_value;
-typedef class QJSValueIterator *qmlbind_iterator;
-typedef class QByteArray *qmlbind_string;
-
-typedef QmlBind::MetaObject *qmlbind_metaobject;
-typedef QmlBind::Interface *qmlbind_interface;
+typedef QSharedPointer<QmlBind::MetaObject> *qmlbind_metaobject;
+typedef QSharedPointer<QmlBind::Interface> *qmlbind_interface;
 
 #else
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QVector>
-#include <QScopedPointer>
+#include <QSharedPointer>
 
 namespace QmlBind {
 
@@ -10,8 +10,8 @@ class MetaObject;
 class TypeRegisterer
 {
 public:
-    static TypeRegisterer *instance();
-    int registerType(MetaObject *metaObject, const char *uri, int versionMajor, int versionMinor, const char *qmlName);
+    static TypeRegisterer &instance();
+    int registerType(const QSharedPointer<const MetaObject> &metaObject, const char *uri, int versionMajor, int versionMinor, const char *qmlName);
 
 private:
     typedef void (*CreationCallback)(void *);
@@ -19,9 +19,9 @@ private:
 
     TypeRegisterer();
     template <int Index> static void create(void *memory);
-    void registerType(MetaObject *metaObject, CreationCallback create, const char *uri, int versionMajor, int versionMinor, const char *qmlName);
+    void registerType(const QSharedPointer<const MetaObject> &metaObject, CreationCallback create, const char *uri, int versionMajor, int versionMinor, const char *qmlName);
 
-    QVector<MetaObject *> mMetaObjects;
+    QVector<QSharedPointer<const MetaObject> >  mMetaObjects;
     QVector<CreationCallback> mCreationCallbacks;
 };
 

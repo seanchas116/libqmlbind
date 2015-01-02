@@ -7,12 +7,12 @@
 
 namespace QmlBind {
 
-MetaObject::MetaObject(Interface *interface) :
+MetaObject::MetaObject(const QSharedPointer<const Interface> &interface) :
     mInterface(interface),
     mHandlers(interface->handlers()),
     mMethods(interface->methodMap()),
     mProperties(interface->propertyMap()),
-    mPrototype(interface->metaObjectBuilder()->toMetaObject())
+    mPrototype(interface->metaObjectBuilder().toMetaObject())
 {
     if (!mHandlers.call_method) {
         qFatal("qmlbind: call_method handler not specified");
@@ -29,7 +29,6 @@ MetaObject::MetaObject(Interface *interface) :
 
 MetaObject::~MetaObject()
 {
-    free(mPrototype);
 }
 
 int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) const

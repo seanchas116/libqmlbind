@@ -13,7 +13,7 @@ TEST_CASE("iterator")
     for (auto i = 0; i < 10; ++i) {
         auto value = qmlbind_value_new_number(i);
         qmlbind_value_set_property(object, std::to_string(i).data(), value);
-        qmlbind_value_delete(value);
+        qmlbind_value_release(value);
     }
 
     auto iterator = qmlbind_iterator_new(object);
@@ -27,11 +27,11 @@ TEST_CASE("iterator")
         REQUIRE(std::string(qmlbind_string_get_chars(key)) == std::to_string(i));
         REQUIRE(qmlbind_value_get_number(value) == i);
 
-        qmlbind_string_delete(key);
-        qmlbind_value_delete(value);
+        qmlbind_string_release(key);
+        qmlbind_value_release(value);
     }
 
-    qmlbind_iterator_delete(iterator);
-    qmlbind_value_delete(object);
-    qmlbind_engine_delete(engine);
+    qmlbind_iterator_release(iterator);
+    qmlbind_value_release(object);
+    qmlbind_engine_release(engine);
 }

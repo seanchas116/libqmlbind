@@ -11,14 +11,14 @@ namespace QmlBind {
 template <int Index>
 void TypeRegisterer::create(void *memory)
 {
-    MetaObject *metaobj = TypeRegisterer::instance()->mMetaObjects[Index];
-    const Interface *interface = metaobj->interface();
+    const QSharedPointer<const MetaObject> &metaobj = TypeRegisterer::instance().mMetaObjects[Index];
+    const Interface *interface = metaobj->interface().data();
     qmlbind_object_handle handle = interface->handlers().new_object(interface->classHandle());
 
     new (memory) Wrapper(metaobj, handle);
 }
 
-// statically generates createInto array
+// statically generates callback array
 
 template <int Count, int Offset>
 struct TypeRegisterer::CreationCallbacksSetter
@@ -45,7 +45,7 @@ TypeRegisterer::TypeRegisterer() :
     CreationCallbacksSetter<MAX_CALLBACK_COUNT>().set(this);
 }
 
-int TypeRegisterer::registerType(MetaObject *metaObject, const char *uri, int versionMajor, int versionMinor, const char *qmlName)
+int TypeRegisterer::registerType(const QSharedPointer<const MetaObject> &metaObject, const char *uri, int versionMajor, int versionMinor, const char *qmlName)
 {
     int index = mMetaObjects.size();
     if (MAX_CALLBACK_COUNT <= index) {
@@ -61,7 +61,7 @@ int TypeRegisterer::registerType(MetaObject *metaObject, const char *uri, int ve
     return true;
 }
 
-void TypeRegisterer::registerType(MetaObject *metaObject, CreationCallback create, const char *uri, int versionMajor, int versionMinor, const char *qmlName)
+void TypeRegisterer::registerType(const QSharedPointer<const MetaObject> &metaObject, CreationCallback create, const char *uri, int versionMajor, int versionMinor, const char *qmlName)
 {
     QByteArray className;
     className += metaObject->className();
@@ -79,7 +79,7 @@ void TypeRegisterer::registerType(MetaObject *metaObject, CreationCallback creat
         sizeof(Wrapper), create,
         QString(),
 
-        uri, versionMajor, versionMinor, qmlName, metaObject,
+        uri, versionMajor, versionMinor, qmlName, metaObject.data(),
 
         0, 0,
 
@@ -96,13 +96,13 @@ void TypeRegisterer::registerType(MetaObject *metaObject, CreationCallback creat
     QQmlPrivate::qmlregister(QQmlPrivate::TypeRegistration, &type);
 }
 
-TypeRegisterer *TypeRegisterer::instance()
+TypeRegisterer &TypeRegisterer::instance()
 {
     static TypeRegisterer *i = 0;
     if (!i) {
         i = new TypeRegisterer();
     }
-    return i;
+    return *i;
 }
 
 } // namespace QmlBind

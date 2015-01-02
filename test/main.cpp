@@ -6,6 +6,6 @@ int main(int argc, char **argv)
 {
     auto app = qmlbind_application_new(argc, argv);
     auto result = Catch::Session().run();
-    qmlbind_application_delete(app);
+    qmlbind_application_release(app);
     return result;
 }

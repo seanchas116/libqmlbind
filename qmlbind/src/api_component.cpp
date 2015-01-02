@@ -1,33 +1,36 @@
 #include "qmlbind/component.h"
+#include "util.h"
 #include <QQmlComponent>
 #include <QQmlEngine>
 #include <QQmlContext>
+
+using namespace QmlBind;
 
 extern "C" {
 
 qmlbind_component qmlbind_component_new(qmlbind_engine engine)
 {
-    return new QQmlComponent(engine);
+    return newSharedPointer(new QQmlComponent(engine->data()));
 }
 
-void qmlbind_component_delete(qmlbind_component component)
+void qmlbind_component_release(qmlbind_component component)
 {
     delete component;
 }
 
 void qmlbind_component_load_path(qmlbind_component component, const char *path)
 {
-    component->loadUrl(QUrl::fromLocalFile(path));
+    (*component)->loadUrl(QUrl::fromLocalFile(path));
 }
 
 void qmlbind_component_set_data(qmlbind_component component, const char *data, const char *path)
 {
-    component->setData(data, QUrl::fromLocalFile(path));
+    (*component)->setData(data, QUrl::fromLocalFile(path));
 }
 
 qmlbind_string qmlbind_component_get_error_string(qmlbind_component component)
 {
-    QString str = component->errorString();
+    QString str = (*component)->errorString();
 
     if (str.isEmpty()) {
         return 0;
@@ -39,7 +42,7 @@ qmlbind_string qmlbind_component_get_error_string(qmlbind_component component)
 
 qmlbind_value qmlbind_component_create(qmlbind_component component)
 {
-    QObject *object = component->create();
+    QObject *object = (*component)->create();
     if (!object) {
         return new QJSValue(QJSValue::UndefinedValue);
     }

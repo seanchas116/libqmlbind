@@ -27,7 +27,7 @@ public:
                                      const char *name, int notifySignalIndex);
 
     qmlbind_class_handle classHandle() const;
-    const QMetaObjectBuilder *metaObjectBuilder() const;
+    const QMetaObjectBuilder &metaObjectBuilder() const;
     qmlbind_interface_handlers handlers() const;
     QHash<int, Method> methodMap() const;
     QHash<int, Property> propertyMap() const;

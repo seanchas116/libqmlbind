@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 QMLBIND_API qmlbind_engine qmlbind_engine_new();
-QMLBIND_API void qmlbind_engine_delete(qmlbind_engine engine);
+QMLBIND_API void qmlbind_engine_release(qmlbind_engine engine);
 
 QMLBIND_API qmlbind_value qmlbind_engine_eval(
     qmlbind_engine engine,

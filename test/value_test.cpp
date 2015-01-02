@@ -25,23 +25,23 @@ TEST_CASE("value")
             REQUIRE(qmlbind_value_is_identical(one1, one2));
         }
 
-        qmlbind_value_delete(one1);
-        qmlbind_value_delete(one2);
-        qmlbind_value_delete(strOne);
+        qmlbind_value_release(one1);
+        qmlbind_value_release(one2);
+        qmlbind_value_release(strOne);
     }
 
     SECTION("undefined")
     {
         auto value = qmlbind_value_new_undefined();
         REQUIRE(qmlbind_value_is_undefined(value));
-        qmlbind_value_delete(value);
+        qmlbind_value_release(value);
     }
 
     SECTION("null")
     {
         auto value = qmlbind_value_new_null();
         REQUIRE(qmlbind_value_is_null(value));
-        qmlbind_value_delete(value);
+        qmlbind_value_release(value);
     }
 
     SECTION("number")
@@ -49,7 +49,7 @@ TEST_CASE("value")
         auto value = qmlbind_value_new_number(3.14);
         REQUIRE(qmlbind_value_is_number(value));
         REQUIRE(qmlbind_value_get_number(value) == 3.14);
-        qmlbind_value_delete(value);
+        qmlbind_value_release(value);
     }
 
     SECTION("string")
@@ -62,8 +62,8 @@ TEST_CASE("value")
         REQUIRE(std::string(qmlbind_string_get_chars(result)) == str);
         REQUIRE(qmlbind_string_get_length(result) == 4);
 
-        qmlbind_string_delete(result);
-        qmlbind_value_delete(value);
+        qmlbind_string_release(result);
+        qmlbind_value_release(value);
     }
 
     SECTION("object")
@@ -73,13 +73,13 @@ TEST_CASE("value")
 
         auto prop = qmlbind_value_new_number(123);
         qmlbind_value_set_property(value, "prop", prop);
-        qmlbind_value_delete(prop);
+        qmlbind_value_release(prop);
 
         prop = qmlbind_value_get_property(value, "prop");
         REQUIRE(qmlbind_value_get_number(prop) == 123);
-        qmlbind_value_delete(prop);
+        qmlbind_value_release(prop);
 
-        qmlbind_value_delete(value);
+        qmlbind_value_release(value);
     }
 
     SECTION("function")
@@ -93,9 +93,9 @@ TEST_CASE("value")
 
         REQUIRE(qmlbind_value_get_number(parsed) == 123);
 
-        qmlbind_value_delete(parseInt);
-        qmlbind_value_delete(str);
-        qmlbind_value_delete(parsed);
+        qmlbind_value_release(parseInt);
+        qmlbind_value_release(str);
+        qmlbind_value_release(parsed);
     }
 
     SECTION("construtor")
@@ -104,16 +104,16 @@ TEST_CASE("value")
         auto len = qmlbind_value_new_number(10);
 
         auto array = qmlbind_value_call_constructor(arrayConstructor, 1, &len);
-        qmlbind_value_delete(len);
+        qmlbind_value_release(len);
 
         REQUIRE(qmlbind_value_is_array(array));
 
         len = qmlbind_value_get_property(array, "length");
         REQUIRE(qmlbind_value_get_number(len) == 10);
 
-        qmlbind_value_delete(array);
-        qmlbind_value_delete(len);
-        qmlbind_value_delete(arrayConstructor);
+        qmlbind_value_release(array);
+        qmlbind_value_release(len);
+        qmlbind_value_release(arrayConstructor);
     }
 
     SECTION("array")
@@ -125,7 +125,7 @@ TEST_CASE("value")
         for (auto i = 0; i < count; ++i) {
             auto value =  qmlbind_value_new_number(i);
             qmlbind_value_set_array_item(array, i, value);
-            qmlbind_value_delete(value);
+            qmlbind_value_release(value);
         }
 
         REQUIRE(qmlbind_value_is_array(array));
@@ -133,10 +133,10 @@ TEST_CASE("value")
         for (auto i = 0; i < count; ++i) {
             auto value = qmlbind_value_get_array_item(array, i);
             REQUIRE(qmlbind_value_get_number(value) == i);
-            qmlbind_value_delete(value);
+            qmlbind_value_release(value);
         }
 
-        qmlbind_value_delete(array);
+        qmlbind_value_release(array);
     }
 
     SECTION("set / get prototype")
@@ -146,7 +146,7 @@ TEST_CASE("value")
         {
             auto prop = qmlbind_value_new_number(123);
             qmlbind_value_set_property(proto, "prop", prop);
-            qmlbind_value_delete(prop);
+            qmlbind_value_release(prop);
         }
 
         auto obj = qmlbind_engine_new_object(engine);
@@ -155,15 +155,15 @@ TEST_CASE("value")
         {
             auto prop = qmlbind_value_get_property(obj, "prop");
             REQUIRE(qmlbind_value_get_number(prop) == 123);
-            qmlbind_value_delete(prop);
+            qmlbind_value_release(prop);
         }
 
         auto gotProto = qmlbind_value_get_prototype(obj);
         REQUIRE(qmlbind_value_is_identical(proto, gotProto));
 
-        qmlbind_value_delete(obj);
-        qmlbind_value_delete(proto);
-        qmlbind_value_delete(gotProto);
+        qmlbind_value_release(obj);
+        qmlbind_value_release(proto);
+        qmlbind_value_release(gotProto);
     }
 
     SECTION("property manipulation")
@@ -173,7 +173,7 @@ TEST_CASE("value")
         {
             auto prop = qmlbind_value_new_number(123);
             qmlbind_value_set_property(proto, "inherited", prop);
-            qmlbind_value_delete(prop);
+            qmlbind_value_release(prop);
         }
 
         auto obj = qmlbind_engine_new_object(engine);
@@ -182,7 +182,7 @@ TEST_CASE("value")
         {
             auto prop = qmlbind_value_new_number(456);
             qmlbind_value_set_property(obj, "own", prop);
-            qmlbind_value_delete(prop);
+            qmlbind_value_release(prop);
         }
 
         SECTION("#has_own_property")
@@ -203,17 +203,17 @@ TEST_CASE("value")
             REQUIRE(!qmlbind_value_has_property(obj, "own"));
         }
 
-        qmlbind_value_delete(obj);
-        qmlbind_value_delete(proto);
+        qmlbind_value_release(obj);
+        qmlbind_value_release(proto);
     }
 
     SECTION("error")
     {
         auto value = qmlbind_engine_eval(engine, "throw new Error('hoge')", "file", 1);
         REQUIRE(qmlbind_value_is_error(value));
-        qmlbind_value_delete(value);
+        qmlbind_value_release(value);
     }
 
-    qmlbind_value_delete(global);
-    qmlbind_engine_delete(engine);
+    qmlbind_value_release(global);
+    qmlbind_engine_release(engine);
 }

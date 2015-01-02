@@ -11,7 +11,7 @@ TEST_CASE("engine")
         {
             auto result = qmlbind_engine_eval(engine, "1 + 2 + 3", "", 1);
             REQUIRE(qmlbind_value_get_number(result) == 6);
-            qmlbind_value_delete(result);
+            qmlbind_value_release(result);
         }
     }
 
@@ -24,8 +24,8 @@ TEST_CASE("engine")
 
             REQUIRE(qmlbind_value_is_function(arrayClass));
 
-            qmlbind_value_delete(arrayClass);
-            qmlbind_value_delete(global);
+            qmlbind_value_release(arrayClass);
+            qmlbind_value_release(global);
         }
     }
 
@@ -38,7 +38,7 @@ TEST_CASE("engine")
             REQUIRE(qmlbind_value_is_object(object));
             REQUIRE(!qmlbind_value_is_array(object));
 
-            qmlbind_value_delete(object);
+            qmlbind_value_release(object);
         }
     }
 
@@ -54,8 +54,8 @@ TEST_CASE("engine")
 
             REQUIRE(qmlbind_value_get_number(length) == 10);
 
-            qmlbind_value_delete(length);
-            qmlbind_value_delete(array);
+            qmlbind_value_release(length);
+            qmlbind_value_release(array);
         }
     }
 
@@ -73,16 +73,16 @@ TEST_CASE("engine")
         qmlbind_component_set_data(component, data, "./fixtures/test.qml");
 
         auto obj = qmlbind_component_create(component);
-        qmlbind_component_delete(component);
+        qmlbind_component_release(component);
 
         auto foo = qmlbind_value_get_property(obj, "foo");
         REQUIRE(qmlbind_value_get_number(foo) == 456);
 
-        qmlbind_value_delete(foo);
-        qmlbind_value_delete(obj);
+        qmlbind_value_release(foo);
+        qmlbind_value_release(obj);
     }
 
-    qmlbind_engine_delete(engine);
+    qmlbind_engine_release(engine);
 }
 
 

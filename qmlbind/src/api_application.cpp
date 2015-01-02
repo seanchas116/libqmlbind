@@ -1,14 +1,18 @@
 #include "qmlbind/application.h"
+#include "util.h"
 #include <QApplication>
+#include <QSharedPointer>
+
+using namespace QmlBind;
 
 extern "C" {
 
 qmlbind_application qmlbind_application_new(int argc, char **argv)
 {
-    return new QApplication(argc, argv);
+    return newSharedPointer(new QApplication(argc, argv));
 }
 
-void qmlbind_application_delete(qmlbind_application app)
+void qmlbind_application_release(qmlbind_application app)
 {
     delete app;
 }

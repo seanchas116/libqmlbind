@@ -42,4 +42,5 @@ HEADERS += \
     include/qmlbind/component.h \
     include/qmlbind.h \
     src/typeregisterer.h \
-    include/qmlbind/register.h
+    include/qmlbind/register.h \
+    src/util.h

@@ -6,7 +6,7 @@ qmlbind_iterator qmlbind_iterator_new(qmlbind_value object)
     return new QJSValueIterator(*object);
 }
 
-void qmlbind_iterator_delete(qmlbind_iterator self)
+void qmlbind_iterator_release(qmlbind_iterator self)
 {
     delete self;
 }

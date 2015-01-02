@@ -2,6 +2,7 @@
 
 #include "qmlbind/qmlbind_global.h"
 #include <QObject>
+#include <QSharedPointer>
 
 namespace QmlBind {
 
@@ -10,7 +11,7 @@ class MetaObject;
 class Wrapper : public QObject
 {
 public:
-    Wrapper(const MetaObject *metaObject, qmlbind_object_handle handle);
+    Wrapper(const QSharedPointer<const MetaObject> &metaObject, qmlbind_object_handle handle);
     ~Wrapper();
 
     const QMetaObject *metaObject() const Q_DECL_OVERRIDE;
@@ -20,7 +21,7 @@ public:
 
 private:
 
-    const MetaObject *mMetaObject;
+    QSharedPointer<const MetaObject> mMetaObject;
     qmlbind_object_handle mHandle;
 };
 

@@ -64,9 +64,9 @@ qmlbind_class_handle Interface::classHandle() const
     return mClassHandle;
 }
 
-const QMetaObjectBuilder *Interface::metaObjectBuilder() const
+const QMetaObjectBuilder &Interface::metaObjectBuilder() const
 {
-    return &mBuilder;
+    return mBuilder;
 }
 
 qmlbind_interface_handlers Interface::handlers() const

@@ -31,8 +31,8 @@ TEST_CASE("component")
         auto foo = qmlbind_value_get_property(obj, "foo");
         REQUIRE(qmlbind_value_get_number(foo) == 123);
 
-        qmlbind_value_delete(foo);
-        qmlbind_value_delete(obj);
+        qmlbind_value_release(foo);
+        qmlbind_value_release(obj);
     }
 
     SECTION("#get_error_string")
@@ -49,9 +49,9 @@ TEST_CASE("component")
         REQUIRE(str != nullptr);
         REQUIRE(qmlbind_string_get_length(str) > 0);
 
-        qmlbind_string_delete(str);
+        qmlbind_string_release(str);
     }
 
-    qmlbind_component_delete(component);
-    qmlbind_engine_delete(engine);
+    qmlbind_component_release(component);
+    qmlbind_engine_release(engine);
 }

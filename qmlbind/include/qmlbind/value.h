@@ -17,7 +17,7 @@ typedef enum {
 
 QMLBIND_API qmlbind_value qmlbind_value_new_undefined();
 QMLBIND_API qmlbind_value qmlbind_value_new_null();
-QMLBIND_API void qmlbind_value_delete(qmlbind_value self);
+QMLBIND_API void qmlbind_value_release(qmlbind_value self);
 
 QMLBIND_API int qmlbind_value_is_equal(qmlbind_value value1, qmlbind_value value2);
 QMLBIND_API int qmlbind_value_is_identical(qmlbind_value value1, qmlbind_value value2);
