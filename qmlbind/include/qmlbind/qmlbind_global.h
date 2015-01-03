@@ -24,12 +24,13 @@ namespace QmlBind {
 
 class MetaObject;
 class Interface;
+class Engine;
 
 }
 
 typedef QSharedPointer<QApplication> *qmlbind_application;
 
-typedef QSharedPointer<QQmlEngine> *qmlbind_engine;
+typedef QSharedPointer<QmlBind::Engine> *qmlbind_engine;
 typedef QSharedPointer<QQmlComponent> *qmlbind_component;
 
 typedef QJSValue *qmlbind_value;
@@ -55,11 +56,13 @@ typedef struct qmlbind_interface_s *qmlbind_interface;
 
 #endif
 
-typedef struct {} *qmlbind_class_handle;
-typedef struct {} *qmlbind_object_handle;
-typedef struct {} *qmlbind_method_handle;
-typedef struct {} *qmlbind_setter_handle;
-typedef struct {} *qmlbind_getter_handle;
+typedef struct qmlbind_function_data_s {} *qmlbind_function_data;
+
+typedef struct qmlbind_class_handle_s {} *qmlbind_class_handle;
+typedef struct qmlbind_object_handle_s {} *qmlbind_object_handle;
+typedef struct qmlbind_method_handle_s {} *qmlbind_method_handle;
+typedef struct qmlbind_setter_handle_s {} *qmlbind_setter_handle;
+typedef struct qmlbind_getter_handle_s {} *qmlbind_getter_handle;
 
 typedef struct {
     qmlbind_object_handle (*new_object)(qmlbind_class_handle classHandle);

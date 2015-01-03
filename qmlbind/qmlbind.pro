@@ -25,7 +25,9 @@ SOURCES += \
     src/api_string.cpp \
     src/api_component.cpp \
     src/typeregisterer.cpp \
-    src/api_register.cpp
+    src/api_register.cpp \
+    src/engine.cpp \
+    src/functionwrapper.cpp
 
 HEADERS += \
     include/qmlbind/application.h \
@@ -43,4 +45,6 @@ HEADERS += \
     include/qmlbind.h \
     src/typeregisterer.h \
     include/qmlbind/register.h \
-    src/util.h
+    src/util.h \
+    src/engine.h \
+    src/functionwrapper.h
