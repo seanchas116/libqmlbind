@@ -52,8 +52,8 @@ QMetaPropertyBuilder Interface::addProperty(qmlbind_getter_handle getterHandle, 
 {
     QMetaPropertyBuilder property = mBuilder.addProperty(name, "QJSValue", notifySignalIndex);
 
-    property.setReadable(getterHandle != 0);
-    property.setWritable(setterHandle != 0);
+    property.setReadable(true);
+    property.setWritable(true);
 
     Property propertyInfo;
     propertyInfo.getterHandle = getterHandle;
