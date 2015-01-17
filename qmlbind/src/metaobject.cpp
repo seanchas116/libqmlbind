@@ -4,6 +4,8 @@
 #include <QJSValue>
 #include <QMetaMethod>
 #include <QDebug>
+#include <QQmlEngine>
+#include <QQmlContext>
 
 namespace QmlBind {
 
@@ -40,12 +42,15 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
 
     qmlbind_object_handle objectHandle = static_cast<Wrapper *>(object)->handle();
 
+    QQmlContext *context = QQmlEngine::contextForObject(object);
+    QQmlEngine *engine = context ? context->engine() : 0;
+
     switch(call) {
     case QMetaObject::ReadProperty:
     {
         int count = propertyCount() - propertyOffset();
         if (index < count) {
-            QJSValue *value = mHandlers.get_property(objectHandle, mProperties[index].getterHandle);
+            QJSValue *value = mHandlers.get_property(engine, objectHandle, mProperties[index].getterHandle);
             *static_cast<QJSValue *>(argv[0]) = *value;
             delete value;
         }
@@ -56,7 +61,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
     {
         int count = propertyCount() - propertyOffset();
         if (index < count) {
-            mHandlers.set_property(objectHandle, mProperties[index].setterHandle, static_cast<QJSValue *>(argv[0]));
+            mHandlers.set_property(engine, objectHandle, mProperties[index].setterHandle, static_cast<QJSValue *>(argv[0]));
         }
         index -= count;
         break;
@@ -70,7 +75,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
             }
             else {
                 Interface::Method method = mMethods[index];
-                QJSValue *result = mHandlers.call_method(objectHandle, method.handle, method.arity, reinterpret_cast<QJSValue **>(argv + 1));
+                QJSValue *result = mHandlers.call_method(engine, objectHandle, method.handle, method.arity, reinterpret_cast<QJSValue **>(argv + 1));
                 if (argv[0]) {
                     *static_cast<QJSValue *>(argv[0]) = *result;
                 }

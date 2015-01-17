@@ -64,7 +64,7 @@ typedef struct {} *qmlbind_getter_handle;
 typedef struct {
     qmlbind_object_handle (*new_object)(qmlbind_class_handle classHandle);
     void (*delete_object)(qmlbind_object_handle objHandle);
-    qmlbind_value (*call_method)(qmlbind_object_handle objHandle, qmlbind_method_handle methodHandle, int argc, qmlbind_value *argv);
-    qmlbind_value (*get_property)(qmlbind_object_handle objHandle, qmlbind_getter_handle getterHandle);
-    void (*set_property)(qmlbind_object_handle objHandle, qmlbind_setter_handle setterHandle, qmlbind_value value);
+    qmlbind_value (*call_method)(qmlbind_engine engine, qmlbind_object_handle objHandle, qmlbind_method_handle methodHandle, int argc, qmlbind_value *argv);
+    qmlbind_value (*get_property)(qmlbind_engine engine, qmlbind_object_handle objHandle, qmlbind_getter_handle getterHandle);
+    void (*set_property)(qmlbind_engine engine, qmlbind_object_handle objHandle, qmlbind_setter_handle setterHandle, qmlbind_value value);
 } qmlbind_interface_handlers;

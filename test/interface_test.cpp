@@ -39,9 +39,20 @@ public:
         m_value = val;
     }
 
+    qmlbind_engine engine()
+    {
+        return m_engine;
+    }
+
+    void setEngine(qmlbind_engine engine)
+    {
+        m_engine = engine;
+    }
+
 private:
     double m_value;
     std::function<void ()> m_onDestroy;
+    qmlbind_engine m_engine = nullptr;
 };
 
 namespace Handlers {
@@ -54,33 +65,36 @@ namespace Handlers {
         return (qmlbind_object_handle)test;
     }
 
-    qmlbind_value invokeMethod(qmlbind_object_handle obj, qmlbind_method_handle method, int argc, qmlbind_value *argv)
+    qmlbind_value invokeMethod(qmlbind_engine engine, qmlbind_object_handle obj, qmlbind_method_handle method, int argc, qmlbind_value *argv)
     {
         std::string name = (char *)method;
         REQUIRE(name == "method:incrementBy");
         REQUIRE(argc == 1);
 
         auto test = (Test *)obj;
+        REQUIRE(test->engine() == engine);
         test->incrementBy(qmlbind_value_get_number(argv[0]));
 
         return qmlbind_value_new_number(test->value());
     }
 
-    qmlbind_value invokeGetter(qmlbind_object_handle obj, qmlbind_getter_handle getter)
+    qmlbind_value invokeGetter(qmlbind_engine engine, qmlbind_object_handle obj, qmlbind_getter_handle getter)
     {
         std::string name = (char *)getter;
         REQUIRE(name == "getter:value");
 
         auto test = (Test *)obj;
+        REQUIRE(test->engine() == engine);
         return qmlbind_value_new_number(test->value());
     }
 
-    void invokeSetter(qmlbind_object_handle obj, qmlbind_setter_handle setter, qmlbind_value value)
+    void invokeSetter(qmlbind_engine engine, qmlbind_object_handle obj, qmlbind_setter_handle setter, qmlbind_value value)
     {
         std::string name = (char *)setter;
         REQUIRE(name == "setter:value");
 
         auto test = (Test *)obj;
+        REQUIRE(test->engine() == engine);
         test->setValue(qmlbind_value_get_number(value));
     }
 
@@ -217,6 +231,8 @@ TEST_CASE("metaobject_exporter")
         }
 
         auto obj = qmlbind_component_create(component);
+        auto test = (Test *)qmlbind_value_get_handle(obj);
+        test->setEngine(engine);
 
         {
             auto value = qmlbind_value_get_property(obj, "value");
@@ -231,7 +247,6 @@ TEST_CASE("metaobject_exporter")
             auto func = qmlbind_value_get_property(obj, "incrementBy");
             auto result = qmlbind_value_call_with_instance(func, obj, 1, &offset);
 
-            auto test = (Test *)qmlbind_value_get_handle(obj);
             REQUIRE(test != nullptr);
             REQUIRE(test->value() == 101);
 
