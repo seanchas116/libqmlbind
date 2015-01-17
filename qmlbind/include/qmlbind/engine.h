@@ -19,14 +19,7 @@ QMLBIND_API qmlbind_value qmlbind_engine_get_global_object(qmlbind_engine engine
 QMLBIND_API qmlbind_value qmlbind_engine_new_object(qmlbind_engine engine);
 QMLBIND_API qmlbind_value qmlbind_engine_new_array(qmlbind_engine engine, int length);
 
-QMLBIND_API qmlbind_value qmlbind_engine_new_function(
-    qmlbind_engine engine, qmlbind_value (*callback)(qmlbind_function_data data, int argc, qmlbind_value *argv),
-    qmlbind_function_data data,
-    void (*delete_data)(qmlbind_function_data data)
-);
-
-QMLBIND_API qmlbind_value qmlbind_engine_new_wrapper(
-    qmlbind_engine engine,
+QMLBIND_API qmlbind_value qmlbind_engine_new_wrapper(qmlbind_engine engine,
     qmlbind_metaobject metaobj,
     qmlbind_object_handle handle
 );

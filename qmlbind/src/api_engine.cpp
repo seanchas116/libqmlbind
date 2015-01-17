@@ -2,8 +2,7 @@
 #include "metaobject.h"
 #include "wrapper.h"
 #include "util.h"
-#include "engine.h"
-#include "functionwrapper.h"
+#include <QQmlEngine>
 #include <QDebug>
 
 using namespace QmlBind;
@@ -12,7 +11,7 @@ extern "C" {
 
 qmlbind_engine qmlbind_engine_new()
 {
-    return newSharedPointer(new Engine());
+    return newSharedPointer(new QQmlEngine());
 }
 
 void qmlbind_engine_release(qmlbind_engine engine)
@@ -39,17 +38,6 @@ qmlbind_value qmlbind_engine_new_object(qmlbind_engine engine)
 qmlbind_value qmlbind_engine_new_array(qmlbind_engine engine, int length)
 {
     return new QJSValue((*engine)->newArray(length));
-}
-
-qmlbind_value qmlbind_engine_new_function(
-    qmlbind_engine engine,
-    qmlbind_value (*callback)(qmlbind_function_data, int, qmlbind_value *),
-    qmlbind_function_data data,
-    void (*delete_data)(qmlbind_function_data)
-)
-{
-    QJSValue func = (*engine)->newFunction(new FunctionWrapper(callback, data, delete_data));
-    return new QJSValue(func);
 }
 
 qmlbind_value qmlbind_engine_new_wrapper(qmlbind_engine engine, qmlbind_metaobject metaobj, qmlbind_object_handle handle)

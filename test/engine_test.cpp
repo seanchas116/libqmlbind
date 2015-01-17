@@ -59,41 +59,6 @@ TEST_CASE("engine")
         }
     }
 
-    SECTION("new function")
-    {
-        auto callback = [] (qmlbind_function_data data, int argc, qmlbind_value *argv) {
-            auto base = (int *)data;
-            REQUIRE(argc == 2);
-            auto result = *base + qmlbind_value_get_number(argv[0]) + qmlbind_value_get_number(argv[1]);
-            return qmlbind_value_new_number(result);
-        };
-
-        auto deleteData = [] (qmlbind_function_data data) {
-            auto base = (int *)data;
-            *base = 0;
-        };
-
-        int base = 10;
-
-        auto func = qmlbind_engine_new_function(engine, callback, (qmlbind_function_data)&base, deleteData);
-        auto arg1 = qmlbind_value_new_number(20);
-        auto arg2 = qmlbind_value_new_number(30);
-        qmlbind_value args[] = { arg1, arg2 };
-
-        auto result = qmlbind_value_call(func, 2, args);
-        REQUIRE(qmlbind_value_get_number(result) == 60);
-
-        qmlbind_value_release(result);
-        qmlbind_value_release(arg1);
-        qmlbind_value_release(arg2);
-        qmlbind_value_release(func);
-
-        qmlbind_engine_collect_garbage(engine);
-        qmlbind_process_events();
-
-        REQUIRE(base == 0);
-    }
-
     SECTION("#add_import_path")
     {
         qmlbind_engine_add_import_path(engine, "./fixtures");

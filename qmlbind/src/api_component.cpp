@@ -1,7 +1,7 @@
 #include "qmlbind/component.h"
 #include "util.h"
-#include "engine.h"
 #include <QQmlComponent>
+#include <QQmlEngine>
 #include <QQmlContext>
 
 using namespace QmlBind;
