@@ -1,5 +1,6 @@
 #include "interface.h"
 #include <stdexcept>
+#include <QVector>
 
 namespace QmlBind {
 
@@ -25,6 +26,8 @@ static QByteArray methodSignature(const char *name, int arity)
     return sig;
 }
 
+
+
 QMetaMethodBuilder Interface::addMethod(qmlbind_method_handle handle, const char *name, int arity)
 {
     QMetaMethodBuilder method = mBuilder.addMethod(methodSignature(name, arity), "QJSValue");
@@ -38,9 +41,11 @@ QMetaMethodBuilder Interface::addMethod(qmlbind_method_handle handle, const char
     return method;
 }
 
-QMetaMethodBuilder Interface::addSignal(const char *name, int arity)
+QMetaMethodBuilder Interface::addSignal(const char *name, const QList<QByteArray> &args)
 {
-    return mBuilder.addSignal(methodSignature(name, arity));
+    QMetaMethodBuilder method = mBuilder.addSignal(methodSignature(name, args.size()));
+    method.setParameterNames(args);
+    return method;
 }
 
 QMetaPropertyBuilder Interface::addProperty(qmlbind_getter_handle getterHandle, qmlbind_setter_handle setterHandle, const char *name, int notifySignalIndex)

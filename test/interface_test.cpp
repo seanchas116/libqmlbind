@@ -104,7 +104,8 @@ TEST_CASE("metaobject_exporter")
 
     auto interface = qmlbind_interface_new((qmlbind_class_handle)"class:Test", "Test", handlers);
 
-    auto notifierIndex = qmlbind_interface_add_signal(interface, "valueChanged", 1);
+    const char *notifierparams[] = { "value" };
+    auto notifierIndex = qmlbind_interface_add_signal(interface, "valueChanged", 1, notifierparams);
     auto methodIndex = qmlbind_interface_add_method(interface, (qmlbind_method_handle)"method:incrementBy", "incrementBy", 1);
     auto propertyIndex = qmlbind_interface_add_property(interface, (qmlbind_getter_handle)"getter:value", (qmlbind_setter_handle)"setter:value", "value", notifierIndex);
 
@@ -134,6 +135,7 @@ TEST_CASE("metaobject_exporter")
             auto method = metaobj->method(notifierIndex + metaobj->methodOffset());
             REQUIRE(method.name() == "valueChanged");
             REQUIRE(method.methodType() == QMetaMethod::Signal);
+            REQUIRE(method.parameterNames()[0] == "value");
         }
 
         SECTION("property info")

@@ -22,7 +22,7 @@ public:
     Interface(const char *className, qmlbind_class_handle classHandle, qmlbind_interface_handlers handlers);
 
     QMetaMethodBuilder addMethod(qmlbind_method_handle handle, const char *name, int arity);
-    QMetaMethodBuilder addSignal(const char *name, int arity);
+    QMetaMethodBuilder addSignal(const char *name, const QList<QByteArray> &args);
     QMetaPropertyBuilder addProperty(qmlbind_getter_handle getterHandle, qmlbind_setter_handle setterHandle,
                                      const char *name, int notifySignalIndex);
 

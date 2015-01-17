@@ -23,7 +23,8 @@ QMLBIND_API int qmlbind_interface_add_method(
 QMLBIND_API int qmlbind_interface_add_signal(
     qmlbind_interface interface,
     const char *name,
-    int arity
+    int arity,
+    const char **params
 );
 
 QMLBIND_API int qmlbind_interface_add_property(

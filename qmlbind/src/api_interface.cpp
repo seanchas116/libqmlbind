@@ -31,10 +31,15 @@ int qmlbind_interface_add_method(
 int qmlbind_interface_add_signal(
     qmlbind_interface interface,
     const char *name,
-    int arity
+    int arity,
+    const char **params
 )
 {
-    return (*interface)->addSignal(name, arity).index();
+    QList<QByteArray> paramList;
+    for (int i = 0; i < arity; ++i) {
+        paramList << params[i];
+    }
+    return (*interface)->addSignal(name, paramList).index();
 }
 
 int qmlbind_interface_add_property(
