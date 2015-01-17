@@ -9,7 +9,7 @@ extern "C" {
 
 qmlbind_application qmlbind_application_new(int argc, char **argv)
 {
-    return newSharedPointer(new QApplication(argc, argv));
+    return new QApplication(argc, argv);
 }
 
 void qmlbind_application_release(qmlbind_application app)

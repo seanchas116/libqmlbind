@@ -27,10 +27,10 @@ class Interface;
 
 }
 
-typedef QSharedPointer<QApplication> *qmlbind_application;
+typedef QApplication *qmlbind_application;
 
-typedef QSharedPointer<QQmlEngine> *qmlbind_engine;
-typedef QSharedPointer<QQmlComponent> *qmlbind_component;
+typedef QQmlEngine *qmlbind_engine;
+typedef QQmlComponent *qmlbind_component;
 
 typedef QJSValue *qmlbind_value;
 typedef QJSValueIterator *qmlbind_iterator;
