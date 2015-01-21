@@ -18,14 +18,14 @@ SOURCES += \
     src/api_iterator.cpp \
     src/api_value.cpp \
     src/metaobject.cpp \
-    src/interface.cpp \
     src/api_metaobject.cpp \
-    src/api_interface.cpp \
     src/wrapper.cpp \
     src/api_string.cpp \
     src/api_component.cpp \
     src/typeregisterer.cpp \
-    src/api_register.cpp
+    src/api_register.cpp \
+    src/exporter.cpp \
+    src/api_exporter.cpp
 
 HEADERS += \
     include/qmlbind/application.h \
@@ -34,8 +34,6 @@ HEADERS += \
     include/qmlbind/qmlbind_global.h \
     include/qmlbind/value.h \
     src/metaobject.h \
-    src/interface.h \
-    include/qmlbind/interface.h \
     include/qmlbind/metaobject.h \
     src/wrapper.h \
     include/qmlbind/string.h \
@@ -43,4 +41,6 @@ HEADERS += \
     include/qmlbind.h \
     src/typeregisterer.h \
     include/qmlbind/register.h \
-    src/util.h
+    src/util.h \
+    src/exporter.h \
+    include/qmlbind/exporter.h

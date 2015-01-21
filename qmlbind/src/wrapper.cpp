@@ -11,7 +11,7 @@ Wrapper::Wrapper(const QSharedPointer<const MetaObject> &metaObject, qmlbind_obj
 
 Wrapper::~Wrapper()
 {
-    mMetaObject->interface()->handlers().delete_object(mHandle);
+    mMetaObject->exporter()->handlers().delete_object(mHandle);
 }
 
 const QMetaObject *Wrapper::metaObject() const

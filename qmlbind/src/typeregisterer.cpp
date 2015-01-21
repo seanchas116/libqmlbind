@@ -12,8 +12,8 @@ template <int Index>
 void TypeRegisterer::create(void *memory)
 {
     const QSharedPointer<const MetaObject> &metaobj = TypeRegisterer::instance().mMetaObjects[Index];
-    const Interface *interface = metaobj->interface().data();
-    qmlbind_object_handle handle = interface->handlers().new_object(interface->classHandle());
+    const Exporter *exporter = metaobj->exporter().data();
+    qmlbind_object_handle handle = exporter->handlers().new_object(exporter->classHandle());
 
     new (memory) Wrapper(metaobj, handle);
 }

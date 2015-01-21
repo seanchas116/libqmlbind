@@ -7,10 +7,10 @@ SOURCES += \
     api.c \
     main.cpp \
     engine_test.cpp \
-    interface_test.cpp \
     value_test.cpp \
     iterator_test.cpp \
-    component_test.cpp
+    component_test.cpp \
+    exporter_test.cpp
 
 QMAKE_CFLAGS += "-std=c89"
 

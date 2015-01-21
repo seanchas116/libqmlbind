@@ -1,5 +1,5 @@
 #include "metaobject.h"
-#include "interface.h"
+#include "exporter.h"
 #include "wrapper.h"
 #include <QJSValue>
 #include <QMetaMethod>
@@ -9,12 +9,12 @@
 
 namespace QmlBind {
 
-MetaObject::MetaObject(const QSharedPointer<const Interface> &interface) :
-    mInterface(interface),
-    mHandlers(interface->handlers()),
-    mMethods(interface->methodMap()),
-    mProperties(interface->propertyMap()),
-    mPrototype(interface->metaObjectBuilder().toMetaObject())
+MetaObject::MetaObject(const QSharedPointer<const Exporter> &exporter) :
+    mExporter(exporter),
+    mHandlers(exporter->handlers()),
+    mMethods(exporter->methodMap()),
+    mProperties(exporter->propertyMap()),
+    mPrototype(exporter->metaObjectBuilder().toMetaObject())
 {
     if (!mHandlers.call_method) {
         qFatal("qmlbind: call_method handler not specified");
@@ -74,7 +74,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
                 QMetaObject::activate(object, this, index, argv);
             }
             else {
-                Interface::Method method = mMethods[index];
+                Exporter::Method method = mMethods[index];
                 QJSValue *result = mHandlers.call_method(engine, objectHandle, method.handle, method.arity, reinterpret_cast<QJSValue **>(argv + 1));
                 if (argv[0]) {
                     *static_cast<QJSValue *>(argv[0]) = *result;

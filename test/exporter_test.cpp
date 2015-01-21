@@ -104,7 +104,7 @@ namespace Handlers {
     }
 }
 
-TEST_CASE("metaobject_exporter")
+TEST_CASE("exporter")
 {
     auto engine = qmlbind_engine_new();
 
@@ -116,15 +116,15 @@ TEST_CASE("metaobject_exporter")
     handlers.get_property = &Handlers::invokeGetter;
     handlers.delete_object = &Handlers::deleteObject;
 
-    auto interface = qmlbind_interface_new((qmlbind_class_handle)"class:Test", "Test", handlers);
+    auto exporter = qmlbind_exporter_new((qmlbind_class_handle)"class:Test", "Test", handlers);
 
     const char *notifierparams[] = { "value" };
-    auto notifierIndex = qmlbind_interface_add_signal(interface, "valueChanged", 1, notifierparams);
-    auto methodIndex = qmlbind_interface_add_method(interface, (qmlbind_method_handle)"method:incrementBy", "incrementBy", 1);
-    auto propertyIndex = qmlbind_interface_add_property(interface, (qmlbind_getter_handle)"getter:value", (qmlbind_setter_handle)"setter:value", "value", notifierIndex);
+    auto notifierIndex = qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
+    auto methodIndex = qmlbind_exporter_add_method(exporter, (qmlbind_method_handle)"method:incrementBy", "incrementBy", 1);
+    auto propertyIndex = qmlbind_exporter_add_property(exporter, (qmlbind_getter_handle)"getter:value", (qmlbind_setter_handle)"setter:value", "value", notifierIndex);
 
-    auto metaobject = qmlbind_metaobject_new(interface);
-    qmlbind_interface_release(interface);
+    auto metaobject = qmlbind_metaobject_new(exporter);
+    qmlbind_exporter_release(exporter);
 
     SECTION("generated metaobject")
     {

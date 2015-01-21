@@ -23,7 +23,7 @@ class QByteArray;
 namespace QmlBind {
 
 class MetaObject;
-class Interface;
+class Exporter;
 
 }
 
@@ -37,7 +37,7 @@ typedef QJSValueIterator *qmlbind_iterator;
 typedef QByteArray *qmlbind_string;
 
 typedef QSharedPointer<QmlBind::MetaObject> *qmlbind_metaobject;
-typedef QSharedPointer<QmlBind::Interface> *qmlbind_interface;
+typedef QSharedPointer<QmlBind::Exporter> *qmlbind_exporter;
 
 #else
 
@@ -51,7 +51,7 @@ typedef struct qmlbind_iterator_s *qmlbind_iterator;
 typedef struct qmlbind_string_s *qmlbind_string;
 
 typedef struct qmlbind_metaobject_s *qmlbind_metaobject;
-typedef struct qmlbind_interface_s *qmlbind_interface;
+typedef struct qmlbind_exporter_s *qmlbind_exporter;
 
 #endif
 

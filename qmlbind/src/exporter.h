@@ -5,7 +5,7 @@
 
 namespace QmlBind {
 
-class Interface
+class Exporter
 {
 public:
 
@@ -19,7 +19,7 @@ public:
         qmlbind_getter_handle getterHandle;
     };
 
-    Interface(const char *className, qmlbind_class_handle classHandle, qmlbind_interface_handlers handlers);
+    Exporter(const char *className, qmlbind_class_handle classHandle, qmlbind_interface_handlers handlers);
 
     QMetaMethodBuilder addMethod(qmlbind_method_handle handle, const char *name, int arity);
     QMetaMethodBuilder addSignal(const char *name, const QList<QByteArray> &args);

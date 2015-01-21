@@ -1,10 +1,10 @@
-#include "interface.h"
+#include "exporter.h"
 #include <stdexcept>
 #include <QVector>
 
 namespace QmlBind {
 
-Interface::Interface(const char *className, qmlbind_class_handle classHandle, qmlbind_interface_handlers handlers) :
+Exporter::Exporter(const char *className, qmlbind_class_handle classHandle, qmlbind_interface_handlers handlers) :
     mClassHandle(classHandle),
     mHandlers(handlers)
 {
@@ -28,7 +28,7 @@ static QByteArray methodSignature(const char *name, int arity)
 
 
 
-QMetaMethodBuilder Interface::addMethod(qmlbind_method_handle handle, const char *name, int arity)
+QMetaMethodBuilder Exporter::addMethod(qmlbind_method_handle handle, const char *name, int arity)
 {
     QMetaMethodBuilder method = mBuilder.addMethod(methodSignature(name, arity), "QJSValue");
 
@@ -41,14 +41,14 @@ QMetaMethodBuilder Interface::addMethod(qmlbind_method_handle handle, const char
     return method;
 }
 
-QMetaMethodBuilder Interface::addSignal(const char *name, const QList<QByteArray> &args)
+QMetaMethodBuilder Exporter::addSignal(const char *name, const QList<QByteArray> &args)
 {
     QMetaMethodBuilder method = mBuilder.addSignal(methodSignature(name, args.size()));
     method.setParameterNames(args);
     return method;
 }
 
-QMetaPropertyBuilder Interface::addProperty(qmlbind_getter_handle getterHandle, qmlbind_setter_handle setterHandle, const char *name, int notifySignalIndex)
+QMetaPropertyBuilder Exporter::addProperty(qmlbind_getter_handle getterHandle, qmlbind_setter_handle setterHandle, const char *name, int notifySignalIndex)
 {
     QMetaPropertyBuilder property = mBuilder.addProperty(name, "QJSValue", notifySignalIndex);
 
@@ -64,27 +64,27 @@ QMetaPropertyBuilder Interface::addProperty(qmlbind_getter_handle getterHandle, 
     return property;
 }
 
-qmlbind_class_handle Interface::classHandle() const
+qmlbind_class_handle Exporter::classHandle() const
 {
     return mClassHandle;
 }
 
-const QMetaObjectBuilder &Interface::metaObjectBuilder() const
+const QMetaObjectBuilder &Exporter::metaObjectBuilder() const
 {
     return mBuilder;
 }
 
-qmlbind_interface_handlers Interface::handlers() const
+qmlbind_interface_handlers Exporter::handlers() const
 {
     return mHandlers;
 }
 
-QHash<int, Interface::Method> Interface::methodMap() const
+QHash<int, Exporter::Method> Exporter::methodMap() const
 {
     return mMethodMap;
 }
 
-QHash<int, Interface::Property> Interface::propertyMap() const
+QHash<int, Exporter::Property> Exporter::propertyMap() const
 {
     return mPropertyMap;
 }

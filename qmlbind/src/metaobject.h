@@ -1,31 +1,31 @@
 #pragma once
 
 #include "qmlbind/qmlbind_global.h"
-#include "interface.h"
+#include "exporter.h"
 #include <QScopedPointer>
 #include <QSharedPointer>
 #include <private/qobject_p.h>
 
 namespace QmlBind {
 
-class Interface;
+class Exporter;
 class Wrapper;
 
 class MetaObject : public QMetaObject
 {
 public:
-    MetaObject(const QSharedPointer<const Interface> &interface);
+    MetaObject(const QSharedPointer<const Exporter> &exporter);
     ~MetaObject();
 
-    QSharedPointer<const Interface> interface() const { return mInterface; }
+    QSharedPointer<const Exporter> exporter() const { return mExporter; }
     int metaCall(QObject *object, Call call, int index, void **argv) const;
 
 private:
 
-    QSharedPointer<const Interface> mInterface;
+    QSharedPointer<const Exporter> mExporter;
     qmlbind_interface_handlers mHandlers;
-    QHash<int, Interface::Method> mMethods;
-    QHash<int, Interface::Property> mProperties;
+    QHash<int, Exporter::Method> mMethods;
+    QHash<int, Exporter::Property> mProperties;
     QScopedPointer<QMetaObject, QScopedPointerPodDeleter> mPrototype;
 };
 
