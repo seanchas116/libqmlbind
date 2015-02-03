@@ -1,7 +1,9 @@
 #pragma once
 
 #include "qmlbind/qmlbind_global.h"
+#include "backref.h"
 #include <private/qmetaobjectbuilder_p.h>
+#include <QSharedPointer>
 
 namespace QmlBind {
 
@@ -10,32 +12,31 @@ class Exporter
 public:
 
     struct Method {
-        qmlbind_method_handle handle;
+        Backref method;
         int arity;
     };
 
     struct Property {
-        qmlbind_setter_handle setterHandle;
-        qmlbind_getter_handle getterHandle;
+        Backref setter;
+        Backref getter;
     };
 
-    Exporter(const char *className, qmlbind_class_handle classHandle, qmlbind_interface_handlers handlers);
+    Exporter(const char *className, const Backref &classRef);
 
-    QMetaMethodBuilder addMethod(qmlbind_method_handle handle, const char *name, int arity);
+    QMetaMethodBuilder addMethod(const Backref &methodRef, const char *name, int arity);
     QMetaMethodBuilder addSignal(const char *name, const QList<QByteArray> &args);
-    QMetaPropertyBuilder addProperty(qmlbind_getter_handle getterHandle, qmlbind_setter_handle setterHandle,
+    QMetaPropertyBuilder addProperty(const Backref &getter, const Backref &setter,
                                      const char *name, int notifySignalIndex);
+    QSharedPointer<Interface> interface() const { return mClassRef.interface(); }
 
-    qmlbind_class_handle classHandle() const;
-    const QMetaObjectBuilder &metaObjectBuilder() const;
-    qmlbind_interface_handlers handlers() const;
-    QHash<int, Method> methodMap() const;
-    QHash<int, Property> propertyMap() const;
+    Backref classRef() const { return mClassRef; }
+    const QMetaObjectBuilder &metaObjectBuilder() const { return mBuilder; }
+    QHash<int, Method> methodMap() const { return mMethodMap; }
+    QHash<int, Property> propertyMap() const { return mPropertyMap; }
 
 private:
 
-    qmlbind_class_handle mClassHandle;
-    qmlbind_interface_handlers mHandlers;
+    Backref mClassRef;
     QHash<int, Method> mMethodMap;
     QHash<int, Property> mPropertyMap;
 

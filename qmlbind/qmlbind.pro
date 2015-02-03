@@ -25,7 +25,10 @@ SOURCES += \
     src/typeregisterer.cpp \
     src/api_register.cpp \
     src/exporter.cpp \
-    src/api_exporter.cpp
+    src/api_exporter.cpp \
+    src/api_interface.cpp \
+    src/interface.cpp \
+    src/backref.cpp
 
 HEADERS += \
     include/qmlbind/application.h \
@@ -43,4 +46,7 @@ HEADERS += \
     include/qmlbind/register.h \
     src/util.h \
     src/exporter.h \
-    include/qmlbind/exporter.h
+    include/qmlbind/exporter.h \
+    include/qmlbind/interface.h \
+    src/interface.h \
+    src/backref.h

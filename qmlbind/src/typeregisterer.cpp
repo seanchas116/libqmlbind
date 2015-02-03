@@ -1,6 +1,7 @@
 #include "typeregisterer.h"
 #include "metaobject.h"
 #include "wrapper.h"
+#include "interface.h"
 #include <QVector>
 #include <QtQml>
 
@@ -11,11 +12,11 @@ namespace QmlBind {
 template <int Index>
 void TypeRegisterer::create(void *memory)
 {
-    const QSharedPointer<const MetaObject> &metaobj = TypeRegisterer::instance().mMetaObjects[Index];
-    const Exporter *exporter = metaobj->exporter().data();
-    qmlbind_object_handle handle = exporter->handlers().new_object(exporter->classHandle());
+    QSharedPointer<const MetaObject> metaobj = TypeRegisterer::instance().mMetaObjects[Index];
+    Backref classRef = metaobj->exporter()->classRef();
+    Backref ref = classRef.interface()->newObject(classRef);
 
-    new (memory) Wrapper(metaobj, handle);
+    new (memory) Wrapper(metaobj, ref);
 }
 
 // statically generates callback array

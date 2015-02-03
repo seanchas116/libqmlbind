@@ -1,17 +1,13 @@
 #include "wrapper.h"
 #include "metaobject.h"
+#include "exporter.h"
 
 namespace QmlBind {
 
-Wrapper::Wrapper(const QSharedPointer<const MetaObject> &metaObject, qmlbind_object_handle handle) :
+Wrapper::Wrapper(const QSharedPointer<const MetaObject> &metaObject, const Backref &ref) :
     mMetaObject(metaObject),
-    mHandle(handle)
+    mRef(ref)
 {
-}
-
-Wrapper::~Wrapper()
-{
-    mMetaObject->exporter()->handlers().delete_object(mHandle);
 }
 
 const QMetaObject *Wrapper::metaObject() const
@@ -22,11 +18,6 @@ const QMetaObject *Wrapper::metaObject() const
 int Wrapper::qt_metacall(QMetaObject::Call call, int index, void **argv)
 {
     return mMetaObject->metaCall(this, call, index, argv);
-}
-
-qmlbind_object_handle Wrapper::handle() const
-{
-    return mHandle;
 }
 
 } // namespace QmlBind

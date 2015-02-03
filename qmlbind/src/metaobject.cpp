@@ -1,5 +1,6 @@
 #include "metaobject.h"
 #include "exporter.h"
+#include "interface.h"
 #include "wrapper.h"
 #include <QJSValue>
 #include <QMetaMethod>
@@ -11,21 +12,8 @@ namespace QmlBind {
 
 MetaObject::MetaObject(const QSharedPointer<const Exporter> &exporter) :
     mExporter(exporter),
-    mHandlers(exporter->handlers()),
-    mMethods(exporter->methodMap()),
-    mProperties(exporter->propertyMap()),
     mPrototype(exporter->metaObjectBuilder().toMetaObject())
 {
-    if (!mHandlers.call_method) {
-        qFatal("qmlbind: call_method handler not specified");
-    }
-    if (!mHandlers.set_property) {
-        qFatal("qmlbind: set_property handler not specified");
-    }
-    if (!mHandlers.get_property) {
-        qFatal("qmlbind: get_property handler not specified");
-    }
-
     d = mPrototype->d;
 }
 
@@ -40,19 +28,20 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
         return index;
     }
 
-    qmlbind_object_handle objectHandle = static_cast<Wrapper *>(object)->handle();
+    Backref ref = static_cast<Wrapper *>(object)->backref();
 
     QQmlContext *context = QQmlEngine::contextForObject(object);
     QQmlEngine *engine = context ? context->engine() : 0;
+
+    QSharedPointer<const Exporter> exporter = mExporter;
+    QSharedPointer<Interface> interface = ref.interface();
 
     switch(call) {
     case QMetaObject::ReadProperty:
     {
         int count = propertyCount() - propertyOffset();
         if (index < count) {
-            QJSValue *value = mHandlers.get_property(engine, objectHandle, mProperties[index].getterHandle);
-            *static_cast<QJSValue *>(argv[0]) = *value;
-            delete value;
+            *static_cast<QJSValue *>(argv[0]) = interface->getProperty(engine, ref, exporter->propertyMap()[index].getter);
         }
         index -= count;
         break;
@@ -61,7 +50,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
     {
         int count = propertyCount() - propertyOffset();
         if (index < count) {
-            mHandlers.set_property(engine, objectHandle, mProperties[index].setterHandle, static_cast<QJSValue *>(argv[0]));
+            interface->setProperty(engine, ref, exporter->propertyMap()[index].setter, *static_cast<QJSValue *>(argv[0]));
         }
         index -= count;
         break;
@@ -74,12 +63,8 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
                 QMetaObject::activate(object, this, index, argv);
             }
             else {
-                Exporter::Method method = mMethods[index];
-                QJSValue *result = mHandlers.call_method(engine, objectHandle, method.handle, method.arity, reinterpret_cast<QJSValue **>(argv + 1));
-                if (argv[0]) {
-                    *static_cast<QJSValue *>(argv[0]) = *result;
-                }
-                delete result;
+                Exporter::Method method = exporter->methodMap()[index];
+                *static_cast<QJSValue *>(argv[0]) = interface->callMethod(engine, ref, method.method, method.arity, const_cast<const QJSValue **>(reinterpret_cast<QJSValue **>(argv + 1)));
             }
         }
         index -= count;

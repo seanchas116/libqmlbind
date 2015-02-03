@@ -92,7 +92,7 @@ QMLBIND_API qmlbind_value qmlbind_value_call_with_instance(
 
 /* wrapper */
 
-QMLBIND_API qmlbind_object_handle qmlbind_value_get_handle(qmlbind_value self);
+QMLBIND_API qmlbind_backref qmlbind_value_get_backref(qmlbind_value self);
 
 #ifdef __cplusplus
 }

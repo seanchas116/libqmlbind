@@ -19,9 +19,10 @@ QMLBIND_API qmlbind_value qmlbind_engine_get_global_object(qmlbind_engine engine
 QMLBIND_API qmlbind_value qmlbind_engine_new_object(qmlbind_engine engine);
 QMLBIND_API qmlbind_value qmlbind_engine_new_array(qmlbind_engine engine, int length);
 
-QMLBIND_API qmlbind_value qmlbind_engine_new_wrapper(qmlbind_engine engine,
+QMLBIND_API qmlbind_value qmlbind_engine_new_wrapper(
+    qmlbind_engine engine,
     qmlbind_metaobject metaobj,
-    qmlbind_object_handle handle
+    qmlbind_backref ref
 );
 
 QMLBIND_API void qmlbind_engine_add_import_path(qmlbind_engine engine, const char *path);

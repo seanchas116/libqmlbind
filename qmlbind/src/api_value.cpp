@@ -84,7 +84,7 @@ int qmlbind_value_is_error(qmlbind_value self)
 
 int qmlbind_value_is_wrapper(qmlbind_value self)
 {
-    return qmlbind_value_get_handle(self) != 0;
+    return qmlbind_value_get_backref(self) != 0;
 }
 
 qmlbind_value qmlbind_value_new_boolean(int x)
@@ -129,12 +129,14 @@ qmlbind_value qmlbind_value_get_property(qmlbind_value self, const char *key)
 
 void qmlbind_value_set_property(qmlbind_value self, const char *key, qmlbind_value value)
 {
-    self->setProperty(QString::fromUtf8(key), *value);
+    QJSValue obj = *self;
+    obj.setProperty(QString::fromUtf8(key), *value);
 }
 
-int qmlbind_value_delete_property(qmlbind_value value, const char *key)
+int qmlbind_value_delete_property(qmlbind_value self, const char *key)
 {
-    return value->deleteProperty(key);
+    QJSValue value = *self;
+    return value.deleteProperty(key);
 }
 
 int qmlbind_value_has_property(qmlbind_value value, const char *key)
@@ -152,9 +154,10 @@ qmlbind_value qmlbind_value_get_prototype(qmlbind_value value)
     return new QJSValue(value->prototype());
 }
 
-void qmlbind_value_set_prototype(qmlbind_value value, qmlbind_value proto)
+void qmlbind_value_set_prototype(qmlbind_value self, qmlbind_value proto)
 {
-    value->setPrototype(*proto);
+    QJSValue obj = *self;
+    obj.setPrototype(*proto);
 }
 
 qmlbind_value qmlbind_value_get_array_item(qmlbind_value value, int index)
@@ -162,18 +165,19 @@ qmlbind_value qmlbind_value_get_array_item(qmlbind_value value, int index)
     return new QJSValue(value->property(index));
 }
 
-void qmlbind_value_set_array_item(qmlbind_value value, int index, qmlbind_value property)
+void qmlbind_value_set_array_item(qmlbind_value self, int index, qmlbind_value property)
 {
-    value->setProperty(index, *property);
+    QJSValue obj = *self;
+    obj.setProperty(index, *property);
 }
 
-qmlbind_object_handle qmlbind_value_get_handle(qmlbind_value self)
+qmlbind_backref qmlbind_value_get_backref(qmlbind_value self)
 {
     Wrapper *obj = dynamic_cast<Wrapper *>(self->toQObject());
     if (!obj) {
         return 0;
     }
-    return obj->handle();
+    return obj->backref().backref();
 }
 
 static QJSValueList pack_args(int argc, qmlbind_value *argv)
@@ -187,17 +191,20 @@ static QJSValueList pack_args(int argc, qmlbind_value *argv)
 
 qmlbind_value qmlbind_value_call(qmlbind_value self, int argc, qmlbind_value *argv)
 {
-    return new QJSValue(self->call(pack_args(argc, argv)));
+    QJSValue func = *self;
+    return new QJSValue(func.call(pack_args(argc, argv)));
 }
 
-qmlbind_value qmlbind_value_call_constructor(qmlbind_value function, int argc, qmlbind_value *argv)
+qmlbind_value qmlbind_value_call_constructor(qmlbind_value self, int argc, qmlbind_value *argv)
 {
-    return new QJSValue(function->callAsConstructor(pack_args(argc, argv)));
+    QJSValue func = *self;
+    return new QJSValue(func.callAsConstructor(pack_args(argc, argv)));
 }
 
 qmlbind_value qmlbind_value_call_with_instance(qmlbind_value self, qmlbind_value instance, int argc, qmlbind_value *argv)
 {
-    return new QJSValue(self->callWithInstance(*instance, pack_args(argc, argv)));
+    QJSValue func = *self;
+    return new QJSValue(func.callWithInstance(*instance, pack_args(argc, argv)));
 }
 
 }

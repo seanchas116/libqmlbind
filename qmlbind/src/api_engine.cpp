@@ -40,9 +40,9 @@ qmlbind_value qmlbind_engine_new_array(qmlbind_engine engine, int length)
     return new QJSValue(engine->newArray(length));
 }
 
-qmlbind_value qmlbind_engine_new_wrapper(qmlbind_engine engine, qmlbind_metaobject metaobj, qmlbind_object_handle handle)
+qmlbind_value qmlbind_engine_new_wrapper(qmlbind_engine engine, qmlbind_metaobject metaobj, qmlbind_backref ref)
 {
-    Wrapper *obj = new Wrapper(*metaobj, handle);
+    Wrapper *obj = new Wrapper(*metaobj, Backref(ref, (*metaobj)->exporter()->classRef().interface()));
 
     QQmlEngine::setObjectOwnership(obj, QQmlEngine::JavaScriptOwnership);
     return new QJSValue(engine->newQObject(obj));

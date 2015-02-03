@@ -55,53 +55,64 @@ private:
     qmlbind_engine m_engine = nullptr;
 };
 
+using TestSP = std::shared_ptr<Test>;
+Q_DECLARE_METATYPE(TestSP)
+
 namespace Handlers {
 
-    qmlbind_object_handle newObject(qmlbind_class_handle klass)
-    {
-        std::string name = (char *)klass;
-        REQUIRE(name == "class:Test");
-        auto test = new Test([] {});
-        return (qmlbind_object_handle)test;
-    }
+qmlbind_backref variantToBackref(const QVariant variant)
+{
+    return reinterpret_cast<qmlbind_backref>(new QVariant(variant));
+}
 
-    qmlbind_value invokeMethod(qmlbind_engine engine, qmlbind_object_handle obj, qmlbind_method_handle method, int argc, qmlbind_value *argv)
-    {
-        std::string name = (char *)method;
-        REQUIRE(name == "method:incrementBy");
-        REQUIRE(argc == 1);
+QVariant backrefToVariant(qmlbind_backref ref)
+{
+    return *reinterpret_cast<QVariant *>(ref);
+}
 
-        auto test = (Test *)obj;
-        REQUIRE(test->engine() == engine);
-        test->incrementBy(qmlbind_value_get_number(argv[0]));
+qmlbind_backref newObject(qmlbind_backref klass)
+{
+    REQUIRE(backrefToVariant(klass).toString() == "class:Test");
+    auto variant = QVariant::fromValue(std::make_shared<Test>([] {}));
+    return variantToBackref(variant);
+}
 
-        return qmlbind_value_new_number(test->value());
-    }
+qmlbind_value invokeMethod(qmlbind_engine engine, qmlbind_backref obj, qmlbind_backref method, int argc, qmlbind_value *argv)
+{
+    auto test = backrefToVariant(obj).value<TestSP>();
+    REQUIRE(test);
+    REQUIRE(test->engine() == engine);
+    REQUIRE(backrefToVariant(method).toString() == "method:incrementBy");
+    REQUIRE(argc == 1);
 
-    qmlbind_value invokeGetter(qmlbind_engine engine, qmlbind_object_handle obj, qmlbind_getter_handle getter)
-    {
-        std::string name = (char *)getter;
-        REQUIRE(name == "getter:value");
+    test->incrementBy(qmlbind_value_get_number(argv[0]));
+    return qmlbind_value_new_number(test->value());
+}
 
-        auto test = (Test *)obj;
-        REQUIRE(test->engine() == engine);
-        return qmlbind_value_new_number(test->value());
-    }
+qmlbind_value invokeGetter(qmlbind_engine engine, qmlbind_backref obj, qmlbind_backref getter)
+{
+    auto test = backrefToVariant(obj).value<TestSP>();
+    REQUIRE(test);
+    REQUIRE(test->engine() == engine);
+    REQUIRE(backrefToVariant(getter).toString() == "getter:value");
 
-    void invokeSetter(qmlbind_engine engine, qmlbind_object_handle obj, qmlbind_setter_handle setter, qmlbind_value value)
-    {
-        std::string name = (char *)setter;
-        REQUIRE(name == "setter:value");
+    return qmlbind_value_new_number(test->value());
+}
 
-        auto test = (Test *)obj;
-        REQUIRE(test->engine() == engine);
-        test->setValue(qmlbind_value_get_number(value));
-    }
+void invokeSetter(qmlbind_engine engine, qmlbind_backref obj, qmlbind_backref setter, qmlbind_value value)
+{
+    auto test = backrefToVariant(obj).value<TestSP>();
+    REQUIRE(test);
+    REQUIRE(test->engine() == engine);
+    REQUIRE(backrefToVariant(setter).toString() == "setter:value");
 
-    void deleteObject(qmlbind_object_handle obj)
-    {
-        delete (Test *)obj;
-    }
+    test->setValue(qmlbind_value_get_number(value));
+}
+
+void deleteObject(qmlbind_backref obj)
+{
+    delete reinterpret_cast<QVariant *>(obj);
+}
 }
 
 TEST_CASE("exporter")
@@ -116,15 +127,23 @@ TEST_CASE("exporter")
     handlers.get_property = &Handlers::invokeGetter;
     handlers.delete_object = &Handlers::deleteObject;
 
-    auto exporter = qmlbind_exporter_new((qmlbind_class_handle)"class:Test", "Test", handlers);
+    auto interface = qmlbind_interface_new(handlers);
+
+    auto exporter = qmlbind_exporter_new(Handlers::variantToBackref("class:Test"), "Test", interface);
 
     const char *notifierparams[] = { "value" };
     auto notifierIndex = qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
-    auto methodIndex = qmlbind_exporter_add_method(exporter, (qmlbind_method_handle)"method:incrementBy", "incrementBy", 1);
-    auto propertyIndex = qmlbind_exporter_add_property(exporter, (qmlbind_getter_handle)"getter:value", (qmlbind_setter_handle)"setter:value", "value", notifierIndex);
+    auto methodIndex = qmlbind_exporter_add_method(exporter,
+                                                   Handlers::variantToBackref("method:incrementBy"),
+                                                   "incrementBy", 1);
+    auto propertyIndex = qmlbind_exporter_add_property(exporter,
+                                                       Handlers::variantToBackref("getter:value"),
+                                                       Handlers::variantToBackref("setter:value"),
+                                                       "value", notifierIndex);
 
     auto metaobject = qmlbind_metaobject_new(exporter);
     qmlbind_exporter_release(exporter);
+    qmlbind_interface_release(interface);
 
     SECTION("generated metaobject")
     {
@@ -162,45 +181,48 @@ TEST_CASE("exporter")
     SECTION("created wrapper")
     {
         bool destroyed = false;
-        auto test = new Test([&] {
-            destroyed = true;
-        });
 
-        auto value = qmlbind_engine_new_wrapper(engine, metaobject, (qmlbind_object_handle)test);
-
-        REQUIRE(qmlbind_value_is_wrapper(value));
-
-        test->setValue(123);
-
-        SECTION("getter")
         {
-            auto prop = qmlbind_value_get_property(value, "value");
-            REQUIRE(qmlbind_value_get_number(prop) == 123);
-            qmlbind_value_release(prop);
+            auto test = std::make_shared<Test>([&] {
+                destroyed = true;
+            });
+
+            auto value = qmlbind_engine_new_wrapper(engine, metaobject, Handlers::variantToBackref(QVariant::fromValue(test)));
+
+            REQUIRE(qmlbind_value_is_wrapper(value));
+
+            test->setValue(123);
+
+            SECTION("getter")
+            {
+                auto prop = qmlbind_value_get_property(value, "value");
+                REQUIRE(qmlbind_value_get_number(prop) == 123);
+                qmlbind_value_release(prop);
+            }
+
+            SECTION("setter")
+            {
+                auto prop = qmlbind_value_new_number(234);
+                qmlbind_value_set_property(value, "value", prop);
+                REQUIRE(test->value() == 234);
+                qmlbind_value_release(prop);
+            }
+
+            SECTION("method")
+            {
+                auto offset = qmlbind_value_new_number(100);
+                auto func = qmlbind_value_get_property(value, "incrementBy");
+                auto result = qmlbind_value_call_with_instance(func, value, 1, &offset);
+
+                REQUIRE(test->value() == 223);
+
+                qmlbind_value_release(offset);
+                qmlbind_value_release(func);
+                qmlbind_value_release(result);
+            }
+
+            qmlbind_value_release(value);
         }
-
-        SECTION("setter")
-        {
-            auto prop = qmlbind_value_new_number(234);
-            qmlbind_value_set_property(value, "value", prop);
-            REQUIRE(test->value() == 234);
-            qmlbind_value_release(prop);
-        }
-
-        SECTION("method")
-        {
-            auto offset = qmlbind_value_new_number(100);
-            auto func = qmlbind_value_get_property(value, "incrementBy");
-            auto result = qmlbind_value_call_with_instance(func, value, 1, &offset);
-
-            REQUIRE(test->value() == 223);
-
-            qmlbind_value_release(offset);
-            qmlbind_value_release(func);
-            qmlbind_value_release(result);
-        }
-
-        qmlbind_value_release(value);
 
         qmlbind_engine_collect_garbage(engine);
 
@@ -231,7 +253,7 @@ TEST_CASE("exporter")
         }
 
         auto obj = qmlbind_component_create(component);
-        auto test = (Test *)qmlbind_value_get_handle(obj);
+        auto test = Handlers::backrefToVariant(qmlbind_value_get_backref(obj)).value<TestSP>();
         test->setEngine(engine);
 
         {

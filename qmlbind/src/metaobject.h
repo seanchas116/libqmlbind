@@ -23,9 +23,6 @@ public:
 private:
 
     QSharedPointer<const Exporter> mExporter;
-    qmlbind_interface_handlers mHandlers;
-    QHash<int, Exporter::Method> mMethods;
-    QHash<int, Exporter::Property> mProperties;
     QScopedPointer<QMetaObject, QScopedPointerPodDeleter> mPrototype;
 };
 
