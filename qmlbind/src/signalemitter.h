@@ -1,5 +1,4 @@
-#ifndef QMLBIND_SIGNALEMITTER_H
-#define QMLBIND_SIGNALEMITTER_H
+#pragma once
 
 #include <QPointer>
 #include "wrapper.h"
@@ -23,5 +22,3 @@ private:
 };
 
 } // namespace QmlBind
-
-#endif // QMLBIND_SIGNALEMITTER_H
