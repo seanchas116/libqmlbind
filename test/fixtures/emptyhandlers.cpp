@@ -12,7 +12,8 @@ qmlbind_value invokeMethod(qmlbind_engine, qmlbind_backref, qmlbind_backref, int
 
 qmlbind_value invokeGetter(qmlbind_engine, qmlbind_backref, qmlbind_backref)
 {
-    return qmlbind_value_new_undefined();}
+    return qmlbind_value_new_undefined();
+}
 
 void invokeSetter(qmlbind_engine, qmlbind_backref, qmlbind_backref, qmlbind_value)
 {
