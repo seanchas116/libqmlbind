@@ -3,6 +3,7 @@
 #include "qmlbind/qmlbind_global.h"
 #include <QJSValue>
 #include <QSharedPointer>
+#include <QMutex>
 
 namespace QmlBind {
 
@@ -28,6 +29,7 @@ private:
 
     qmlbind_interface_handlers mHandlers;
     QHash<qmlbind_backref, int> mRefCount;
+    QMutex mRefCountMutex;
 };
 
 } // namespace QmlBind

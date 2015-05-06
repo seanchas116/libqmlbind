@@ -49,6 +49,8 @@ Backref Interface::newObject(const Backref &klass, SignalEmitter *signalEmitter)
 
 void Interface::retainObject(qmlbind_backref ref)
 {
+    QMutexLocker locker(&mRefCountMutex);
+
     if (mRefCount.contains(ref)) {
         ++mRefCount[ref];
     }
@@ -59,6 +61,8 @@ void Interface::retainObject(qmlbind_backref ref)
 
 void Interface::releaseObject(qmlbind_backref ref)
 {
+    QMutexLocker locker(&mRefCountMutex);
+
     Q_ASSERT(mRefCount.contains(ref));
     if (--mRefCount[ref] == 0) {
         mHandlers.delete_object(ref);
