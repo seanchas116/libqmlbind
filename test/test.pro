@@ -10,7 +10,9 @@ SOURCES += \
     value_test.cpp \
     iterator_test.cpp \
     component_test.cpp \
-    exporter_test.cpp
+    exporter_test.cpp \
+    application_test.cpp \
+    fixtures/emptyhandlers.cpp
 
 QMAKE_CFLAGS += "-std=c89"
 
@@ -19,4 +21,5 @@ INCLUDEPATH += $$PWD/../qmlbind/include $$PWD/lib/Catch/include
 DEPENDPATH += $$PWD/../qmlbind
 
 HEADERS += \
-    test_helper.h
+    test_helper.h \
+    fixtures/emptyhandlers.h
