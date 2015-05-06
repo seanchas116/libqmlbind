@@ -33,12 +33,14 @@ public:
     const QMetaObjectBuilder &metaObjectBuilder() const { return mBuilder; }
     QHash<int, Method> methodMap() const { return mMethodMap; }
     QHash<int, Property> propertyMap() const { return mPropertyMap; }
+    QHash<QByteArray, int> signalIndexMap() const { return mSignalIndexMap; }
 
 private:
 
     Backref mClassRef;
     QHash<int, Method> mMethodMap;
     QHash<int, Property> mPropertyMap;
+    QHash<QByteArray, int> mSignalIndexMap;
 
     QMetaObjectBuilder mBuilder;
 };

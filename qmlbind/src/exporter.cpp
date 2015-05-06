@@ -45,6 +45,9 @@ QMetaMethodBuilder Exporter::addSignal(const char *name, const QList<QByteArray>
 {
     QMetaMethodBuilder method = mBuilder.addSignal(methodSignature(name, args.size()));
     method.setParameterNames(args);
+
+    mSignalIndexMap[name] = method.index();
+
     return method;
 }
 

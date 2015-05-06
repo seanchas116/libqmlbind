@@ -18,6 +18,7 @@ public:
     int qt_metacall(QMetaObject::Call call, int index, void **argv) Q_DECL_OVERRIDE;
 
     Backref backref() { return mRef; }
+    QSharedPointer<const MetaObject> qmlbindMetaObject() { return mMetaObject; }
 
 private:
 

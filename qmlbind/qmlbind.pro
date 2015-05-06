@@ -28,7 +28,9 @@ SOURCES += \
     src/api_exporter.cpp \
     src/api_interface.cpp \
     src/interface.cpp \
-    src/backref.cpp
+    src/backref.cpp \
+    src/signalemitter.cpp \
+    src/api_signal_emitter.cpp
 
 HEADERS += \
     include/qmlbind/application.h \
@@ -49,4 +51,6 @@ HEADERS += \
     include/qmlbind/exporter.h \
     include/qmlbind/interface.h \
     src/interface.h \
-    src/backref.h
+    src/backref.h \
+    src/signalemitter.h \
+    include/qmlbind/signal_emitter.h

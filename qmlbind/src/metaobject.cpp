@@ -64,7 +64,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
             }
             else {
                 Exporter::Method method = exporter->methodMap()[index];
-                *static_cast<QJSValue *>(argv[0]) = interface->callMethod(engine, ref, method.method, method.arity, const_cast<const QJSValue **>(reinterpret_cast<QJSValue **>(argv + 1)));
+                *static_cast<QJSValue *>(argv[0]) = interface->callMethod(engine, ref, method.method, method.arity, reinterpret_cast<QJSValue **>(argv + 1));
             }
         }
         index -= count;

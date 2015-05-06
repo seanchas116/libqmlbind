@@ -13,9 +13,10 @@ class Test
 {
 public:
 
-    Test(std::function<void ()> onDestroy) :
+    Test(std::function<void ()> onDestroy, qmlbind_signal_emitter emitter) :
         m_value(1),
-        m_onDestroy(onDestroy)
+        m_onDestroy(onDestroy),
+        m_emitter(emitter)
     {
     }
 
@@ -26,7 +27,7 @@ public:
 
     void incrementBy(double diff)
     {
-        m_value += diff;
+        setValue(value() + diff);
     }
 
     double value()
@@ -36,7 +37,14 @@ public:
 
     void setValue(double val)
     {
-        m_value = val;
+        if (m_value != val) {
+            m_value = val;
+            if (m_emitter) {
+                auto value = qmlbind_value_new_number(val);
+                qmlbind_signal_emitter_emit(m_emitter, "valueChanged", 1, &value);
+                qmlbind_value_release(value);
+            }
+        }
     }
 
     qmlbind_engine engine()
@@ -53,6 +61,7 @@ private:
     double m_value;
     std::function<void ()> m_onDestroy;
     qmlbind_engine m_engine = nullptr;
+    qmlbind_signal_emitter m_emitter = nullptr;
 };
 
 using TestSP = std::shared_ptr<Test>;
@@ -70,10 +79,10 @@ QVariant backrefToVariant(qmlbind_backref ref)
     return *reinterpret_cast<QVariant *>(ref);
 }
 
-qmlbind_backref newObject(qmlbind_backref klass)
+qmlbind_backref newObject(qmlbind_backref klass, qmlbind_signal_emitter emitter)
 {
     REQUIRE(backrefToVariant(klass).toString() == "class:Test");
-    auto variant = QVariant::fromValue(std::make_shared<Test>([] {}));
+    auto variant = QVariant::fromValue(std::make_shared<Test>([] {}, emitter));
     return variantToBackref(variant);
 }
 
@@ -185,7 +194,7 @@ TEST_CASE("exporter")
         {
             auto test = std::make_shared<Test>([&] {
                 destroyed = true;
-            });
+            }, nullptr);
 
             auto value = qmlbind_engine_new_wrapper(engine, metaobject, Handlers::variantToBackref(QVariant::fromValue(test)));
 
@@ -238,6 +247,10 @@ TEST_CASE("exporter")
             import QtQml 2.2
             import test 1.0
             Test {
+                property bool valueChangedEmitted: false
+                onValueChanged: {
+                    valueChangedEmitted = true
+                }
             }
         )QML";
 
@@ -265,6 +278,14 @@ TEST_CASE("exporter")
         }
 
         {
+            auto emitted = qmlbind_value_get_property(obj, "valueChangedEmitted");
+
+            REQUIRE(!qmlbind_value_get_boolean(emitted));
+
+            qmlbind_value_release(emitted);
+        }
+
+        {
             auto offset = qmlbind_value_new_number(100);
             auto func = qmlbind_value_get_property(obj, "incrementBy");
             auto result = qmlbind_value_call_with_instance(func, obj, 1, &offset);
@@ -275,6 +296,14 @@ TEST_CASE("exporter")
             qmlbind_value_release(offset);
             qmlbind_value_release(func);
             qmlbind_value_release(result);
+        }
+
+        {
+            auto emitted = qmlbind_value_get_property(obj, "valueChangedEmitted");
+
+            REQUIRE(qmlbind_value_get_boolean(emitted));
+
+            qmlbind_value_release(emitted);
         }
 
         qmlbind_value_release(obj);

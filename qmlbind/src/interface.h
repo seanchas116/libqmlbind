@@ -13,11 +13,11 @@ class Interface : public QEnableSharedFromThis<Interface>
 public:
     Interface(qmlbind_interface_handlers handlers);
 
-    QJSValue callMethod(QQmlEngine *engine, const Backref &obj, const Backref &method, int argc, const QJSValue **argv) const;
+    QJSValue callMethod(QQmlEngine *engine, const Backref &obj, const Backref &method, int argc, QJSValue **argv) const;
     QJSValue getProperty(QQmlEngine *engine, const Backref &obj, const Backref &getter) const;
     void setProperty(QQmlEngine *engine, const Backref &obj, const Backref &setter, const QJSValue &value) const;
 
-    Backref newObject(const Backref &klass);
+    Backref newObject(const Backref &klass, SignalEmitter *signalEmitter);
 
 private:
 

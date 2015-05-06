@@ -24,7 +24,7 @@ Interface::Interface(qmlbind_interface_handlers handlers) :
     }
 }
 
-QJSValue Interface::callMethod(QQmlEngine *engine, const Backref &obj, const Backref &method, int argc, const QJSValue **argv) const
+QJSValue Interface::callMethod(QQmlEngine *engine, const Backref &obj, const Backref &method, int argc, QJSValue **argv) const
 {
     QScopedPointer<const QJSValue> result(mHandlers.call_method(engine, obj.backref(), method.backref(), argc, argv));
     return *result;
@@ -38,12 +38,13 @@ QJSValue Interface::getProperty(QQmlEngine *engine, const Backref &obj, const Ba
 
 void Interface::setProperty(QQmlEngine *engine, const Backref &obj, const Backref &setter, const QJSValue &value) const
 {
-    mHandlers.set_property(engine, obj.backref(), setter.backref(), &value);
+    QJSValue val = value;
+    mHandlers.set_property(engine, obj.backref(), setter.backref(), &val);
 }
 
-Backref Interface::newObject(const Backref &klass)
+Backref Interface::newObject(const Backref &klass, SignalEmitter *signalEmitter)
 {
-    return Backref(mHandlers.new_object(klass.backref()), sharedFromThis());
+    return Backref(mHandlers.new_object(klass.backref(), signalEmitter), sharedFromThis());
 }
 
 void Interface::retainObject(qmlbind_backref ref)

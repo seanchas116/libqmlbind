@@ -2,6 +2,7 @@
 #include "metaobject.h"
 #include "wrapper.h"
 #include "interface.h"
+#include "signalemitter.h"
 #include <QVector>
 #include <QtQml>
 
@@ -14,9 +15,11 @@ void TypeRegisterer::create(void *memory)
 {
     QSharedPointer<const MetaObject> metaobj = TypeRegisterer::instance().mMetaObjects[Index];
     Backref classRef = metaobj->exporter()->classRef();
-    Backref ref = classRef.interface()->newObject(classRef);
+    SignalEmitter *emitter = new SignalEmitter();
+    Backref ref = classRef.interface()->newObject(classRef, emitter);
 
-    new (memory) Wrapper(metaobj, ref);
+    Wrapper *wrapper = new (memory) Wrapper(metaobj, ref);
+    emitter->setWrapper(wrapper);
 }
 
 // statically generates callback array

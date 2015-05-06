@@ -25,6 +25,7 @@ namespace QmlBind {
 class Interface;
 class MetaObject;
 class Exporter;
+class SignalEmitter;
 
 }
 
@@ -33,13 +34,16 @@ typedef QApplication *qmlbind_application;
 typedef QQmlEngine *qmlbind_engine;
 typedef QQmlComponent *qmlbind_component;
 
-typedef const QJSValue *qmlbind_value;
+typedef QJSValue *qmlbind_value;
 typedef QJSValueIterator *qmlbind_iterator;
 typedef QByteArray *qmlbind_string;
 
+// Use shared pointer for widely referenced classes
 typedef QSharedPointer<QmlBind::Interface> *qmlbind_interface;
 typedef QSharedPointer<QmlBind::MetaObject> *qmlbind_metaobject;
 typedef QSharedPointer<QmlBind::Exporter> *qmlbind_exporter;
+
+typedef QmlBind::SignalEmitter *qmlbind_signal_emitter;
 
 #else
 
@@ -56,12 +60,14 @@ typedef struct {} *qmlbind_interface;
 typedef struct {} *qmlbind_metaobject;
 typedef struct {} *qmlbind_exporter;
 
+typedef struct {} *qmlbind_signal_emitter;
+
 #endif
 
 typedef struct qmlbind_backref_s *qmlbind_backref;
 
 typedef struct {
-    qmlbind_backref (*new_object)(qmlbind_backref classRef);
+    qmlbind_backref (*new_object)(qmlbind_backref classRef, qmlbind_signal_emitter signalEmitter);
     void (*delete_object)(qmlbind_backref objRef);
     qmlbind_value (*call_method)(qmlbind_engine engine, qmlbind_backref objRef, qmlbind_backref methodRef, int argc, qmlbind_value *argv);
     qmlbind_value (*get_property)(qmlbind_engine engine, qmlbind_backref objRef, qmlbind_backref getterRef);
