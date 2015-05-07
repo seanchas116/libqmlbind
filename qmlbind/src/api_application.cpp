@@ -39,6 +39,11 @@ void qmlbind_application_release(qmlbind_application app)
     delete app;
 }
 
+int qmlbind_application_exec(qmlbind_application app)
+{
+    return app->exec();
+}
+
 void qmlbind_process_events()
 {
     QCoreApplication::processEvents();
