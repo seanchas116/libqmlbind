@@ -16,7 +16,7 @@ qmlbind_engine qmlbind_engine_new()
 
 void qmlbind_engine_release(qmlbind_engine engine)
 {
-    delete engine;
+    engine->deleteLater();
 }
 
 qmlbind_value qmlbind_engine_eval(qmlbind_engine engine, const char *str, const char *file, int lineNumber)
