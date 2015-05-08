@@ -55,6 +55,7 @@ public:
     void setEngine(qmlbind_engine engine)
     {
         m_engine = engine;
+        REQUIRE(engine == qmlbind_signal_emitter_get_engine(m_emitter));
     }
 
 private:
