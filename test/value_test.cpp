@@ -209,6 +209,7 @@ TEST_CASE("value")
         {
             auto prop = qmlbind_value_new_number(456);
             qmlbind_value_set_property(obj, "own", prop);
+            qmlbind_value_set_property(obj, "456", prop);
             qmlbind_value_release(prop);
         }
 
@@ -222,6 +223,11 @@ TEST_CASE("value")
         {
             REQUIRE(qmlbind_value_has_property(obj, "own"));
             REQUIRE(qmlbind_value_has_property(obj, "inherited"));
+        }
+
+        SECTION("#has_key")
+        {
+            REQUIRE(qmlbind_value_has_index(obj, 456));
         }
 
         SECTION("#delete_property")

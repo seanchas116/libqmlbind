@@ -59,6 +59,7 @@ QMLBIND_API void qmlbind_value_set_property(qmlbind_value self, const char *key,
 
 QMLBIND_API int qmlbind_value_delete_property(qmlbind_value value, const char *key);
 QMLBIND_API int qmlbind_value_has_property(qmlbind_value value, const char *key);
+QMLBIND_API int qmlbind_value_has_index(qmlbind_value value, int index);
 QMLBIND_API int qmlbind_value_has_own_property(qmlbind_value value, const char *key);
 
 QMLBIND_API qmlbind_value qmlbind_value_get_prototype(qmlbind_value value);

@@ -144,6 +144,11 @@ int qmlbind_value_has_property(qmlbind_value value, const char *key)
     return value->hasProperty(key);
 }
 
+int qmlbind_value_has_index(qmlbind_value value, int index)
+{
+    return value->hasProperty(QString::number(index));
+}
+
 int qmlbind_value_has_own_property(qmlbind_value value, const char *key)
 {
     return value->hasOwnProperty(key);
