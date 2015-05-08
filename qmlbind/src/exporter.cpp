@@ -2,6 +2,7 @@
 #include "interface.h"
 #include <stdexcept>
 #include <QVector>
+#include <QDebug>
 
 namespace QmlBind {
 
@@ -51,9 +52,12 @@ QMetaMethodBuilder Exporter::addSignal(const char *name, const QList<QByteArray>
     return method;
 }
 
-QMetaPropertyBuilder Exporter::addProperty(const char *name, int notifySignalIndex)
+QMetaPropertyBuilder Exporter::addProperty(const char *name, const char *notifier)
 {
-    QMetaPropertyBuilder property = mBuilder.addProperty(name, "QJSValue", notifySignalIndex);
+    if (!mSignalIndexMap.contains(notifier)) {
+        qWarning() << "signal" << notifier << "not yet added";
+    }
+    QMetaPropertyBuilder property = mBuilder.addProperty(name, "QJSValue", mSignalIndexMap[notifier]);
 
     property.setReadable(true);
     property.setWritable(true);

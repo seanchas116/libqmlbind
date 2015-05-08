@@ -24,7 +24,7 @@ public:
 
     QMetaMethodBuilder addMethod(const char *name, int arity);
     QMetaMethodBuilder addSignal(const char *name, const QList<QByteArray> &args);
-    QMetaPropertyBuilder addProperty(const char *name, int notifySignalIndex);
+    QMetaPropertyBuilder addProperty(const char *name, const char *notifier);
     QSharedPointer<Interface> interface() const { return mClassRef.interface(); }
 
     Backref classRef() const { return mClassRef; }

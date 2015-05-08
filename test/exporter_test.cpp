@@ -143,7 +143,7 @@ TEST_CASE("exporter")
     const char *notifierparams[] = { "value" };
     auto notifierIndex = qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
     auto methodIndex = qmlbind_exporter_add_method(exporter, "incrementBy", 1);
-    auto propertyIndex = qmlbind_exporter_add_property(exporter, "value", notifierIndex);
+    auto propertyIndex = qmlbind_exporter_add_property(exporter, "value", "valueChanged");
 
     auto metaobject = qmlbind_metaobject_new(exporter);
     qmlbind_exporter_release(exporter);

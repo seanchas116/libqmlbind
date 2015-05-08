@@ -29,7 +29,7 @@ QMLBIND_API int qmlbind_exporter_add_signal(
 QMLBIND_API int qmlbind_exporter_add_property(
     qmlbind_exporter exporter,
     const char *name,
-    int notifierSignalIndex
+    const char *notifierSignal
 );
 
 #ifdef __cplusplus

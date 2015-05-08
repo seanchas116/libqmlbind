@@ -43,10 +43,10 @@ int qmlbind_exporter_add_signal(
 
 int qmlbind_exporter_add_property(qmlbind_exporter exporter,
     const char *name,
-    int notifierSignalIndex
+    const char *notifierSignal
 )
 {
-    return (*exporter)->addProperty(name, notifierSignalIndex).index();
+    return (*exporter)->addProperty(name, notifierSignal).index();
 }
 
 }
