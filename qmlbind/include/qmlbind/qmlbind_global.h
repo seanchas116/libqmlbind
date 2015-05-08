@@ -69,7 +69,7 @@ typedef struct qmlbind_backref_s *qmlbind_backref;
 typedef struct {
     qmlbind_backref (*new_object)(qmlbind_backref classRef, qmlbind_signal_emitter signalEmitter);
     void (*delete_object)(qmlbind_backref objRef);
-    qmlbind_value (*call_method)(qmlbind_engine engine, qmlbind_backref objRef, qmlbind_backref methodRef, int argc, qmlbind_value *argv);
-    qmlbind_value (*get_property)(qmlbind_engine engine, qmlbind_backref objRef, qmlbind_backref getterRef);
-    void (*set_property)(qmlbind_engine engine, qmlbind_backref objRef, qmlbind_backref setterRef, qmlbind_value value);
+    qmlbind_value (*call_method)(qmlbind_engine engine, qmlbind_backref objRef, const char *name, int argc, qmlbind_value *argv);
+    qmlbind_value (*get_property)(qmlbind_engine engine, qmlbind_backref objRef, const char *name);
+    void (*set_property)(qmlbind_engine engine, qmlbind_backref objRef, const char *name, qmlbind_value value);
 } qmlbind_interface_handlers;

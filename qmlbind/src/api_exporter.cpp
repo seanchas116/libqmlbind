@@ -18,13 +18,13 @@ void qmlbind_exporter_release(qmlbind_exporter exporter)
     delete exporter;
 }
 
-int qmlbind_exporter_add_method(qmlbind_exporter exporter,
-    qmlbind_backref handle,
+int qmlbind_exporter_add_method(
+    qmlbind_exporter exporter,
     const char *name,
     int arity
 )
 {
-    return (*exporter)->addMethod(Backref(handle, (*exporter)->interface()), name, arity).index();
+    return (*exporter)->addMethod(name, arity).index();
 }
 
 int qmlbind_exporter_add_signal(
@@ -41,17 +41,12 @@ int qmlbind_exporter_add_signal(
     return (*exporter)->addSignal(name, paramList).index();
 }
 
-int qmlbind_exporter_add_property(
-    qmlbind_exporter exporter,
-    qmlbind_backref getterHandle,
-    qmlbind_backref setterHandle,
+int qmlbind_exporter_add_property(qmlbind_exporter exporter,
     const char *name,
     int notifierSignalIndex
 )
 {
-    Backref getter(getterHandle, (*exporter)->interface());
-    Backref setter(setterHandle, (*exporter)->interface());
-    return (*exporter)->addProperty(getter, setter, name, notifierSignalIndex).index();
+    return (*exporter)->addProperty(name, notifierSignalIndex).index();
 }
 
 }

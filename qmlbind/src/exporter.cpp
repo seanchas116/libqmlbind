@@ -28,13 +28,13 @@ static QByteArray methodSignature(const char *name, int arity)
 
 
 
-QMetaMethodBuilder Exporter::addMethod(const Backref &methodRef, const char *name, int arity)
+QMetaMethodBuilder Exporter::addMethod(const char *name, int arity)
 {
     QMetaMethodBuilder method = mBuilder.addMethod(methodSignature(name, arity), "QJSValue");
 
     Method methodInfo;
     methodInfo.arity = arity;
-    methodInfo.method = methodRef;
+    methodInfo.name = name;
 
     mMethodMap[method.index()] = methodInfo;
 
@@ -51,7 +51,7 @@ QMetaMethodBuilder Exporter::addSignal(const char *name, const QList<QByteArray>
     return method;
 }
 
-QMetaPropertyBuilder Exporter::addProperty(const Backref &getter, const Backref &setter, const char *name, int notifySignalIndex)
+QMetaPropertyBuilder Exporter::addProperty(const char *name, int notifySignalIndex)
 {
     QMetaPropertyBuilder property = mBuilder.addProperty(name, "QJSValue", notifySignalIndex);
 
@@ -59,8 +59,7 @@ QMetaPropertyBuilder Exporter::addProperty(const Backref &getter, const Backref 
     property.setWritable(true);
 
     Property propertyInfo;
-    propertyInfo.getter = getter;
-    propertyInfo.setter = setter;
+    propertyInfo.name = name;
 
     mPropertyMap[property.index()] = propertyInfo;
 

@@ -86,34 +86,34 @@ qmlbind_backref newObject(qmlbind_backref klass, qmlbind_signal_emitter emitter)
     return variantToBackref(variant);
 }
 
-qmlbind_value invokeMethod(qmlbind_engine engine, qmlbind_backref obj, qmlbind_backref method, int argc, qmlbind_value *argv)
+qmlbind_value invokeMethod(qmlbind_engine engine, qmlbind_backref obj, const char *method, int argc, qmlbind_value *argv)
 {
     auto test = backrefToVariant(obj).value<TestSP>();
     REQUIRE(test);
     REQUIRE(test->engine() == engine);
-    REQUIRE(backrefToVariant(method).toString() == "method:incrementBy");
+    REQUIRE(QString(method) == "incrementBy");
     REQUIRE(argc == 1);
 
     test->incrementBy(qmlbind_value_get_number(argv[0]));
     return qmlbind_value_new_number(test->value());
 }
 
-qmlbind_value invokeGetter(qmlbind_engine engine, qmlbind_backref obj, qmlbind_backref getter)
+qmlbind_value invokeGetter(qmlbind_engine engine, qmlbind_backref obj, const char *property)
 {
     auto test = backrefToVariant(obj).value<TestSP>();
     REQUIRE(test);
     REQUIRE(test->engine() == engine);
-    REQUIRE(backrefToVariant(getter).toString() == "getter:value");
+    REQUIRE(QString(property) == "value");
 
     return qmlbind_value_new_number(test->value());
 }
 
-void invokeSetter(qmlbind_engine engine, qmlbind_backref obj, qmlbind_backref setter, qmlbind_value value)
+void invokeSetter(qmlbind_engine engine, qmlbind_backref obj, const char *property, qmlbind_value value)
 {
     auto test = backrefToVariant(obj).value<TestSP>();
     REQUIRE(test);
     REQUIRE(test->engine() == engine);
-    REQUIRE(backrefToVariant(setter).toString() == "setter:value");
+    REQUIRE(QString(property) == "value");
 
     test->setValue(qmlbind_value_get_number(value));
 }
@@ -142,13 +142,8 @@ TEST_CASE("exporter")
 
     const char *notifierparams[] = { "value" };
     auto notifierIndex = qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
-    auto methodIndex = qmlbind_exporter_add_method(exporter,
-                                                   Handlers::variantToBackref("method:incrementBy"),
-                                                   "incrementBy", 1);
-    auto propertyIndex = qmlbind_exporter_add_property(exporter,
-                                                       Handlers::variantToBackref("getter:value"),
-                                                       Handlers::variantToBackref("setter:value"),
-                                                       "value", notifierIndex);
+    auto methodIndex = qmlbind_exporter_add_method(exporter, "incrementBy", 1);
+    auto propertyIndex = qmlbind_exporter_add_property(exporter, "value", notifierIndex);
 
     auto metaobject = qmlbind_metaobject_new(exporter);
     qmlbind_exporter_release(exporter);

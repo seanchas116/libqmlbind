@@ -15,7 +15,6 @@ QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter exporter);
 
 QMLBIND_API int qmlbind_exporter_add_method(
     qmlbind_exporter exporter,
-    qmlbind_backref handle,
     const char *name,
     int arity
 );
@@ -29,8 +28,6 @@ QMLBIND_API int qmlbind_exporter_add_signal(
 
 QMLBIND_API int qmlbind_exporter_add_property(
     qmlbind_exporter exporter,
-    qmlbind_backref getterHandle,
-    qmlbind_backref setterHandle,
     const char *name,
     int notifierSignalIndex
 );

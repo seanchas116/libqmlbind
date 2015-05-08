@@ -12,21 +12,19 @@ class Exporter
 public:
 
     struct Method {
-        Backref method;
+        QByteArray name;
         int arity;
     };
 
     struct Property {
-        Backref setter;
-        Backref getter;
+        QByteArray name;
     };
 
     Exporter(const char *className, const Backref &classRef);
 
-    QMetaMethodBuilder addMethod(const Backref &methodRef, const char *name, int arity);
+    QMetaMethodBuilder addMethod(const char *name, int arity);
     QMetaMethodBuilder addSignal(const char *name, const QList<QByteArray> &args);
-    QMetaPropertyBuilder addProperty(const Backref &getter, const Backref &setter,
-                                     const char *name, int notifySignalIndex);
+    QMetaPropertyBuilder addProperty(const char *name, int notifySignalIndex);
     QSharedPointer<Interface> interface() const { return mClassRef.interface(); }
 
     Backref classRef() const { return mClassRef; }
