@@ -5,6 +5,8 @@
 #include <QSharedPointer>
 #include <QMutex>
 
+class QQmlEngine;
+
 namespace QmlBind {
 
 class Backref;

@@ -30,7 +30,8 @@ SOURCES += \
     src/interface.cpp \
     src/backref.cpp \
     src/signalemitter.cpp \
-    src/api_signal_emitter.cpp
+    src/api_signal_emitter.cpp \
+    src/engine.cpp
 
 HEADERS += \
     include/qmlbind/application.h \
@@ -53,4 +54,5 @@ HEADERS += \
     src/interface.h \
     src/backref.h \
     src/signalemitter.h \
-    include/qmlbind/signal_emitter.h
+    include/qmlbind/signal_emitter.h \
+    src/engine.h

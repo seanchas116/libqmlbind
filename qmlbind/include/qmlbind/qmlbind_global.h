@@ -14,7 +14,6 @@
 
 template <typename T> class QSharedPointer;
 class QApplication;
-class QQmlEngine;
 class QQmlComponent;
 class QJSValue;
 class QJSValueIterator;
@@ -22,6 +21,7 @@ class QByteArray;
 
 namespace QmlBind {
 
+class Engine;
 class Interface;
 class MetaObject;
 class Exporter;
@@ -31,7 +31,7 @@ class SignalEmitter;
 
 typedef QApplication *qmlbind_application;
 
-typedef QQmlEngine *qmlbind_engine;
+typedef QmlBind::Engine *qmlbind_engine;
 typedef QQmlComponent *qmlbind_component;
 
 typedef QJSValue *qmlbind_value;

@@ -1,5 +1,6 @@
 #include "qmlbind/signal_emitter.h"
 #include "signalemitter.h"
+#include "engine.h"
 #include <QQmlEngine>
 #include <QQmlContext>
 
@@ -15,7 +16,7 @@ void qmlbind_signal_emitter_emit(qmlbind_signal_emitter emitter, const char *sig
 qmlbind_engine qmlbind_signal_emitter_get_engine(qmlbind_signal_emitter emitter)
 {
     Wrapper *wrapper = emitter->wrapper();
-    return QQmlEngine::contextForObject(wrapper)->engine();
+    return qobject_cast<Engine *>(QQmlEngine::contextForObject(wrapper)->engine());
 }
 
 void qmlbind_signal_emitter_release(qmlbind_signal_emitter emitter)

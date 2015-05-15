@@ -1,4 +1,5 @@
 #include "qmlbind/engine.h"
+#include "engine.h"
 #include "metaobject.h"
 #include "wrapper.h"
 #include "util.h"
@@ -11,12 +12,12 @@ extern "C" {
 
 qmlbind_engine qmlbind_engine_new()
 {
-    return new QQmlEngine();
+    return new Engine();
 }
 
 void qmlbind_engine_release(qmlbind_engine engine)
 {
-    engine->deleteLater();
+    engine->scheduleDelete();
 }
 
 qmlbind_value qmlbind_engine_eval(qmlbind_engine engine, const char *str, const char *file, int lineNumber)

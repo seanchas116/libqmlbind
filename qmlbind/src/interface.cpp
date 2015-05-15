@@ -1,5 +1,6 @@
 #include "interface.h"
 #include "backref.h"
+#include "engine.h"
 #include <QDebug>
 
 namespace QmlBind {
@@ -26,20 +27,20 @@ Interface::Interface(qmlbind_interface_handlers handlers) :
 
 QJSValue Interface::callMethod(QQmlEngine *engine, const Backref &obj, const QByteArray &method, int argc, QJSValue **argv) const
 {
-    QScopedPointer<const QJSValue> result(mHandlers.call_method(engine, obj.backref(), method, argc, argv));
+    QScopedPointer<const QJSValue> result(mHandlers.call_method(qobject_cast<Engine *>(engine), obj.backref(), method, argc, argv));
     return *result;
 }
 
 QJSValue Interface::getProperty(QQmlEngine *engine, const Backref &obj, const QByteArray &property) const
 {
-    QScopedPointer<const QJSValue> result(mHandlers.get_property(engine, obj.backref(), property));
+    QScopedPointer<const QJSValue> result(mHandlers.get_property(qobject_cast<Engine *>(engine), obj.backref(), property));
     return *result;
 }
 
 void Interface::setProperty(QQmlEngine *engine, const Backref &obj, const QByteArray &property, const QJSValue &value) const
 {
     QJSValue val = value;
-    mHandlers.set_property(engine, obj.backref(), property, &val);
+    mHandlers.set_property(qobject_cast<Engine *>(engine), obj.backref(), property, &val);
 }
 
 Backref Interface::newObject(const Backref &klass, SignalEmitter *signalEmitter)

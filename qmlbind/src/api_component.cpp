@@ -1,4 +1,5 @@
 #include "qmlbind/component.h"
+#include "engine.h"
 #include "util.h"
 #include <QQmlComponent>
 #include <QQmlEngine>
@@ -15,7 +16,7 @@ qmlbind_component qmlbind_component_new(qmlbind_engine engine)
 
 void qmlbind_component_release(qmlbind_component component)
 {
-    component->deleteLater();
+    delete component;
 }
 
 void qmlbind_component_load_path(qmlbind_component component, const char *path)

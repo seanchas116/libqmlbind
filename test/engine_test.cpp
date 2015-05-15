@@ -85,4 +85,10 @@ TEST_CASE("engine")
     qmlbind_engine_release(engine);
 }
 
-
+TEST_CASE("engine alives until components deleted")
+{
+    auto engine = qmlbind_engine_new();
+    auto component = qmlbind_component_new(engine);
+    qmlbind_engine_release(engine);
+    qmlbind_component_release(component);
+}
