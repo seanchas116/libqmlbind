@@ -7,6 +7,7 @@
 #include "qmlbind/exporter.h"
 #include "qmlbind/iterator.h"
 #include "qmlbind/metaobject.h"
+#include "qmlbind/plugin.h"
 #include "qmlbind/signal_emitter.h"
 #include "qmlbind/string.h"
 #include "qmlbind/value.h"

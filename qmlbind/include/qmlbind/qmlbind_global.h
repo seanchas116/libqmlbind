@@ -18,6 +18,7 @@ class QQmlComponent;
 class QJSValue;
 class QJSValueIterator;
 class QByteArray;
+class QPluginLoader;
 
 namespace QmlBind {
 
@@ -33,6 +34,7 @@ typedef QApplication *qmlbind_application;
 
 typedef QmlBind::Engine *qmlbind_engine;
 typedef QQmlComponent *qmlbind_component;
+typedef QPluginLoader *qmlbind_plugin;
 
 typedef QJSValue *qmlbind_value;
 typedef QJSValueIterator *qmlbind_iterator;
@@ -51,6 +53,7 @@ typedef struct {} *qmlbind_application;
 
 typedef struct {} *qmlbind_engine;
 typedef struct {} *qmlbind_component;
+typedef struct {} *qmlbind_plugin;
 
 typedef struct {} *qmlbind_value;
 typedef struct {} *qmlbind_iterator;

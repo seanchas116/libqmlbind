@@ -12,7 +12,8 @@ SOURCES += \
     component_test.cpp \
     exporter_test.cpp \
     application_test.cpp \
-    fixtures/emptyhandlers.cpp
+    fixtures/emptyhandlers.cpp \
+    plugin_test.cpp
 
 QMAKE_CFLAGS += "-std=c89"
 
