@@ -14,7 +14,12 @@ void qmlbind_plugin_release(qmlbind_plugin plugin)
 
 qmlbind_string qmlbind_plugin_get_error_string(qmlbind_plugin plugin)
 {
-    return new QByteArray(plugin->errorString().toUtf8());
+    QString error = plugin->errorString();
+    if (error.isEmpty()) {
+        return 0;
+    } else {
+        return new QByteArray(plugin->errorString().toUtf8());
+    }
 }
 
 qmlbind_value qmlbind_plugin_get_instance(qmlbind_plugin plugin, qmlbind_engine engine)
