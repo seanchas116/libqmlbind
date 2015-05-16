@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QSharedPointer>
 #include <QTimer>
+#include <QVector>
 
 using namespace QmlBind;
 
@@ -25,13 +26,44 @@ private:
     Backref mData;
 };
 
+class AppArgs
+{
+public:
+    AppArgs(int argc, char **argv) :
+        mArgs(argc), mArgc(argc), mArgv(argc)
+    {
+        for (int i = 0; i < argc; ++i) {
+            mArgs[i] = argv[i];
+        }
+        for (int i = 0; i < argc; ++i) {
+            mArgv[i] = mArgs[i].data();
+        }
+    }
+
+    int &argc()
+    {
+        return mArgc;
+    }
+
+    char **argv()
+    {
+        return mArgv.data();
+    }
+
+private:
+    QVector<QByteArray> mArgs;
+    int mArgc;
+    QVector<char *> mArgv;
+};
+
 }
 
 extern "C" {
 
 qmlbind_application qmlbind_application_new(int argc, char **argv)
 {
-    return new QApplication(argc, argv);
+    AppArgs *args = new AppArgs(argc, argv);
+    return new QApplication(args->argc(), args->argv());
 }
 
 void qmlbind_application_release(qmlbind_application app)
