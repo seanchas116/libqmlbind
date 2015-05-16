@@ -5,6 +5,7 @@
 #include "util.h"
 #include <QQmlEngine>
 #include <QDebug>
+#include <QApplication>
 
 using namespace QmlBind;
 
@@ -12,7 +13,9 @@ extern "C" {
 
 qmlbind_engine qmlbind_engine_new()
 {
-    return new Engine();
+    Engine *engine = new Engine();
+    QObject::connect(engine, SIGNAL(quit()), QApplication::instance(), SLOT(quit()));
+    return engine;
 }
 
 void qmlbind_engine_release(qmlbind_engine engine)
