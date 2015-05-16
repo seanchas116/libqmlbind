@@ -2,7 +2,7 @@ language: cpp
 compiler:
   - clang
 before_install:
-  - sudo apt-add-repository -y ppa:beineri/opt-qt54
+  - sudo apt-add-repository -y ppa:beineri/opt-qt541
   - sudo apt-get update
   - sudo apt-get install -y qt54base qt54declarative
 script:
