@@ -8,9 +8,7 @@ before_install:
 script:
   - source /opt/qt54/bin/qt54-env.sh
   - qmake -r QMAKE_CC=$CC QMAKE_CXX=$CXX
-  - cd qmlbind
   - make
-  - export LD_LIBRARY_PATH=$PWD
-  - cd ../test
-  - make
+  - export LD_LIBRARY_PATH=$PWD/qmlbind
+  - cd ./test
   - ./test -platform offscreen
