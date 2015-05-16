@@ -21,6 +21,8 @@ TEST_CASE("plugin")
         qmlbind_value_release(test);
         qmlbind_value_release(instance);
 
+        REQUIRE(qmlbind_plugin_get_error_string(plugin) == NULL);
+
         qmlbind_plugin_release(plugin);
     }
 
