@@ -32,7 +32,8 @@ SOURCES += \
     src/signalemitter.cpp \
     src/api_signal_emitter.cpp \
     src/engine.cpp \
-    src/api_plugin.cpp
+    src/api_plugin.cpp \
+    src/ticktimer.cpp
 
 HEADERS += \
     include/qmlbind/application.h \
@@ -57,4 +58,5 @@ HEADERS += \
     src/signalemitter.h \
     include/qmlbind/signal_emitter.h \
     src/engine.h \
-    include/qmlbind/plugin.h
+    include/qmlbind/plugin.h \
+    src/ticktimer.h

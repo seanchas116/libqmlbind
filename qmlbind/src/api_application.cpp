@@ -1,5 +1,6 @@
 #include "qmlbind/application.h"
 #include "util.h"
+#include "ticktimer.h"
 #include "backref.h"
 #include <QApplication>
 #include <QSharedPointer>
@@ -58,12 +59,19 @@ private:
 
 }
 
+static void (*tickCallback)();
+
 extern "C" {
 
 qmlbind_application qmlbind_application_new(int argc, char **argv)
 {
     AppArgs *args = new AppArgs(argc, argv);
-    return new QApplication(args->argc(), args->argv());
+    QApplication *app = new QApplication(args->argc(), args->argv());
+
+    TickTimer *timer = new TickTimer(&tickCallback, app);
+    timer->start();
+
+    return app;
 }
 
 void qmlbind_application_release(qmlbind_application app)
@@ -80,6 +88,11 @@ void qmlbind_process_events()
 {
     QCoreApplication::processEvents();
     QCoreApplication::sendPostedEvents(0, QEvent::DeferredDelete);
+}
+
+void qmlbind_set_tick_callback(void (*func)())
+{
+    tickCallback = func;
 }
 
 void qmlbind_next_tick(qmlbind_interface interface, void (*func)(qmlbind_backref), qmlbind_backref data)

@@ -11,7 +11,7 @@ QMLBIND_API void qmlbind_application_release(qmlbind_application app);
 QMLBIND_API int qmlbind_application_exec(qmlbind_application app);
 
 QMLBIND_API void qmlbind_process_events();
-QMLBIND_API void qmlbind_next_tick(qmlbind_interface interface, void (*func)(qmlbind_backref), qmlbind_backref data);
+QMLBIND_API void qmlbind_set_tick_callback(void (*func)());
 
 #ifdef __cplusplus
 }
