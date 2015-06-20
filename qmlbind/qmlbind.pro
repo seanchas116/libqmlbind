@@ -2,6 +2,7 @@ QT += widgets qml quick core-private
 
 TARGET = qmlbind
 TEMPLATE = lib
+CONFIG += c++11
 
 DEFINES += QMLBIND_LIBRARY
 
