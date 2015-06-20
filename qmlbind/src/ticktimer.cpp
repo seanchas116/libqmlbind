@@ -1,16 +1,28 @@
 #include "ticktimer.h"
+#include <QCoreApplication>
 
-TickTimer::TickTimer(Callback *callback, QObject *parent) : QTimer(parent), mCallback(callback)
+TickTimer::TickTimer(QObject *parent) : QTimer(parent)
 {
     setInterval(0);
     setSingleShot(false);
     connect(this, SIGNAL(timeout()), this, SLOT(onTimeout()));
 }
 
+void TickTimer::setCallback(Callback cb) {
+    QTimer::singleShot(0, this, [&] {
+        if (cb) {
+            mCallback = cb;
+            start();
+        } else {
+            stop();
+        }
+    });
+    QCoreApplication::processEvents();
+}
+
 void TickTimer::onTimeout()
 {
-    void (*callback)() = mCallback->load();
-    if (callback) {
-        callback();
+    if (mCallback) {
+        mCallback();
     }
 }

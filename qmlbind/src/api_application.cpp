@@ -59,7 +59,7 @@ private:
 
 }
 
-QAtomicPointer<void ()> tickCallback;
+TickTimer *tickTimer;
 
 extern "C" {
 
@@ -68,8 +68,8 @@ qmlbind_application qmlbind_application_new(int argc, char **argv)
     AppArgs *args = new AppArgs(argc, argv);
     QApplication *app = new QApplication(args->argc(), args->argv());
 
-    TickTimer *timer = new TickTimer(&tickCallback, app);
-    timer->start();
+    tickTimer = new TickTimer(app);
+    tickTimer->start();
 
     return app;
 }
@@ -92,7 +92,9 @@ void qmlbind_process_events()
 
 void qmlbind_set_tick_callback(void (*func)())
 {
-    tickCallback = func;
+    if (tickTimer) {
+        tickTimer->setCallback(func);
+    }
 }
 
 void qmlbind_next_tick(qmlbind_interface interface, void (*func)(qmlbind_backref), qmlbind_backref data)
