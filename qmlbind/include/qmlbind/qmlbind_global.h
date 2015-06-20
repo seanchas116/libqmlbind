@@ -49,21 +49,21 @@ typedef QmlBind::SignalEmitter *qmlbind_signal_emitter;
 
 #else
 
-typedef struct {} *qmlbind_application;
+typedef struct qmlbind_application_s {} *qmlbind_application;
 
-typedef struct {} *qmlbind_engine;
-typedef struct {} *qmlbind_component;
-typedef struct {} *qmlbind_plugin;
+typedef struct qmlbind_engine_s {} *qmlbind_engine;
+typedef struct qmlbind_component_s {} *qmlbind_component;
+typedef struct qmlbind_plugin_s {} *qmlbind_plugin;
 
-typedef struct {} *qmlbind_value;
-typedef struct {} *qmlbind_iterator;
-typedef struct {} *qmlbind_string;
+typedef struct qmlbind_value_s {} *qmlbind_value;
+typedef struct qmlbind_iterator_s {} *qmlbind_iterator;
+typedef struct qmlbind_string_s {} *qmlbind_string;
 
-typedef struct {} *qmlbind_interface;
-typedef struct {} *qmlbind_metaobject;
-typedef struct {} *qmlbind_exporter;
+typedef struct qmlbind_interface_s {} *qmlbind_interface;
+typedef struct qmlbind_metaobject_s {} *qmlbind_metaobject;
+typedef struct qmlbind_exporter_s {} *qmlbind_exporter;
 
-typedef struct {} *qmlbind_signal_emitter;
+typedef struct qmlbind_signal_emitter_s {} *qmlbind_signal_emitter;
 
 #endif
 

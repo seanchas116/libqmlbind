@@ -7,11 +7,6 @@ DEFINES += QMLBIND_LIBRARY
 
 INCLUDEPATH += $$PWD/include
 
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
-
 SOURCES += \
     src/api_application.cpp \
     src/api_engine.cpp \
@@ -35,28 +30,44 @@ SOURCES += \
     src/api_plugin.cpp \
     src/ticktimer.cpp
 
-HEADERS += \
+PUBLIC_HEADERS += \
     include/qmlbind/application.h \
     include/qmlbind/engine.h \
     include/qmlbind/iterator.h \
     include/qmlbind/qmlbind_global.h \
     include/qmlbind/value.h \
-    src/metaobject.h \
     include/qmlbind/metaobject.h \
-    src/wrapper.h \
     include/qmlbind/string.h \
     include/qmlbind/component.h \
     include/qmlbind.h \
-    src/typeregisterer.h \
     include/qmlbind/register.h \
-    src/util.h \
-    src/exporter.h \
     include/qmlbind/exporter.h \
     include/qmlbind/interface.h \
+    include/qmlbind/signal_emitter.h \
+    include/qmlbind/plugin.h \
+
+PRIVATE_HEADERS += \
+    src/metaobject.h \
+    src/wrapper.h \
+    src/typeregisterer.h \
+    src/util.h \
+    src/exporter.h \
     src/interface.h \
     src/backref.h \
     src/signalemitter.h \
-    include/qmlbind/signal_emitter.h \
     src/engine.h \
-    include/qmlbind/plugin.h \
     src/ticktimer.h
+
+HEADERS = $$PUBLIC_HEADERS $$PRIVATE_HEADERS
+
+unix {
+    for(header, PUBLIC_HEADERS) {
+       path = $${INSTALL_PREFIX}/usr/$${dirname(header)}
+       eval(headers_$${path}.files += $$header)
+       eval(headers_$${path}.path = $$path)
+       eval(INSTALLS *= headers_$${path})
+    }
+
+    target.path = /usr/lib
+    INSTALLS += target
+}
