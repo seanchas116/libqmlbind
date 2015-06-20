@@ -70,7 +70,7 @@ void qmlbind_process_events()
 
 void qmlbind_next_tick(void (*callback)(void *), void *data)
 {
-    QTimer::singleShot(0, [=] {
+    QTimer::singleShot(0, QCoreApplication::instance(), [=] {
         callback(data);
     });
 }
