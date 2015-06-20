@@ -11,22 +11,6 @@ using namespace QmlBind;
 
 namespace QmlBind {
 
-class NextTickFunc
-{
-public:
-    NextTickFunc(void (*func)(qmlbind_backref), const Backref &data) : mFunc(func), mData(data)
-    {}
-
-    void operator()()
-    {
-        mFunc(mData.backref());
-    }
-
-private:
-    void (*mFunc)(qmlbind_backref);
-    Backref mData;
-};
-
 class AppArgs
 {
 public:
@@ -95,11 +79,6 @@ void qmlbind_set_tick_callback(void (*func)())
     if (tickTimer) {
         tickTimer->setCallback(func);
     }
-}
-
-void qmlbind_next_tick(qmlbind_interface interface, void (*func)(qmlbind_backref), qmlbind_backref data)
-{
-    QTimer::singleShot(0, NextTickFunc(func, Backref(data, *interface)));
 }
 
 }
