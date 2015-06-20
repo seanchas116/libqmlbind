@@ -6,14 +6,14 @@ class TickTimer : public QTimer
 {
     Q_OBJECT
 public:
-    typedef void (*Callback)();
+    typedef QAtomicPointer<void ()> Callback;
 
-    explicit TickTimer(Callback *whereCallback, QObject *parent = 0);
+    explicit TickTimer(Callback *callback, QObject *parent = 0);
 
 private slots:
     void onTimeout();
 
 private:
-    Callback *mWhereCallback;
+    Callback *mCallback;
 };
 

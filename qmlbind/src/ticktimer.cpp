@@ -1,6 +1,6 @@
 #include "ticktimer.h"
 
-TickTimer::TickTimer(Callback *whereCallback, QObject *parent) : QTimer(parent), mWhereCallback(whereCallback)
+TickTimer::TickTimer(Callback *callback, QObject *parent) : QTimer(parent), mCallback(callback)
 {
     setInterval(0);
     setSingleShot(false);
@@ -9,7 +9,8 @@ TickTimer::TickTimer(Callback *whereCallback, QObject *parent) : QTimer(parent),
 
 void TickTimer::onTimeout()
 {
-    if (*mWhereCallback) {
-        (*mWhereCallback)();
+    void (*callback)() = mCallback->load();
+    if (callback) {
+        callback();
     }
 }

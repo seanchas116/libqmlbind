@@ -59,7 +59,7 @@ private:
 
 }
 
-static void (*tickCallback)();
+QAtomicPointer<void ()> tickCallback;
 
 extern "C" {
 
