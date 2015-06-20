@@ -28,8 +28,7 @@ SOURCES += \
     src/signalemitter.cpp \
     src/api_signal_emitter.cpp \
     src/engine.cpp \
-    src/api_plugin.cpp \
-    src/ticktimer.cpp
+    src/api_plugin.cpp
 
 PUBLIC_HEADERS += \
     include/qmlbind/application.h \
@@ -56,8 +55,7 @@ PRIVATE_HEADERS += \
     src/interface.h \
     src/backref.h \
     src/signalemitter.h \
-    src/engine.h \
-    src/ticktimer.h
+    src/engine.h
 
 HEADERS = $$PUBLIC_HEADERS $$PRIVATE_HEADERS
 

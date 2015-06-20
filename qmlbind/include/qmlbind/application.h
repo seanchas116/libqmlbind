@@ -12,8 +12,7 @@ QMLBIND_API int qmlbind_application_exec(qmlbind_application app);
 
 QMLBIND_API void qmlbind_process_events();
 
-/* qmlbind_set_tick_callback is thread safe */
-QMLBIND_API void qmlbind_set_tick_callback(void (*func)());
+QMLBIND_API void qmlbind_next_tick(void (*callback)(void *), void *data);
 
 #ifdef __cplusplus
 }
