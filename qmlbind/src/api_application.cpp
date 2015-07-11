@@ -65,7 +65,7 @@ public:
         std::function<void ()> mFunc;
     };
 
-    bool event(QEvent *event) override
+    bool event(QEvent *event) Q_DECL_OVERRIDE
     {
         if (event->type() == Event::User) {
             static_cast<Event *>(event)->call();
