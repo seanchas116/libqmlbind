@@ -5,6 +5,7 @@
 #include <QSharedPointer>
 #include <QTimer>
 #include <QVector>
+#include <functional>
 
 using namespace QmlBind;
 
@@ -40,6 +41,44 @@ private:
     QVector<char *> mArgv;
 };
 
+class NextTickProcessor : public QObject
+{
+public:
+    class Event : public QEvent
+    {
+    public:
+        enum Type {
+            Type = QEvent::User
+        };
+
+        Event(const std::function<void ()> func) : QEvent((QEvent::Type)Type),
+            mFunc(func)
+        {
+        }
+
+        void call() const
+        {
+            mFunc();
+        }
+
+    private:
+        std::function<void ()> mFunc;
+    };
+
+    bool event(QEvent *event) override
+    {
+        if (event->type() == Event::User) {
+            static_cast<Event *>(event)->call();
+            return true;
+        }
+        else {
+            return QObject::event(event);
+        }
+    }
+};
+
+static auto nextTickProcessor = new NextTickProcessor();
+
 }
 
 extern "C" {
@@ -70,9 +109,9 @@ void qmlbind_process_events()
 
 void qmlbind_next_tick(void (*callback)(void *), void *data)
 {
-    QTimer::singleShot(0, QCoreApplication::instance(), [=] {
+    QCoreApplication::postEvent(nextTickProcessor, new NextTickProcessor::Event([=] {
         callback(data);
-    });
+    }));
 }
 
 }
