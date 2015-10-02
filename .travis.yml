@@ -2,11 +2,11 @@ language: cpp
 compiler:
   - clang
 before_install:
-  - sudo apt-add-repository -y ppa:beineri/opt-qt541
+  - sudo apt-add-repository -y ppa:beineri/opt-qt55
   - sudo apt-get update
-  - sudo apt-get install -y qt54base qt54declarative
+  - sudo apt-get install -y qt55base qt55declarative
 script:
-  - source /opt/qt54/bin/qt54-env.sh
+  - source /opt/qt55/bin/qt55-env.sh
   - qmake -r QMAKE_CC=$CC QMAKE_CXX=$CXX
   - make
   - export LD_LIBRARY_PATH=$PWD/qmlbind
