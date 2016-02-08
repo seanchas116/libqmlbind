@@ -7,6 +7,7 @@ extern "C" {
 #endif
 
 QMLBIND_API qmlbind_application qmlbind_application_new(int argc, char **argv);
+QMLBIND_API qmlbind_application qmlbind_application_instance(void);
 QMLBIND_API void qmlbind_application_release(qmlbind_application app);
 QMLBIND_API int qmlbind_application_exec(qmlbind_application app);
 
