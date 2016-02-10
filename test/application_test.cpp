@@ -14,3 +14,8 @@ TEST_CASE("next_tick")
 
     REQUIRE(called);
 }
+
+TEST_CASE("instance")
+{
+    REQUIRE(qmlbind_application_instance() != nullptr);
+}

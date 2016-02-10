@@ -91,6 +91,11 @@ qmlbind_application qmlbind_application_new(int argc, char **argv)
     return app;
 }
 
+qmlbind_application qmlbind_application_instance(void)
+{
+    return qApp;
+}
+
 void qmlbind_application_release(qmlbind_application app)
 {
     delete app;
