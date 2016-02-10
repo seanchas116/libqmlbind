@@ -2,7 +2,7 @@ language: cpp
 compiler:
   - clang
 before_install:
-  - sudo apt-add-repository -y ppa:beineri/opt-qt55
+  - sudo apt-add-repository -y ppa:beineri/opt-qt551
   - sudo apt-get update
   - sudo apt-get install -y qt55base qt55declarative
 script:
