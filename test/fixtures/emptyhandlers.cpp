@@ -25,12 +25,11 @@ void deleteObject(qmlbind_backref)
 
 qmlbind_interface_handlers emptyHandlers()
 {
-    qmlbind_interface_handlers handlers = {
-        .new_object = &newObject,
-        .call_method = &invokeMethod,
-        .set_property = &invokeSetter,
-        .get_property = &invokeGetter,
-        .delete_object = &deleteObject
-    };
+    qmlbind_interface_handlers handlers {};
+    handlers.new_object = &newObject;
+    handlers.call_method = &invokeMethod;
+    handlers.set_property = &invokeSetter;
+    handlers.get_property = &invokeGetter;
+    handlers.delete_object = &deleteObject;
     return handlers;
 }
