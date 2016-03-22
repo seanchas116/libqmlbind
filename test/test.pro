@@ -17,7 +17,8 @@ SOURCES += \
 
 QMAKE_CFLAGS += "-std=c89"
 
-LIBS += -L$$PWD/../qmlbind/ -lqmlbind
+QMAKE_RPATHDIR += $$OUT_PWD/../qmlbind
+LIBS += -L$$OUT_PWD/../qmlbind/ -lqmlbind
 INCLUDEPATH += $$PWD/../qmlbind/include $$PWD/lib/Catch/include
 DEPENDPATH += $$PWD/../qmlbind
 
