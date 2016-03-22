@@ -9,6 +9,5 @@ script:
   - source /opt/qt55/bin/qt55-env.sh
   - qmake -r QMAKE_CC=$CC QMAKE_CXX=$CXX
   - make
-  - export LD_LIBRARY_PATH=$PWD/qmlbind
   - cd ./test
   - ./test -platform offscreen
