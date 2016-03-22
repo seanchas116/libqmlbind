@@ -3,7 +3,6 @@ QT += widgets qml quick core-private
 TARGET = qmlbind
 TEMPLATE = lib
 CONFIG += c++11
-
 DEFINES += QMLBIND_LIBRARY
 
 INCLUDEPATH += $$PWD/include
@@ -58,6 +57,10 @@ PRIVATE_HEADERS += \
     src/engine.h
 
 HEADERS = $$PUBLIC_HEADERS $$PRIVATE_HEADERS
+
+macx {
+    QMAKE_SONAME_PREFIX = @rpath
+}
 
 unix {
     for(header, PUBLIC_HEADERS) {

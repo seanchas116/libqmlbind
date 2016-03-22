@@ -50,14 +50,9 @@ and then build it:
 ```
 
 ### Run the Tests
-As libqmlbind is built as a dynamic library, you need to change the library search path to be able to run the test.
-```
-# for MacOS X:
-> export DYLD_LIBRARY_PATH=$PWD/qmlbind
-# for all other Unixes:
-> export LD_LIBRARY_PATH=$PWD/qmlbind
-```
-Then, from the main directory:
+
+From the main directory:
+
 ```
 > ./test/test -platform offscreen
 ```
