@@ -5,8 +5,6 @@ TEMPLATE = lib
 CONFIG += c++11
 DEFINES += QMLBIND_LIBRARY
 
-QMAKE_SONAME_PREFIX = @rpath
-
 INCLUDEPATH += $$PWD/include
 
 SOURCES += \
@@ -59,6 +57,10 @@ PRIVATE_HEADERS += \
     src/engine.h
 
 HEADERS = $$PUBLIC_HEADERS $$PRIVATE_HEADERS
+
+macx {
+    QMAKE_SONAME_PREFIX = @rpath
+}
 
 unix {
     for(header, PUBLIC_HEADERS) {
