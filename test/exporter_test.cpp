@@ -137,9 +137,7 @@ TEST_CASE("exporter")
     handlers.get_property = &Handlers::invokeGetter;
     handlers.delete_object = &Handlers::deleteObject;
 
-    auto interface = qmlbind_interface_new(handlers);
-
-    auto exporter = qmlbind_exporter_new(Handlers::variantToBackref("class:Test"), "Test", interface);
+    auto exporter = qmlbind_exporter_new(Handlers::variantToBackref("class:Test"), "Test", handlers);
 
     const char *notifierparams[] = { "value" };
     auto notifierIndex = qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
@@ -148,7 +146,6 @@ TEST_CASE("exporter")
 
     auto metaobject = qmlbind_metaobject_new(exporter);
     qmlbind_exporter_release(exporter);
-    qmlbind_interface_release(interface);
 
     SECTION("generated metaobject")
     {

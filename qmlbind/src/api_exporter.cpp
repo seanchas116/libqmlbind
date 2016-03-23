@@ -1,5 +1,6 @@
 #include "qmlbind/exporter.h"
 #include "exporter.h"
+#include "interface.h"
 #include "util.h"
 #include <private/qmetaobjectbuilder_p.h>
 #include <private/qobject_p.h>
@@ -8,8 +9,10 @@ using namespace QmlBind;
 
 extern "C" {
 
-qmlbind_exporter qmlbind_exporter_new(qmlbind_backref classHandle, const char *className, qmlbind_interface interface)
+qmlbind_exporter qmlbind_exporter_new(qmlbind_backref classHandle, const char *className, qmlbind_interface_handlers handlers)
 {
+
+    QSharedPointer<Interface> *interface = newSharedPointer(new Interface(handlers));
     return newSharedPointer(new Exporter(className, Backref(classHandle, *interface)));
 }
 
