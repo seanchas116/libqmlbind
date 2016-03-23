@@ -21,7 +21,6 @@ SOURCES += \
     src/api_register.cpp \
     src/exporter.cpp \
     src/api_exporter.cpp \
-    src/api_interface.cpp \
     src/interface.cpp \
     src/backref.cpp \
     src/signalemitter.cpp \
@@ -41,7 +40,6 @@ PUBLIC_HEADERS += \
     include/qmlbind.h \
     include/qmlbind/register.h \
     include/qmlbind/exporter.h \
-    include/qmlbind/interface.h \
     include/qmlbind/signal_emitter.h \
     include/qmlbind/plugin.h \
 

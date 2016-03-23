@@ -8,7 +8,7 @@ extern "C" {
 QMLBIND_API qmlbind_exporter qmlbind_exporter_new(
     qmlbind_backref classHandle,
     const char *className,
-    qmlbind_interface interface
+    qmlbind_interface_handlers interface_handlers
 );
 
 QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter exporter);
