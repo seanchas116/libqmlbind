@@ -22,9 +22,9 @@ public:
 
     Exporter(const char *className, const Backref &classRef);
 
-    QMetaMethodBuilder addMethod(const char *name, int arity);
-    QMetaMethodBuilder addSignal(const char *name, const QList<QByteArray> &args);
-    QMetaPropertyBuilder addProperty(const char *name, const char *notifier);
+    void addMethod(const char *name, int arity);
+    void addSignal(const char *name, const QList<QByteArray> &args);
+    void addProperty(const char *name, const char *notifier);
     QSharedPointer<Interface> interface() const { return mClassRef.interface(); }
 
     Backref classRef() const { return mClassRef; }

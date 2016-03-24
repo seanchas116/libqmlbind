@@ -13,20 +13,20 @@ QMLBIND_API qmlbind_exporter qmlbind_exporter_new(
 
 QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter exporter);
 
-QMLBIND_API int qmlbind_exporter_add_method(
+QMLBIND_API void qmlbind_exporter_add_method(
     qmlbind_exporter exporter,
     const char *name,
     int arity
 );
 
-QMLBIND_API int qmlbind_exporter_add_signal(
+QMLBIND_API void qmlbind_exporter_add_signal(
     qmlbind_exporter exporter,
     const char *name,
     int arity,
     const char **params
 );
 
-QMLBIND_API int qmlbind_exporter_add_property(
+QMLBIND_API void qmlbind_exporter_add_property(
     qmlbind_exporter exporter,
     const char *name,
     const char *notifierSignal
