@@ -7,12 +7,6 @@
 extern "C" {
 #endif
 
-typedef enum {
-    QMLBIND_PROPERTY_WRITABLE = 1,
-    QMLBIND_PROPERTY_CONFIGURABLE = 1 << 1,
-    QMLBIND_PROPERTY_ENUMERABLE = 1 << 2
-} qmlbind_property_option;
-
 /* basic */
 
 QMLBIND_API qmlbind_value qmlbind_value_new_undefined();
