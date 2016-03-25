@@ -29,7 +29,7 @@ static QByteArray methodSignature(const char *name, int arity)
 
 
 
-QMetaMethodBuilder Exporter::addMethod(const char *name, int arity)
+void Exporter::addMethod(const char *name, int arity)
 {
     QMetaMethodBuilder method = mBuilder.addMethod(methodSignature(name, arity), "QJSValue");
 
@@ -38,21 +38,17 @@ QMetaMethodBuilder Exporter::addMethod(const char *name, int arity)
     methodInfo.name = name;
 
     mMethodMap[method.index()] = methodInfo;
-
-    return method;
 }
 
-QMetaMethodBuilder Exporter::addSignal(const char *name, const QList<QByteArray> &args)
+void Exporter::addSignal(const char *name, const QList<QByteArray> &args)
 {
     QMetaMethodBuilder method = mBuilder.addSignal(methodSignature(name, args.size()));
     method.setParameterNames(args);
 
     mSignalIndexMap[name] = method.index();
-
-    return method;
 }
 
-QMetaPropertyBuilder Exporter::addProperty(const char *name, const char *notifier)
+void Exporter::addProperty(const char *name, const char *notifier)
 {
     if (!mSignalIndexMap.contains(notifier)) {
         qWarning() << "signal" << notifier << "not yet added";
@@ -66,8 +62,6 @@ QMetaPropertyBuilder Exporter::addProperty(const char *name, const char *notifie
     propertyInfo.name = name;
 
     mPropertyMap[property.index()] = propertyInfo;
-
-    return property;
 }
 
 } // namespace QmlBind

@@ -18,16 +18,16 @@ void qmlbind_exporter_release(qmlbind_exporter exporter)
     delete exporter;
 }
 
-int qmlbind_exporter_add_method(
+void qmlbind_exporter_add_method(
     qmlbind_exporter exporter,
     const char *name,
     int arity
 )
 {
-    return (*exporter)->addMethod(name, arity).index();
+    (*exporter)->addMethod(name, arity);
 }
 
-int qmlbind_exporter_add_signal(
+void qmlbind_exporter_add_signal(
     qmlbind_exporter exporter,
     const char *name,
     int arity,
@@ -38,15 +38,15 @@ int qmlbind_exporter_add_signal(
     for (int i = 0; i < arity; ++i) {
         paramList << params[i];
     }
-    return (*exporter)->addSignal(name, paramList).index();
+    (*exporter)->addSignal(name, paramList);
 }
 
-int qmlbind_exporter_add_property(qmlbind_exporter exporter,
+void qmlbind_exporter_add_property(qmlbind_exporter exporter,
     const char *name,
     const char *notifierSignal
 )
 {
-    return (*exporter)->addProperty(name, notifierSignal).index();
+    (*exporter)->addProperty(name, notifierSignal);
 }
 
 }

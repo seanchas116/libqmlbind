@@ -142,9 +142,9 @@ TEST_CASE("exporter")
     auto exporter = qmlbind_exporter_new(Handlers::variantToBackref("class:Test"), "Test", interface);
 
     const char *notifierparams[] = { "value" };
-    auto notifierIndex = qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
-    auto methodIndex = qmlbind_exporter_add_method(exporter, "incrementBy", 1);
-    auto propertyIndex = qmlbind_exporter_add_property(exporter, "value", "valueChanged");
+    qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
+    qmlbind_exporter_add_method(exporter, "incrementBy", 1);
+    qmlbind_exporter_add_property(exporter, "value", "valueChanged");
 
     auto metaobject = qmlbind_metaobject_new(exporter);
     qmlbind_exporter_release(exporter);
@@ -163,14 +163,18 @@ TEST_CASE("exporter")
 
         SECTION("method info")
         {
-            auto method = metaobj->method(methodIndex + metaobj->methodOffset());
+            auto methodIndex = metaobj->indexOfMethod("incrementBy(QJSValue)");
+            REQUIRE(methodIndex != -1);
+            auto method = metaobj->method(methodIndex);
             REQUIRE(method.name() == "incrementBy");
             REQUIRE(method.methodType() == QMetaMethod::Method);
         }
 
         SECTION("notifier signal info")
         {
-            auto method = metaobj->method(notifierIndex + metaobj->methodOffset());
+            auto notifierIndex = metaobj->indexOfSignal("valueChanged(QJSValue)");
+            REQUIRE(notifierIndex != -1);
+            auto method = metaobj->method(notifierIndex);
             REQUIRE(method.name() == "valueChanged");
             REQUIRE(method.methodType() == QMetaMethod::Signal);
             REQUIRE(method.parameterNames()[0] == "value");
@@ -178,7 +182,9 @@ TEST_CASE("exporter")
 
         SECTION("property info")
         {
-            auto prop = metaobj->property(propertyIndex + metaobj->propertyOffset());
+            auto propertyIndex = metaobj->indexOfProperty("value");
+            REQUIRE(propertyIndex != -1);
+            auto prop = metaobj->property(propertyIndex);
             REQUIRE(QByteArray(prop.name()) == "value");
         }
     }
