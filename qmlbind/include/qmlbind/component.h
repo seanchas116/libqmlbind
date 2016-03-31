@@ -14,7 +14,7 @@ extern "C" {
  *
  * Its methods are defined in \ref component.h.
  *
- * You can find a simple usage example in `examples/create_component_get_property`.
+ * You can find a simple usage example in `examples/hello_world_window`.
  *
  * libqmlbind's equivalent of [QQmlComponent](https://doc.qt.io/qt-5/qqmlcomponent.html).
  */
