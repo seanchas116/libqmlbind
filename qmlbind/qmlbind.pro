@@ -3,6 +3,8 @@ QT += widgets qml quick core-private
 TARGET = qmlbind
 TEMPLATE = lib
 CONFIG += c++11
+QMAKE_CFLAGS += "-std=c99"
+
 DEFINES += QMLBIND_LIBRARY
 
 INCLUDEPATH += $$PWD/include
