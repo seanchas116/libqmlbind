@@ -5,8 +5,25 @@
 extern "C" {
 #endif
 
+/*! \file register.h
+ * \brief Contains the `qmlbind_register_type` function.
+ */
+
+/*!
+ * \brief exposes the `metaobject` as `qmlName` component to QML.
+ *
+ * `uri`, `versionMajor` and `versionMinor` is the package uri and version under which this `metaobject` is made
+ * available to QML. After calling this function, you can import the component as:
+ *
+ * ```
+ * import <uri> <versionMajor>.<versionMinor>
+ * ```
+ *
+ * This is libqmlbind's rough equivalent of
+ * [QQmlEngine::registerType](https://doc.qt.io/qt-5/qqmlengine.html#qmlRegisterType).
+ */
 QMLBIND_API int qmlbind_register_type(
-    qmlbind_metaobject *metaobject,
+    const qmlbind_metaobject *metaobject,
     const char *uri,
     int versionMajor, int versionMinor,
     const char *qmlName
