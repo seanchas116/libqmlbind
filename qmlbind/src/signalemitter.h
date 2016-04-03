@@ -15,8 +15,8 @@ public:
     SignalEmitter();
 
     void setWrapper(Wrapper *wrapper) { mWrapper = wrapper; }
-    Wrapper *wrapper() { return mWrapper; }
-    void emitSignal(const QByteArray &name, int argc, QJSValue **argv);
+    const Wrapper *wrapper() const { return mWrapper; }
+    void emitSignal(const QByteArray &name, int argc, const QJSValue *const *argv) const;
 
 private:
     QPointer<Wrapper> mWrapper;

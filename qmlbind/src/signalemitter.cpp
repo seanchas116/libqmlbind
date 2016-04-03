@@ -9,7 +9,7 @@ SignalEmitter::SignalEmitter()
 {
 }
 
-void SignalEmitter::emitSignal(const QByteArray &name, int argc, QJSValue **argv)
+void SignalEmitter::emitSignal(const QByteArray &name, int argc, const QJSValue *const *argv) const
 {
     QSharedPointer<const MetaObject> metaObj = mWrapper->qmlbindMetaObject();
     int index = metaObj->exporter()->signalIndexMap().value(name, -1);
@@ -31,11 +31,12 @@ void SignalEmitter::emitSignal(const QByteArray &name, int argc, QJSValue **argv
     // This is undocumented behaviour, and therefore we don't forward that return value through libqmlbind.
     // Source: http://stackoverflow.com/questions/5842124/can-qt-signals-return-a-value/5903082
     // Still, we need to allocate a new array with nullptr as front element and the argv values behind that.
-    QJSValue *argv_with_retvalue[argc + 1];
+    const QJSValue *argv_with_retvalue[argc + 1];
     argv_with_retvalue[0] = nullptr;
     std::copy(argv, argv + argc, argv_with_retvalue + 1);
 
-    QMetaObject::activate(mWrapper, metaObj.data(), index, reinterpret_cast<void **>(argv_with_retvalue));
+    QMetaObject::activate(mWrapper, metaObj.data(), index,
+                          const_cast<void**>(reinterpret_cast<const void **>(argv_with_retvalue)));
 }
 
 } // namespace QmlBind
