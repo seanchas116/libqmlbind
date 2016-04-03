@@ -29,7 +29,7 @@ qmlbind_value *qmlbind_engine_eval(qmlbind_engine *self, const char *str, const 
     return new QJSValue(value);
 }
 
-qmlbind_value *qmlbind_engine_get_global_object(qmlbind_engine *self)
+qmlbind_value *qmlbind_engine_get_global_object(const qmlbind_engine *self)
 {
     return new QJSValue(self->globalObject());
 }
@@ -44,7 +44,7 @@ qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *self, int length)
     return new QJSValue(self->newArray(length));
 }
 
-qmlbind_value *qmlbind_engine_new_wrapper(qmlbind_engine *self, qmlbind_metaobject *metaobj, qmlbind_backref *object)
+qmlbind_value *qmlbind_engine_new_wrapper(qmlbind_engine *self, const qmlbind_metaobject *metaobj, qmlbind_backref *object)
 {
     Wrapper *obj = new Wrapper(*metaobj, Backref(object, (*metaobj)->exporter()->classRef().interface()));
 
