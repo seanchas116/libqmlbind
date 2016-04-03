@@ -8,7 +8,7 @@ using namespace QmlBind;
 
 extern "C" {
 
-qmlbind_exporter *qmlbind_exporter_new(qmlbind_backref *classRef, const char *className, qmlbind_interface *interface)
+qmlbind_exporter *qmlbind_exporter_new(qmlbind_backref *classRef, const char *className, const qmlbind_interface *interface)
 {
     return newSharedPointer(new Exporter(className, Backref(classRef, *interface)));
 }
