@@ -10,6 +10,15 @@
 #   define QMLBIND_API
 # endif
 
+/*!
+ * \file qmlbind_global.h
+ * \brief Contains all struct definitions of libqmlbind.
+ *
+ * Functions using these structs as arguments are defined in all other header files.
+ */
+
+// use the real declarations if libqmlbind is being built as a library (which means QMLBIND_LIBRARY is defined),
+// but use opaque structs if this is another project and only libqmlbind's header files are included.
 #ifdef QMLBIND_LIBRARY
 
 template <typename T> class QSharedPointer;
