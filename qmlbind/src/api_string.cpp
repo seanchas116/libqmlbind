@@ -4,12 +4,14 @@
 
 extern "C" {
 
-char *qmlbind_string_get_chars(qmlbind_string *self)
+// Only implement constData() here, as there's probably no meaningful usecase which includes modifying
+// the internal data representation without needing a copy afterwards anyway.
+const char *qmlbind_string_get_chars(const qmlbind_string *self)
 {
-    return str->data();
+    return self->constData();
 }
 
-int qmlbind_string_get_length(qmlbind_string *self)
+int qmlbind_string_get_length(const qmlbind_string *self)
 {
     return self->size();
 }
