@@ -78,10 +78,61 @@ typedef struct qmlbind_signal_emitter {} qmlbind_signal_emitter;
 
 typedef struct qmlbind_backref {} qmlbind_backref;
 
-typedef struct {
-    qmlbind_backref (*new_object)(qmlbind_backref classRef, qmlbind_signal_emitter signalEmitter);
-    void (*delete_object)(qmlbind_backref objRef);
-    qmlbind_value (*call_method)(qmlbind_engine engine, qmlbind_backref objRef, const char *name, int argc, qmlbind_value *argv);
-    qmlbind_value (*get_property)(qmlbind_engine engine, qmlbind_backref objRef, const char *name);
-    void (*set_property)(qmlbind_engine engine, qmlbind_backref objRef, const char *name, qmlbind_value value);
+
+/*!
+ * \brief encapsulates functions that are used from QML for C object creation & destruction,
+ * method calls and property modification.
+ *
+ * Those functions need to be defined by libqmlbind's users.
+ *
+ * This struct is needed to construct new `qmlbind_interface`s. All function pointers need to be defined, a nullptr is
+ * not a valid argument.
+ */
+typedef struct qmlbind_interface_handlers {
+    /*!
+     * \brief creates a new C object to be used in QML.
+     *
+     * \param classRef the `qmlbind_backref` that was given to `qmlbind_exporter_new`. Does not transfer ownership.
+     * \param signalEmitter should be stored in the returned object to be able to emit signals. Ownership is transfered.
+     * \returns the newly-created object, transfering ownership.
+     */
+    qmlbind_backref* (*new_object)(qmlbind_backref *classRef, qmlbind_signal_emitter *signalEmitter);
+
+    /*!
+     * \brief deletes a C object that was created by `new_object`.
+     */
+    void (*delete_object)(qmlbind_backref *objRef);
+
+    /*!
+     * \brief executes the `name` method defined on the `objRef` C object, with `argc` parameters in `argv`, and returns
+     * the result.
+     *
+     * Ownership of the result must be transfered to the caller.
+     *
+     * Ownership of `engine` and `objRef` is not transfered.
+     *
+     * `engine` is intended to be used to create new objects or arrays.
+     */
+    qmlbind_value* (*call_method)(qmlbind_engine *engine, qmlbind_backref *objRef,
+                                  const char *name, int argc, const qmlbind_value *const *argv);
+
+    /*!
+     * \brief returns the value of the `name` property of the `objRef` C object.
+     * Ownership must be transferred to the caller.
+     *
+     * Ownership of `engine` and `objRef` is not transfered.
+     *
+     * `engine` is intended to be used to create new objects or arrays.
+     */
+    qmlbind_value* (*get_property)(qmlbind_engine *engine, qmlbind_backref *objRef, const char *name);
+
+    /*!
+     * \brief sets the value of the `name` property to of the `objRef` C object to `value`.
+     *
+     * Ownership of `engine` and `objRef` is not transfered.
+     *
+     * `engine` is intended to be used to create new objects or arrays.
+     */
+    void (*set_property)(qmlbind_engine *engine, qmlbind_backref *objRef, const char *name, const qmlbind_value *value);
+
 } qmlbind_interface_handlers;
