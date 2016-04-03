@@ -26,11 +26,11 @@ private:
 
     friend class Backref;
 
-    void retainObject(qmlbind_backref ref);
-    void releaseObject(qmlbind_backref ref);
+    void retainObject(qmlbind_backref *ref);
+    void releaseObject(qmlbind_backref *ref);
 
     qmlbind_interface_handlers mHandlers;
-    QHash<qmlbind_backref, int> mRefCount;
+    QHash<qmlbind_backref *, int> mRefCount;
     QMutex mRefCountMutex;
 };
 

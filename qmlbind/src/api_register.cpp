@@ -6,7 +6,7 @@ using namespace QmlBind;
 extern "C" {
 
 int qmlbind_register_type(
-    qmlbind_metaobject metaobject,
+    qmlbind_metaobject *metaobject,
     const char *uri,
     int versionMajor, int versionMinor,
     const char *qmlName)

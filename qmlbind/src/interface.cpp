@@ -48,7 +48,7 @@ Backref Interface::newObject(const Backref &klass, SignalEmitter *signalEmitter)
     return Backref(mHandlers.new_object(klass.backref(), signalEmitter), sharedFromThis());
 }
 
-void Interface::retainObject(qmlbind_backref ref)
+void Interface::retainObject(qmlbind_backref *ref)
 {
     QMutexLocker locker(&mRefCountMutex);
 
@@ -60,7 +60,7 @@ void Interface::retainObject(qmlbind_backref ref)
     }
 }
 
-void Interface::releaseObject(qmlbind_backref ref)
+void Interface::releaseObject(qmlbind_backref *ref)
 {
     QMutexLocker locker(&mRefCountMutex);
 

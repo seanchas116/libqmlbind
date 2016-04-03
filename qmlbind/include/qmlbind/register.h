@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 QMLBIND_API int qmlbind_register_type(
-    qmlbind_metaobject metaobjet,
+    qmlbind_metaobject *metaobject,
     const char *uri,
     int versionMajor, int versionMinor,
     const char *qmlName
