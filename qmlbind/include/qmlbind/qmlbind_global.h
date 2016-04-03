@@ -76,6 +76,19 @@ typedef struct qmlbind_signal_emitter {} qmlbind_signal_emitter;
 
 #endif
 
+/*!
+ * \brief is a reference to an object or class back in the code calling libqmlbind's functions.
+ *
+ * In many cases, it can be seen as a pointer to the equivalents of QObjects in the calling code, with some wrapping
+ * code around it to be used as a real QObject for QML.
+ *
+ * See `qmlbind_engine_new_wrapper()` to create new `qmlbind_value` wrappers for a `qmlbind_backref`, and
+ * `qmlbind_value_get_backref()` to get back the objRef given to it on creation.
+ *
+ * In `qmlbind_exporter_new()`, it is used as classRef which is forwarded `qmlbind_interface_handlers`' `new_object()`.
+ * In this case, it's a pointer to an arbitrary object in the calling code, intended to be used for a generic class
+ * object, which you can use to create new `objRef`s returned by `new_object()`.
+ */
 typedef struct qmlbind_backref {} qmlbind_backref;
 
 
@@ -91,6 +104,9 @@ typedef struct qmlbind_backref {} qmlbind_backref;
 typedef struct qmlbind_interface_handlers {
     /*!
      * \brief creates a new C object to be used in QML.
+     *
+     * `qmlbind_interface_handlers` hands over the `qmlbind_backref` returned from this function as `objRef` to
+     * `call_method()`, `get_property()` and `set_property()`.
      *
      * \param classRef the `qmlbind_backref` that was given to `qmlbind_exporter_new`. Does not transfer ownership.
      * \param signalEmitter should be stored in the returned object to be able to emit signals. Ownership is transfered.
