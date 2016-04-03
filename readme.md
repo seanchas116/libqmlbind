@@ -56,3 +56,10 @@ From the main directory:
 ```
 > ./test/test -platform offscreen
 ```
+
+### Build the Documentation
+Just run
+```
+> doxygen
+```
+from the project's main directory. You can then find the documentation in `doc/html/index.html`.
