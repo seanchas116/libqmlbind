@@ -23,7 +23,7 @@ MetaObject::~MetaObject()
 
 int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) const
 {
-    index = object->QObject::qt_metacall(call, index ,argv);
+    index = object->QObject::qt_metacall(call, index, argv);
     if (index < 0) {
         return index;
     }

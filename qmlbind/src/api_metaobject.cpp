@@ -6,7 +6,7 @@ using namespace QmlBind;
 
 extern "C" {
 
-qmlbind_metaobject *qmlbind_metaobject_new(qmlbind_exporter *exporter)
+qmlbind_metaobject *qmlbind_metaobject_new(const qmlbind_exporter *exporter)
 {
     return newSharedPointer(new MetaObject(*exporter));
 }
