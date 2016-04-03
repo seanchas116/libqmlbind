@@ -14,7 +14,7 @@ namespace QmlBind {
 class AppArgs
 {
 public:
-    AppArgs(int argc, char **argv) :
+    AppArgs(int argc, const char *const *argv) :
         mArgs(argc), mArgc(argc), mArgv(argc)
     {
         for (int i = 0; i < argc; ++i) {
@@ -83,7 +83,7 @@ static auto nextTickProcessor = new NextTickProcessor();
 
 extern "C" {
 
-qmlbind_application qmlbind_application_new(int argc, char **argv)
+qmlbind_application *qmlbind_application_new(int argc, const char *const *argv)
 {
     AppArgs *args = new AppArgs(argc, argv);
     QApplication *app = new QApplication(args->argc(), args->argv());
