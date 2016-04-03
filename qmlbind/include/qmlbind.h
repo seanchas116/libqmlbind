@@ -1,5 +1,9 @@
 #pragma once
 
+/*! \file qmlbind.h
+ * \brief main qmlbind header file which includes all of qmlbind's public interfaces.
+ */
+
 #include "qmlbind/application.h"
 #include "qmlbind/component.h"
 #include "qmlbind/engine.h"
