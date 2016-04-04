@@ -23,4 +23,4 @@ after_success:
   - sudo pip install ghp-import
   - wget -O - "${DOXYGEN_URL}" | tar xz -C ${TMPDIR-/tmp} ${DOXYGEN_VER}/bin/doxygen
   - export PATH="${TMPDIR-/tmp}/${DOXYGEN_VER}/bin:$PATH"
-  - ./.travis-publish-docs.sh
+  - bash .travis-publish-docs.sh
