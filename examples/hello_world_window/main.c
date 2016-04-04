@@ -7,7 +7,8 @@
  */
 
 int main(int argc, char *argv[]) {
-    qmlbind_application *app = qmlbind_application_new(argc, argv);
+    // explicit const cast required because in plain C99, constness is only converted on the top level.
+    qmlbind_application *app = qmlbind_application_new(argc, (const char* const *)argv);
     qmlbind_engine *engine = qmlbind_engine_new();
     qmlbind_component *component = qmlbind_component_new(engine);
     qmlbind_component_load_path(component, "main.qml");
