@@ -11,7 +11,7 @@ if [ "${TRAVIS}" = "true" ]; then
 	[ "${TRAVIS_JOB_NUMBER}" = "${TRAVIS_BUILD_NUMBER}.1" ] || skip "Only build docs once"
 	git config user.name "Travis CI"
 	git config push.default simple
-	ghp-import -n -m "Updated documentation from ${TRAVIS_COMMIT}" doc/doxygen/html
+	ghp-import -n -m "Updated documentation from ${TRAVIS_COMMIT}" doc/html
 	git push -fq "https://${GH_TOKEN}@github.com/${GH_REPO}.git" gh-pages
 	echo "documentation was pushed."
 fi
