@@ -43,31 +43,31 @@ void Interface::setProperty(QQmlEngine *engine, const Backref &obj, const QByteA
     mHandlers.set_property(qobject_cast<Engine *>(engine), obj.backref(), property, &val);
 }
 
-Backref Interface::newObject(const Backref &klass, SignalEmitter *signalEmitter)
+Backref Interface::newObject(qmlbind_client_class *classObject, SignalEmitter *signalEmitter)
 {
-    return Backref(mHandlers.new_object(klass.backref(), signalEmitter), shared_from_this());
+    return Backref(mHandlers.new_object(classObject, signalEmitter), shared_from_this());
 }
 
-void Interface::retainObject(qmlbind_backref *ref)
+void Interface::retainObject(qmlbind_client_object *object)
 {
     QMutexLocker locker(&mRefCountMutex);
 
-    if (mRefCount.contains(ref)) {
-        ++mRefCount[ref];
+    if (mRefCount.contains(object)) {
+        ++mRefCount[object];
     }
     else {
-        mRefCount[ref] = 1;
+        mRefCount[object] = 1;
     }
 }
 
-void Interface::releaseObject(qmlbind_backref *ref)
+void Interface::releaseObject(qmlbind_client_object *object)
 {
     QMutexLocker locker(&mRefCountMutex);
 
-    Q_ASSERT(mRefCount.contains(ref));
-    if (--mRefCount[ref] == 0) {
-        mHandlers.delete_object(ref);
-        mRefCount.remove(ref);
+    Q_ASSERT(mRefCount.contains(object));
+    if (--mRefCount[object] == 0) {
+        mHandlers.delete_object(object);
+        mRefCount.remove(object);
     }
 }
 

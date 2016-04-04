@@ -113,7 +113,7 @@ QMLBIND_API qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *self, int le
 QMLBIND_API qmlbind_value *qmlbind_engine_new_wrapper(
     qmlbind_engine *self,
     const qmlbind_metaobject *metaobj,
-    qmlbind_backref *object
+    qmlbind_client_object *object
 );
 
 /*!

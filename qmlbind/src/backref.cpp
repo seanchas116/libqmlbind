@@ -7,8 +7,8 @@ Backref::Backref()
 {
 }
 
-Backref::Backref(qmlbind_backref *backref, const std::shared_ptr<Interface> &interface) :
-    mBackref(backref),
+Backref::Backref(qmlbind_client_object *object, const std::shared_ptr<Interface> &interface) :
+    mBackref(object),
     mInterface(interface)
 {
     retain();

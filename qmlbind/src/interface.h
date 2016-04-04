@@ -20,17 +20,17 @@ public:
     QJSValue getProperty(QQmlEngine *engine, const Backref &obj, const QByteArray &property) const;
     void setProperty(QQmlEngine *engine, const Backref &obj, const QByteArray &property, const QJSValue &value) const;
 
-    Backref newObject(const Backref &klass, SignalEmitter *signalEmitter);
+    Backref newObject(qmlbind_client_class * classObject, SignalEmitter *signalEmitter);
 
 private:
 
     friend class Backref;
 
-    void retainObject(qmlbind_backref *ref);
-    void releaseObject(qmlbind_backref *ref);
+    void retainObject(qmlbind_client_object *object);
+    void releaseObject(qmlbind_client_object *object);
 
     qmlbind_interface_handlers mHandlers;
-    QHash<qmlbind_backref *, int> mRefCount;
+    QHash<qmlbind_client_object *, int> mRefCount;
     QMutex mRefCountMutex;
 };
 

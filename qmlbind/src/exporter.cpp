@@ -6,8 +6,9 @@
 
 namespace QmlBind {
 
-Exporter::Exporter(const char *className, const Backref &classRef) :
-    mClassRef(classRef)
+Exporter::Exporter(const char *className, qmlbind_client_class *classObject, QSharedPointer<Interface> interface) :
+    mClassObject(classObject),
+    mInterface(interface)
 {
     mBuilder.setClassName(className);
 }

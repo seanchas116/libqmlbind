@@ -18,9 +18,9 @@ extern "C" {
 /*!
  * \brief Creates a new `qmlbind_exporter`.
  *
- * \param classRef will be given as parameter to the `new_object` function of the interface. You can use it to hand over
+ * \param classObject will be given as parameter to the `new_object` function of the interface. You can use it to hand over
  * the equivalent of class objects in your language to implement a generic `new_object` function. If you don't need it,
- * just hand over a nullpointer. This function does not take ownership of the classRef, but it still needs to be valid
+ * just hand over a nullpointer. This function does not take ownership of the classObject, but it still needs to be valid
  * for as long as new objects are created (i.e. the whole application lifetime).
  *
  * \param className is used for registering the metaobject created with this exporter in the metaobject system.
@@ -30,7 +30,7 @@ extern "C" {
  *
  */
 QMLBIND_API qmlbind_exporter *qmlbind_exporter_new(
-    qmlbind_backref *classRef,
+    qmlbind_client_class *classObject,
     const char *className,
     const qmlbind_interface *interface
 );

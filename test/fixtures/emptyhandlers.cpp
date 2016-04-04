@@ -1,25 +1,25 @@
 #include "emptyhandlers.h"
 
-qmlbind_backref *newObject(qmlbind_backref *, qmlbind_signal_emitter *)
+qmlbind_client_object *newObject(qmlbind_client_class *, qmlbind_signal_emitter *)
 {
     return nullptr;
 }
 
-qmlbind_value *invokeMethod(qmlbind_engine *, qmlbind_backref *, const char *, int, const qmlbind_value *const *)
+qmlbind_value *invokeMethod(qmlbind_engine *, qmlbind_client_object *, const char *, int, const qmlbind_value *const *)
 {
     return qmlbind_value_new_undefined();
 }
 
-qmlbind_value *invokeGetter(qmlbind_engine *, qmlbind_backref *, const char *)
+qmlbind_value *invokeGetter(qmlbind_engine *, qmlbind_client_object *, const char *)
 {
     return qmlbind_value_new_undefined();
 }
 
-void invokeSetter(qmlbind_engine *, qmlbind_backref *, const char *, const qmlbind_value *)
+void invokeSetter(qmlbind_engine *, qmlbind_client_object *, const char *, const qmlbind_value *)
 {
 }
 
-void deleteObject(qmlbind_backref *)
+void deleteObject(qmlbind_client_object *)
 {
 }
 

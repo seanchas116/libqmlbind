@@ -14,9 +14,8 @@ template <int Index>
 void TypeRegisterer::create(void *memory)
 {
     std::shared_ptr<const MetaObject> metaobj = TypeRegisterer::instance().mMetaObjects[Index];
-    Backref classRef = metaobj->exporter()->classRef();
     SignalEmitter *emitter = new SignalEmitter();
-    Backref ref = classRef.interface()->newObject(classRef, emitter);
+    Backref ref = metaobj->exporter()->interface()->newObject(metaobj->exporter()->classObject(), emitter);
 
     Wrapper *wrapper = new (memory) Wrapper(metaobj, ref);
     emitter->setWrapper(wrapper);

@@ -20,14 +20,16 @@ public:
         QByteArray name;
     };
 
-    Exporter(const char *className, const Backref &classRef);
+    Exporter(const char *className, qmlbind_client_class* classObject, QSharedPointer<Interface> interface);
 
     void addMethod(const char *name, int arity);
     void addSignal(const char *name, const QList<QByteArray> &args);
     void addProperty(const char *name, const char *notifier);
-    std::shared_ptr<Interface> interface() const { return mClassRef.interface(); }
 
-    Backref classRef() const { return mClassRef; }
+    qmlbind_client_class *classObject() const { return mClassObject; }
+    std::shared_ptr<Interface> interface() const { return mClassRef.interface(); }
+    QSharedPointer<Interface> interface() const { return mInterface; }
+
     const QMetaObjectBuilder &metaObjectBuilder() const { return mBuilder; }
     QHash<int, Method> methodMap() const { return mMethodMap; }
     QHash<int, Property> propertyMap() const { return mPropertyMap; }
@@ -35,7 +37,8 @@ public:
 
 private:
 
-    Backref mClassRef;
+    qmlbind_client_class *mClassObject;
+    std::shared_ptr<Interface> mInterface;
     QHash<int, Method> mMethodMap;
     QHash<int, Property> mPropertyMap;
     QHash<QByteArray, int> mSignalIndexMap;
