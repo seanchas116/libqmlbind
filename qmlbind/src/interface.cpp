@@ -25,22 +25,22 @@ Interface::Interface(qmlbind_interface_handlers handlers) :
     }
 }
 
-QJSValue Interface::callMethod(QQmlEngine *engine, const Backref &obj, const QByteArray &method, int argc, QJSValue **argv) const
+QJSValue Interface::callMethod(QQmlEngine *engine, qmlbind_client_object *object, const QByteArray &method, int argc, QJSValue **argv) const
 {
-    QScopedPointer<const QJSValue> result(mHandlers.call_method(qobject_cast<Engine *>(engine), obj.backref(), method, argc, argv));
+    QScopedPointer<const QJSValue> result(mHandlers.call_method(qobject_cast<Engine *>(engine), object, method, argc, argv));
     return *result;
 }
 
-QJSValue Interface::getProperty(QQmlEngine *engine, const Backref &obj, const QByteArray &property) const
+QJSValue Interface::getProperty(QQmlEngine *engine, qmlbind_client_object *object, const QByteArray &property) const
 {
-    QScopedPointer<const QJSValue> result(mHandlers.get_property(qobject_cast<Engine *>(engine), obj.backref(), property));
+    QScopedPointer<const QJSValue> result(mHandlers.get_property(qobject_cast<Engine *>(engine), object, property));
     return *result;
 }
 
-void Interface::setProperty(QQmlEngine *engine, const Backref &obj, const QByteArray &property, const QJSValue &value) const
+void Interface::setProperty(QQmlEngine *engine, qmlbind_client_object *object, const QByteArray &property, const QJSValue &value) const
 {
     QJSValue val = value;
-    mHandlers.set_property(qobject_cast<Engine *>(engine), obj.backref(), property, &val);
+    mHandlers.set_property(qobject_cast<Engine *>(engine), object, property, &val);
 }
 
 Backref Interface::newObject(qmlbind_client_class *classObject, SignalEmitter *signalEmitter)

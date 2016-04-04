@@ -35,13 +35,14 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
 
     std::shared_ptr<const Exporter> exporter = mExporter;
     std::shared_ptr<Interface> interface = ref.interface();
+    qmlbind_client_object *clientObject = ref.backref();
 
     switch(call) {
     case QMetaObject::ReadProperty:
     {
         int count = propertyCount() - propertyOffset();
         if (index < count) {
-            *static_cast<QJSValue *>(argv[0]) = interface->getProperty(engine, ref, exporter->propertyMap()[index].name);
+            *static_cast<QJSValue *>(argv[0]) = interface->getProperty(engine, clientObject, exporter->propertyMap()[index].name);
         }
         index -= count;
         break;
@@ -50,7 +51,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
     {
         int count = propertyCount() - propertyOffset();
         if (index < count) {
-            interface->setProperty(engine, ref, exporter->propertyMap()[index].name, *static_cast<QJSValue *>(argv[0]));
+            interface->setProperty(engine, clientObject, exporter->propertyMap()[index].name, *static_cast<QJSValue *>(argv[0]));
         }
         index -= count;
         break;
@@ -64,7 +65,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
             }
             else {
                 Exporter::Method method = exporter->methodMap()[index];
-                *static_cast<QJSValue *>(argv[0]) = interface->callMethod(engine, ref, method.name, method.arity, reinterpret_cast<QJSValue **>(argv + 1));
+                *static_cast<QJSValue *>(argv[0]) = interface->callMethod(engine, clientObject, method.name, method.arity, reinterpret_cast<QJSValue **>(argv + 1));
             }
         }
         index -= count;

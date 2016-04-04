@@ -16,11 +16,11 @@ class Interface : public std::enable_shared_from_this<Interface>
 public:
     Interface(qmlbind_interface_handlers handlers);
 
-    QJSValue callMethod(QQmlEngine *engine, const Backref &obj, const QByteArray &method, int argc, QJSValue **argv) const;
-    QJSValue getProperty(QQmlEngine *engine, const Backref &obj, const QByteArray &property) const;
-    void setProperty(QQmlEngine *engine, const Backref &obj, const QByteArray &property, const QJSValue &value) const;
+    QJSValue callMethod(QQmlEngine *engine, qmlbind_client_object* object, const QByteArray &method, int argc, QJSValue **argv) const;
+    QJSValue getProperty(QQmlEngine *engine, qmlbind_client_object* object, const QByteArray &property) const;
+    void setProperty(QQmlEngine *engine, qmlbind_client_object* object, const QByteArray &property, const QJSValue &value) const;
 
-    Backref newObject(qmlbind_client_class * classObject, SignalEmitter *signalEmitter);
+    Backref newObject(qmlbind_client_class *classObject, SignalEmitter *signalEmitter);
 
 private:
 
