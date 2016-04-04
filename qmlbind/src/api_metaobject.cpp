@@ -6,12 +6,12 @@ using namespace QmlBind;
 
 extern "C" {
 
-qmlbind_metaobject qmlbind_metaobject_new(qmlbind_exporter exporter)
+qmlbind_metaobject *qmlbind_metaobject_new(const qmlbind_exporter *exporter)
 {
     return newSharedPointer(new MetaObject(*exporter));
 }
 
-void qmlbind_metaobject_release(qmlbind_metaobject metaobject)
+void qmlbind_metaobject_release(qmlbind_metaobject *metaobject)
 {
     delete metaobject;
 }

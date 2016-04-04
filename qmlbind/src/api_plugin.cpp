@@ -2,26 +2,26 @@
 #include "engine.h"
 #include <QPluginLoader>
 
-qmlbind_plugin qmlbind_plugin_new(const char *filename)
+qmlbind_plugin *qmlbind_plugin_new(const char *filename)
 {
     return new QPluginLoader(filename);
 }
 
-void qmlbind_plugin_release(qmlbind_plugin plugin)
+void qmlbind_plugin_release(qmlbind_plugin *self)
 {
-    delete plugin;
+    delete self;
 }
 
-qmlbind_string qmlbind_plugin_get_error_string(qmlbind_plugin plugin)
+qmlbind_string *qmlbind_plugin_get_error_string(qmlbind_plugin *self)
 {
-    if (plugin->instance()) {
-        return 0;
+    if (self->instance()) {
+        return nullptr;
     } else {
-        return new QByteArray(plugin->errorString().toUtf8());
+        return new QByteArray(self->errorString().toUtf8());
     }
 }
 
-qmlbind_value qmlbind_plugin_get_instance(qmlbind_plugin plugin, qmlbind_engine engine)
+qmlbind_value *qmlbind_plugin_get_instance(qmlbind_plugin *self, qmlbind_engine *engine)
 {
-    return new QJSValue(engine->newQObject(plugin->instance()));
+    return new QJSValue(engine->newQObject(self->instance()));
 }

@@ -2,6 +2,7 @@ TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG += c++11
+QMAKE_CFLAGS += "-std=c99"
 
 SOURCES += \
     api.c \
@@ -15,7 +16,6 @@ SOURCES += \
     fixtures/emptyhandlers.cpp \
     plugin_test.cpp
 
-QMAKE_CFLAGS += "-std=c89"
 
 QMAKE_RPATHDIR += $$OUT_PWD/../qmlbind
 LIBS += -L$$OUT_PWD/../qmlbind/ -lqmlbind

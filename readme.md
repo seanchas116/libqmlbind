@@ -13,6 +13,19 @@ libqmlbind is a C library for creating QML bindings for other languages easily t
 * Build with qmake
   * No need to configure compilation flags for Qt manually
 
+## Code Structure
+### Mapping of Classes to the C interface
+* All classes are defined as opaque C structs in `include/qmlbind/qmlbind_global.h`
+* For each class, there's a header file at `include/qmlbind/<classname>.h`
+   which contains all methods defined on the class.
+
+### Ownership Conventions used in libqmlbind:
+* `const type*`-pointers never transfer ownership.
+* Functions ending in `_new` are constructors, they transfer the ownership of the returned struct to the caller.
+* Functions ending in `_release` are destructors, they take ownership of their first argument, called `self`.
+* All remaining functions with `self` as first parameter are methods on `self`, they never take ownership of it.
+* In all other cases, ownership of parameters and return value is explicitly stated in the comments.
+
 ## How to build
 ### Requirements
 * A C++11-capable compiler: libqmlbind is tested against `clang 3.4`.
@@ -56,3 +69,10 @@ From the main directory:
 ```
 > ./test/test -platform offscreen
 ```
+
+### Build the Documentation
+Just run
+```
+> doxygen
+```
+from the project's main directory. You can then find the documentation in `doc/html/index.html`.

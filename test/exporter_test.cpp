@@ -13,7 +13,7 @@ class Test
 {
 public:
 
-    Test(std::function<void ()> onDestroy, qmlbind_signal_emitter emitter) :
+    Test(std::function<void ()> onDestroy, qmlbind_signal_emitter *emitter) :
         m_value(1),
         m_onDestroy(onDestroy),
         m_emitter(emitter)
@@ -47,12 +47,12 @@ public:
         }
     }
 
-    qmlbind_engine engine()
+    qmlbind_engine *engine()
     {
         return m_engine;
     }
 
-    void setEngine(qmlbind_engine engine)
+    void setEngine(qmlbind_engine *engine)
     {
         m_engine = engine;
         REQUIRE(engine == qmlbind_signal_emitter_get_engine(m_emitter));
@@ -61,8 +61,8 @@ public:
 private:
     double m_value;
     std::function<void ()> m_onDestroy;
-    qmlbind_engine m_engine = nullptr;
-    qmlbind_signal_emitter m_emitter = nullptr;
+    qmlbind_engine *m_engine = nullptr;
+    qmlbind_signal_emitter *m_emitter = nullptr;
 };
 
 using TestSP = std::shared_ptr<Test>;
@@ -70,24 +70,25 @@ Q_DECLARE_METATYPE(TestSP)
 
 namespace Handlers {
 
-qmlbind_backref variantToBackref(const QVariant variant)
+qmlbind_backref *variantToBackref(const QVariant variant)
 {
-    return reinterpret_cast<qmlbind_backref>(new QVariant(variant));
+    return reinterpret_cast<qmlbind_backref *>(new QVariant(variant));
 }
 
-QVariant backrefToVariant(qmlbind_backref ref)
+QVariant backrefToVariant(qmlbind_backref *ref)
 {
     return *reinterpret_cast<QVariant *>(ref);
 }
 
-qmlbind_backref newObject(qmlbind_backref klass, qmlbind_signal_emitter emitter)
+qmlbind_backref *newObject(qmlbind_backref *klass, qmlbind_signal_emitter *emitter)
 {
     REQUIRE(backrefToVariant(klass).toString() == "class:Test");
     auto variant = QVariant::fromValue(std::make_shared<Test>([] {}, emitter));
     return variantToBackref(variant);
 }
 
-qmlbind_value invokeMethod(qmlbind_engine engine, qmlbind_backref obj, const char *method, int argc, qmlbind_value *argv)
+qmlbind_value *invokeMethod(qmlbind_engine *engine, qmlbind_backref *obj,
+                            const char *method, int argc, const qmlbind_value *const *argv)
 {
     auto test = backrefToVariant(obj).value<TestSP>();
     REQUIRE(test);
@@ -99,7 +100,7 @@ qmlbind_value invokeMethod(qmlbind_engine engine, qmlbind_backref obj, const cha
     return qmlbind_value_new_number(test->value());
 }
 
-qmlbind_value invokeGetter(qmlbind_engine engine, qmlbind_backref obj, const char *property)
+qmlbind_value *invokeGetter(qmlbind_engine *engine, qmlbind_backref *obj, const char *property)
 {
     auto test = backrefToVariant(obj).value<TestSP>();
     REQUIRE(test);
@@ -109,7 +110,7 @@ qmlbind_value invokeGetter(qmlbind_engine engine, qmlbind_backref obj, const cha
     return qmlbind_value_new_number(test->value());
 }
 
-void invokeSetter(qmlbind_engine engine, qmlbind_backref obj, const char *property, qmlbind_value value)
+void invokeSetter(qmlbind_engine *engine, qmlbind_backref *obj, const char *property, const qmlbind_value *value)
 {
     auto test = backrefToVariant(obj).value<TestSP>();
     REQUIRE(test);
@@ -119,7 +120,7 @@ void invokeSetter(qmlbind_engine engine, qmlbind_backref obj, const char *proper
     test->setValue(qmlbind_value_get_number(value));
 }
 
-void deleteObject(qmlbind_backref obj)
+void deleteObject(qmlbind_backref *obj)
 {
     delete reinterpret_cast<QVariant *>(obj);
 }

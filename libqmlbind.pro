@@ -1,3 +1,4 @@
 TEMPLATE = subdirs
 SUBDIRS = qmlbind test \
-    testplugin
+    testplugin \
+    examples

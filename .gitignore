@@ -37,3 +37,7 @@ Makefile*
 *.qmlproject.user.*
 
 /test/test
+
+# don't include the rendered documentation
+/doc/html
+/doc/latex
