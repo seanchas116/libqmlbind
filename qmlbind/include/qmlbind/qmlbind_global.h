@@ -78,19 +78,36 @@ typedef struct qmlbind_signal_emitter {} qmlbind_signal_emitter;
 #endif
 
 /*!
- * \brief is a reference to an object or class back in the code calling libqmlbind's functions.
+ * \brief an opaque struct used to transfer objects exposed to the metaobject system between libqmlbind and its user.
  *
- * In many cases, it can be seen as a pointer to the equivalents of QObjects in the calling code, with some wrapping
- * code around it to be used as a real QObject for QML.
+ * In `qmlbind_interface_handlers`' `new_object()`, you need to return a `qmlbind_client_object` pointer, which is then given
+ * back to you as `objRef` parameter in `call_method()`, `get_property()` and `set_property()`.
+ * With the `qmlbind_interface_handlers`, `qmlbind_client_object`s can be created, used and deleted from QML.
  *
- * See `qmlbind_engine_new_wrapper()` to create new `qmlbind_value` wrappers for a `qmlbind_backref`, and
- * `qmlbind_value_get_backref()` to get back the objRef given to it on creation.
+ * A `qmlbind_client_object` therefore is the rough equivalent of an instance of a
+ * [QObject](http://doc.qt.io/qt-5/qobject.html#QObject) in code using libqmlbind.
  *
- * In `qmlbind_exporter_new()`, it is used as classRef which is forwarded `qmlbind_interface_handlers`' `new_object()`.
- * In this case, it's a pointer to an arbitrary object in the calling code, intended to be used for a generic class
- * object, which you can use to create new `objRef`s returned by `new_object()`.
+ * See `qmlbind_engine_new_wrapper()` to create new `qmlbind_value` wrappers for a `qmlbind_client_object`, and
+ * `qmlbind_value_get_qmlbind_client_object()` to get the wrapped `qmlbind_client_object` back.
  */
-typedef struct qmlbind_backref {} qmlbind_backref;
+typedef struct qmlbind_client_object {} qmlbind_client_object;
+
+/*!
+ * \brief an opaque struct used to transfer class objects of classes exposed to the metaobject system between libqmlbind
+ * and its user.
+ *
+ * This is intended to be used in languages that have the concept of a class object with which you can generically
+ * construct new objects. With that, you can implement generic `qmlbind_interface_handlers` for all classes. In other
+ * languages, you can ignore it and implement multiple `qmlbind_interface_handlers`.
+ *
+ * A `qmlbind_client_class` therefore is the rough equivalent of a
+ * [QObject](http://doc.qt.io/qt-5/qobject.html#QObject) class in code using libqmlbind.
+ *
+ * In `qmlbind_exporter_new()`, a `qmlbind_client_class` pointer can be provided which is forwarded to
+ * `qmlbind_interface_handlers`' `new_object()` for that purpose. You could use it to transfer an arbitrary object,
+ * though.
+ */
+typedef struct qmlbind_client_class {} qmlbind_client_class;
 
 
 /*!
