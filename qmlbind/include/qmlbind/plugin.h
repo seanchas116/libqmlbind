@@ -6,7 +6,8 @@
 extern "C" {
 #endif
 
-/*! \class qmlbind_plugin
+/*!
+ * \defgroup plugin_module qmlbind_plugin
  * \brief loads a plugin at run-time.
  *
  * Its methods are defined in \ref plugin.h.
@@ -34,8 +35,16 @@ extern "C" {
  * libqmlbind's equivalent of [QPluginLoader](https://doc.qt.io/qt-5/qpluginloader.html).
  */
 
+/** \addtogroup plugin_module
+ *  @{
+ */
+
+/*! \struct qmlbind_plugin
+ * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref plugin_module.
+ */
+
 /*! \file plugin.h
- * \brief Contains all methods defined on `qmlbind_plugin`.
+ * \brief Contains all methods defined on \ref plugin_module.
  */
 
 
@@ -78,6 +87,7 @@ QMLBIND_API qmlbind_string *qmlbind_plugin_get_error_string(qmlbind_plugin *self
  */
 QMLBIND_API qmlbind_value *qmlbind_plugin_get_instance(qmlbind_plugin *self, qmlbind_engine *engine);
 
+/** @}*/
 #ifdef __cplusplus
 }
 #endif

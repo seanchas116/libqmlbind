@@ -7,10 +7,9 @@
 extern "C" {
 #endif
 
-/*! \class qmlbind_value
+/*!
+ * \defgroup value_module qmlbind_value
  * \brief acts as a container for Qt/JavaScript data types.
- *
- * Its methods are defined in \ref value.h.
  *
  * `qmlbind_value` supports the types defined in the
  * [ECMA-262 standard](https://www.ecma-international.org/publications/standards/Ecma-262.htm):
@@ -62,10 +61,19 @@ extern "C" {
  * you can do so with the help of a for-in statement in QML script code, or `qmlbind_iterator` in C.
  *
  * libqmlbind's equivalent of a [QJSValue](https://doc.qt.io/qt-5/qjsvalue.html).
+ *
+ */
+
+/** \addtogroup value_module
+ *  @{
+ */
+
+/*! \struct qmlbind_value
+ * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref value_module.
  */
 
 /*! \file value.h
- * \brief Contains all methods defined on `qmlbind_value`.
+ * \brief Contains all methods defined on \ref value_module.
  */
 
 

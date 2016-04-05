@@ -6,18 +6,25 @@
 extern "C" {
 #endif
 
-/*! \class qmlbind_engine
- * \brief provides an environment for instantiating QML components.
+/*!
+ * \defgroup engine_module qmlbind_engine
+ * \brief Provides an environment for instantiating QML components.
  *
  * libqmlbind only supports creation of components in each engine's root context.
- *
- * Its methods are defined in \ref engine.h.
  *
  * libqmlbind's equivalent of [QQmlEngine](https://doc.qt.io/qt-5/qqmlengine.html).
  */
 
+/** \addtogroup engine_module
+ *  @{
+ */
+
+/*! \struct qmlbind_engine
+ * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref engine_module.
+ */
+
 /*! \file engine.h
- * \brief Contains all methods defined on `qmlbind_engine`.
+ * \brief Contains all methods defined on \ref engine_module.
  */
 
 /*!
@@ -143,6 +150,7 @@ QMLBIND_API void qmlbind_engine_add_import_path(qmlbind_engine *self, const char
  */
 QMLBIND_API void qmlbind_engine_collect_garbage(qmlbind_engine *self);
 
+/** @}*/
 #ifdef __cplusplus
 }
 #endif

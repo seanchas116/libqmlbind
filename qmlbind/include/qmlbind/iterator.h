@@ -4,14 +4,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/*! \class qmlbind_iterator
+/*!
+ * \defgroup iterator_module qmlbind_iterator
  * \brief provides a Java-style iterator for the properties of `qmlbind_value`s.
  *
- * Its methods are defined in \ref iterator.h.
  *
- *
- * The `qmlbind_iterator` constructor takes a `qmlbind_value` as argument.
+ * The `qmlbind_iterator_new()` constructor takes a `qmlbind_value` as argument.
  * After construction, the iterator is located at the very beginning of the sequence of properties.
  * Here's how to iterate over all the properties of a `qmlbind_value`:
  *
@@ -54,10 +52,19 @@ extern "C" {
  * ```
  *
  * libqmlbind's equivalent of [QJSValueIterator](https://doc.qt.io/qt-5/qjsvalueiterator.html).
+
+ */
+
+/** \addtogroup iterator_module
+ *  @{
+ */
+
+/*! \struct qmlbind_iterator
+ * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref iterator_module.
  */
 
 /*! \file iterator.h
- * \brief Contains all methods defined on `qmlbind_iterator`.
+ * \brief Contains all methods defined on \ref iterator_module.
  */
 
 
@@ -112,6 +119,7 @@ QMLBIND_API void qmlbind_iterator_next(qmlbind_iterator *self);
  */
 QMLBIND_API int qmlbind_iterator_has_next(const qmlbind_iterator *self);
 
+/** @}*/
 #ifdef __cplusplus
 }
 #endif

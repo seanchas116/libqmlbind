@@ -5,6 +5,11 @@
 extern "C" {
 #endif
 
+
+/** \addtogroup metaobject_module
+ *  @{
+ */
+
 /*! \file register.h
  * \brief Contains the `qmlbind_register_type` function.
  */
@@ -29,6 +34,7 @@ QMLBIND_API int qmlbind_register_type(
     const char *qmlName
 );
 
+/** @}*/
 #ifdef __cplusplus
 }
 #endif
