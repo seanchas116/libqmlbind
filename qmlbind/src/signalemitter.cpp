@@ -11,7 +11,7 @@ SignalEmitter::SignalEmitter()
 
 void SignalEmitter::emitSignal(const QByteArray &name, int argc, const QJSValue *const *argv) const
 {
-    QSharedPointer<const MetaObject> metaObj = mWrapper->qmlbindMetaObject();
+    std::shared_ptr<const MetaObject> metaObj = mWrapper->qmlbindMetaObject();
     int index = metaObj->exporter()->signalIndexMap().value(name, -1);
     if (index == -1) {
         qWarning() << "no such signal found:" << name;
@@ -35,7 +35,7 @@ void SignalEmitter::emitSignal(const QByteArray &name, int argc, const QJSValue 
     argv_with_retvalue[0] = nullptr;
     std::copy(argv, argv + argc, argv_with_retvalue + 1);
 
-    QMetaObject::activate(mWrapper, metaObj.data(), index,
+    QMetaObject::activate(mWrapper, metaObj.get(), index,
                           const_cast<void**>(reinterpret_cast<const void **>(argv_with_retvalue)));
 }
 

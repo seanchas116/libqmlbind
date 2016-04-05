@@ -45,7 +45,7 @@ void Interface::setProperty(QQmlEngine *engine, const Backref &obj, const QByteA
 
 Backref Interface::newObject(const Backref &klass, SignalEmitter *signalEmitter)
 {
-    return Backref(mHandlers.new_object(klass.backref(), signalEmitter), sharedFromThis());
+    return Backref(mHandlers.new_object(klass.backref(), signalEmitter), shared_from_this());
 }
 
 void Interface::retainObject(qmlbind_backref *ref)

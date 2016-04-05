@@ -9,21 +9,21 @@ class Backref
 {
 public:
     Backref();
-    Backref(qmlbind_backref *backref, const QSharedPointer<Interface> &interface);
+    Backref(qmlbind_backref *backref, const std::shared_ptr<Interface> &interface);
     Backref(const Backref &other);
     ~Backref();
 
     Backref &operator=(const Backref &other);
 
     qmlbind_backref *backref() const { return mBackref; }
-    QSharedPointer<Interface> interface() const { return mInterface; }
+    std::shared_ptr<Interface> interface() const { return mInterface; }
 
 private:
     void retain();
     void release();
 
     qmlbind_backref *mBackref;
-    QSharedPointer<Interface> mInterface;
+    std::shared_ptr<Interface> mInterface;
 };
 
 } // namespace QmlBind

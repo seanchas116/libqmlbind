@@ -13,7 +13,7 @@ namespace QmlBind {
 template <int Index>
 void TypeRegisterer::create(void *memory)
 {
-    QSharedPointer<const MetaObject> metaobj = TypeRegisterer::instance().mMetaObjects[Index];
+    std::shared_ptr<const MetaObject> metaobj = TypeRegisterer::instance().mMetaObjects[Index];
     Backref classRef = metaobj->exporter()->classRef();
     SignalEmitter *emitter = new SignalEmitter();
     Backref ref = classRef.interface()->newObject(classRef, emitter);
@@ -49,7 +49,7 @@ TypeRegisterer::TypeRegisterer() :
     CreationCallbacksSetter<MAX_CALLBACK_COUNT>().set(this);
 }
 
-int TypeRegisterer::registerType(const QSharedPointer<const MetaObject> &metaObject, const char *uri, int versionMajor, int versionMinor, const char *qmlName)
+int TypeRegisterer::registerType(const std::shared_ptr<const MetaObject> &metaObject, const char *uri, int versionMajor, int versionMinor, const char *qmlName)
 {
     int index = mMetaObjects.size();
     if (MAX_CALLBACK_COUNT <= index) {
@@ -65,7 +65,7 @@ int TypeRegisterer::registerType(const QSharedPointer<const MetaObject> &metaObj
     return true;
 }
 
-void TypeRegisterer::registerType(const QSharedPointer<const MetaObject> &metaObject, CreationCallback create, const char *uri, int versionMajor, int versionMinor, const char *qmlName)
+void TypeRegisterer::registerType(const std::shared_ptr<const MetaObject> &metaObject, CreationCallback create, const char *uri, int versionMajor, int versionMinor, const char *qmlName)
 {
     QByteArray className;
     className += metaObject->className();
@@ -83,7 +83,7 @@ void TypeRegisterer::registerType(const QSharedPointer<const MetaObject> &metaOb
         sizeof(Wrapper), create,
         QString(),
 
-        uri, versionMajor, versionMinor, qmlName, metaObject.data(),
+        uri, versionMajor, versionMinor, qmlName, metaObject.get(),
 
         0, 0,
 
