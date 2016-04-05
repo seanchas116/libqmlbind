@@ -5,9 +5,6 @@ compiler:
   - gcc
 env:
   - QT_PPA=beineri/opt-qt56-trusty QT_VERSION=56
-  - QT_PPA=beineri/opt-qt551-trusty QT_VERSION=55
-  - QT_PPA=beineri/opt-qt542-trusty QT_VERSION=54
-  - QT_PPA=beineri/opt-qt532-trusty QT_VERSION=53
   - QT_PPA=beineri/opt-qt521-trusty QT_VERSION=52
 
 before_install:
