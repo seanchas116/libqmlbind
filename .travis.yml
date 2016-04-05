@@ -1,6 +1,11 @@
+sudo: required
+dist: trusty
 language: cpp
 compiler:
-  - clang
+  - gcc
+env:
+  - QT_PPA=beineri/opt-qt56-trusty QT_VERSION=56
+  - QT_PPA=beineri/opt-qt521-trusty QT_VERSION=52
 
 before_install:
   # install doxygen 1.8.11 from binary, because older versions throw errors on markdown code with images inside links
@@ -9,12 +14,12 @@ before_install:
   - export DOXYGEN_VER=doxygen-1.8.11
   - export DOXYGEN_TAR=${DOXYGEN_VER}.linux.bin.tar.gz
   - export DOXYGEN_URL="http://ftp.stack.nl/pub/users/dimitri/${DOXYGEN_TAR}"
-  - sudo apt-add-repository -y ppa:beineri/opt-qt551
+  - sudo apt-add-repository -y ppa:${QT_PPA}
   - sudo apt-get update
-  - sudo apt-get install -y qt55base qt55declarative
+  - sudo apt-get install -y qt${QT_VERSION}base qt${QT_VERSION}declarative
 
 script:
-  - source /opt/qt55/bin/qt55-env.sh
+  - source /opt/qt${QT_VERSION}/bin/qt${QT_VERSION}-env.sh
   - qmake -r QMAKE_CC=$CC QMAKE_CXX=$CXX
   - make
   - cd ./test
