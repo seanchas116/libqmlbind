@@ -1,6 +1,5 @@
 #include "wrapper.h"
 #include "metaobject.h"
-#include "exporter.h"
 
 namespace QmlBind {
 

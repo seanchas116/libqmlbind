@@ -46,7 +46,7 @@ qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *self, int length)
 
 qmlbind_value *qmlbind_engine_new_wrapper(qmlbind_engine *self, const qmlbind_metaobject *metaobj, qmlbind_client_object *object)
 {
-    Wrapper *obj = new Wrapper(*metaobj, Backref(object, (*metaobj)->exporter()->interface()));
+    Wrapper *obj = (*metaobj)->newWrapper(object);
 
     // the generated QJSValue is already has JavaScriptOwnership by default. As it has the only referene to
     // the Wrapper QObject, we need to transfer its ownership to JavaScript, too.
