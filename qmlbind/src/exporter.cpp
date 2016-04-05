@@ -6,10 +6,25 @@
 
 namespace QmlBind {
 
-Exporter::Exporter(const char *className, qmlbind_client_class *classObject, QSharedPointer<Interface> interface) :
+Exporter::Exporter(const char *className, qmlbind_client_class *classObject, qmlbind_interface_handlers interfaceHandlers) :
     mClassObject(classObject),
-    mInterface(interface)
+    mInterfaceHandlers(interfaceHandlers)
 {
+    if (!interfaceHandlers.call_method) {
+        qFatal("qmlbind: call_method handler not specified");
+    }
+    if (!interfaceHandlers.set_property) {
+        qFatal("qmlbind: set_property handler not specified");
+    }
+    if (!interfaceHandlers.get_property) {
+        qFatal("qmlbind: get_property handler not specified");
+    }
+    if (!interfaceHandlers.new_object) {
+        qFatal("qmlbind: new_object handler not specified");
+    }
+    if (!interfaceHandlers.delete_object) {
+        qFatal("qmlbind: delete_object handler not specified");
+    }
     mBuilder.setClassName(className);
 }
 

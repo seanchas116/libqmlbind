@@ -8,9 +8,9 @@ using namespace QmlBind;
 
 extern "C" {
 
-qmlbind_exporter *qmlbind_exporter_new(qmlbind_client_class *classObject, const char *className, const qmlbind_interface *interface)
+qmlbind_exporter *qmlbind_exporter_new(qmlbind_client_class *classObject, const char *className, qmlbind_interface_handlers interfaceHandlers)
 {
-    return newSharedPointer(new Exporter(className, classObject, *interface));
+    return newSharedPointer(new Exporter(className, classObject, interfaceHandlers));
 }
 
 void qmlbind_exporter_release(qmlbind_exporter *exporter)

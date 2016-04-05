@@ -24,9 +24,7 @@ SOURCES += \
     src/api_register.cpp \
     src/exporter.cpp \
     src/api_exporter.cpp \
-    src/api_interface.cpp \
     src/interface.cpp \
-    src/backref.cpp \
     src/signalemitter.cpp \
     src/api_signal_emitter.cpp \
     src/engine.cpp \
@@ -44,7 +42,6 @@ PUBLIC_HEADERS += \
     include/qmlbind.h \
     include/qmlbind/register.h \
     include/qmlbind/exporter.h \
-    include/qmlbind/interface.h \
     include/qmlbind/signal_emitter.h \
     include/qmlbind/plugin.h \
 
@@ -55,7 +52,6 @@ PRIVATE_HEADERS += \
     src/util.h \
     src/exporter.h \
     src/interface.h \
-    src/backref.h \
     src/signalemitter.h \
     src/engine.h
 

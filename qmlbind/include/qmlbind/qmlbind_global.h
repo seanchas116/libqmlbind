@@ -51,7 +51,6 @@ typedef QJSValueIterator qmlbind_iterator;
 typedef QByteArray qmlbind_string;
 
 // Use shared pointer for widely referenced classes
-typedef std::shared_ptr<QmlBind::Interface> qmlbind_interface;
 typedef std::shared_ptr<QmlBind::MetaObject> qmlbind_metaobject;
 typedef std::shared_ptr<QmlBind::Exporter> qmlbind_exporter;
 
@@ -69,7 +68,6 @@ typedef struct qmlbind_value {} qmlbind_value;
 typedef struct qmlbind_iterator {} qmlbind_iterator;
 typedef struct qmlbind_string {} qmlbind_string;
 
-typedef struct qmlbind_interface {} qmlbind_interface;
 typedef struct qmlbind_metaobject {} qmlbind_metaobject;
 typedef struct qmlbind_exporter {} qmlbind_exporter;
 
@@ -116,7 +114,7 @@ typedef struct qmlbind_client_class {} qmlbind_client_class;
  *
  * Those functions need to be defined by libqmlbind's users.
  *
- * This struct is needed to construct new `qmlbind_interface`s. All function pointers need to be defined, a nullptr is
+ * This struct is needed to construct new `qmlbind_exporter`s. All function pointers need to be defined, a nullptr is
  * not a valid value here.
  */
 typedef struct qmlbind_interface_handlers {

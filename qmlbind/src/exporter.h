@@ -19,15 +19,14 @@ public:
         QByteArray name;
     };
 
-    Exporter(const char *className, qmlbind_client_class* classObject, QSharedPointer<Interface> interface);
+    Exporter(const char *className, qmlbind_client_class* classObject, qmlbind_interface_handlers interfaceHandlers);
 
     void addMethod(const char *name, int arity);
     void addSignal(const char *name, const QList<QByteArray> &args);
     void addProperty(const char *name, const char *notifier);
 
     qmlbind_client_class *classObject() const { return mClassObject; }
-    std::shared_ptr<Interface> interface() const { return mClassRef.interface(); }
-    QSharedPointer<Interface> interface() const { return mInterface; }
+    qmlbind_interface_handlers interfaceHandlers() const { return mInterfaceHandlers; }
 
     const QMetaObjectBuilder &metaObjectBuilder() const { return mBuilder; }
     QHash<int, Method> methodMap() const { return mMethodMap; }
@@ -37,7 +36,11 @@ public:
 private:
 
     qmlbind_client_class *mClassObject;
+<<<<<<< HEAD
     std::shared_ptr<Interface> mInterface;
+=======
+    qmlbind_interface_handlers mInterfaceHandlers;
+>>>>>>> 33e9708... Remove qmlbind_interface from the public interface.
     QHash<int, Method> mMethodMap;
     QHash<int, Property> mPropertyMap;
     QHash<QByteArray, int> mSignalIndexMap;

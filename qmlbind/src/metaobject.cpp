@@ -2,7 +2,6 @@
 #include "exporter.h"
 #include "interface.h"
 #include "wrapper.h"
-#include "backref.h"
 #include "signalemitter.h"
 #include <QJSValue>
 #include <QMetaMethod>
@@ -26,14 +25,13 @@ MetaObject::~MetaObject()
 Wrapper *MetaObject::newWrapper(qmlbind_client_object *object) const {
     // TODO: does this really work without doing some signal emmiting?
     // I think the only use case for this is setting context properties e.g. on the global object to these values.
-    return new Wrapper(shared_from_this(), Backref(object, mExporter->interface()));
+    return new Wrapper(shared_from_this(), Interface(object, mExporter->interfaceHandlers()));
 }
 
 Wrapper *MetaObject::newObject(void *memory) const {
     SignalEmitter *emitter = new SignalEmitter();
-    qmlbind_client_object *object = mExporter->interface()->newObject(mExporter->classObject(), emitter);
 
-    Wrapper *wrapper = new (memory) Wrapper(sharedFromThis(), Backref(object, mExporter->interface()));
+    Wrapper *wrapper = new (memory) Wrapper(sharedFromThis(), Interface(mExporter->classObject(), mExporter->interfaceHandlers(), emitter));
     emitter->setWrapper(wrapper);
     return wrapper;
 }
@@ -45,20 +43,17 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
         return index;
     }
 
-    Backref ref = static_cast<Wrapper *>(object)->backref();
+    Wrapper *wrapper = static_cast<Wrapper *>(object);
 
     QQmlContext *context = QQmlEngine::contextForObject(object);
     QQmlEngine *engine = context ? context->engine() : 0;
-
-    std::shared_ptr<Interface> interface = ref.interface();
-    qmlbind_client_object *clientObject = ref.backref();
 
     switch(call) {
     case QMetaObject::ReadProperty:
     {
         int count = propertyCount() - propertyOffset();
         if (index < count) {
-            *static_cast<QJSValue *>(argv[0]) = interface->getProperty(engine, clientObject, mExporter->propertyMap()[index].name);
+            *static_cast<QJSValue *>(argv[0]) = wrapper->interface().getProperty(engine, mExporter->propertyMap()[index].name);
         }
         index -= count;
         break;
@@ -67,7 +62,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
     {
         int count = propertyCount() - propertyOffset();
         if (index < count) {
-            interface->setProperty(engine, clientObject, mExporter->propertyMap()[index].name, *static_cast<QJSValue *>(argv[0]));
+            wrapper->interface().setProperty(engine, mExporter->propertyMap()[index].name, *static_cast<QJSValue *>(argv[0]));
         }
         index -= count;
         break;
@@ -81,7 +76,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
             }
             else {
                 Exporter::Method method = mExporter->methodMap()[index];
-                *static_cast<QJSValue *>(argv[0]) = interface->callMethod(engine, clientObject, method.name, method.arity, reinterpret_cast<QJSValue **>(argv + 1));
+                *static_cast<QJSValue *>(argv[0]) = wrapper->interface().callMethod(engine, method.name, method.arity, reinterpret_cast<QJSValue **>(argv + 1));
             }
         }
         index -= count;

@@ -25,14 +25,14 @@ extern "C" {
  *
  * \param className is used for registering the metaobject created with this exporter in the metaobject system.
  *
- * \param qmlbind_interface is copied, so it does not need to outlive `qmlbind_exporter`s created with it and can
- * be destroyed as soon as all exporters are created.
- *
+ * \param qmlbind_interface_handlers is used to create, use and delete instances of the metaobject to build.
+ * You can either create a single, generic one and pass that to every new \ref qmlbind_exporter_new, or create specific
+ * ones for each exporter.
  */
 QMLBIND_API qmlbind_exporter *qmlbind_exporter_new(
     qmlbind_client_class *classObject,
     const char *className,
-    const qmlbind_interface *interface
+    qmlbind_interface_handlers interfaceHandlers
 );
 
 /*!

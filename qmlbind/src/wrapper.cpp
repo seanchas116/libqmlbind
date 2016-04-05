@@ -3,9 +3,9 @@
 
 namespace QmlBind {
 
-Wrapper::Wrapper(const std::shared_ptr<const MetaObject> &metaObject, const Backref &ref) :
+Wrapper::Wrapper(const std::shared_ptr<const MetaObject> &metaObject, Interface&& interface) :
     mMetaObject(metaObject),
-    mRef(ref)
+    mInterface(interface)
 {
 }
 

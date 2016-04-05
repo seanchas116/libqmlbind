@@ -1,75 +1,45 @@
 #include "interface.h"
-#include "backref.h"
 #include "engine.h"
 #include <QDebug>
 
 namespace QmlBind {
 
-Interface::Interface(qmlbind_interface_handlers handlers) :
+Interface::Interface(qmlbind_client_class* classObject, qmlbind_interface_handlers handlers, SignalEmitter *signalEmitter) :
+    mObject(nullptr),
     mHandlers(handlers)
 {
-    if (!handlers.call_method) {
-        qFatal("qmlbind: call_method handler not specified");
-    }
-    if (!handlers.set_property) {
-        qFatal("qmlbind: set_property handler not specified");
-    }
-    if (!handlers.get_property) {
-        qFatal("qmlbind: get_property handler not specified");
-    }
-    if (!handlers.new_object) {
-        qFatal("qmlbind: new_object handler not specified");
-    }
-    if (!handlers.delete_object) {
-        qFatal("qmlbind: delete_object handler not specified");
-    }
+    mObject = mHandlers.new_object(classObject, signalEmitter);
 }
 
-QJSValue Interface::callMethod(QQmlEngine *engine, qmlbind_client_object *object, const QByteArray &method, int argc, QJSValue **argv) const
+Interface::Interface(qmlbind_client_object* object, qmlbind_interface_handlers handlers) :
+    mObject(object),
+    mHandlers(handlers)
 {
-    QScopedPointer<const QJSValue> result(mHandlers.call_method(qobject_cast<Engine *>(engine), object, method, argc, argv));
+}
+
+Interface::~Interface()
+{
+    mHandlers.delete_object(mObject);
+}
+
+
+QJSValue Interface::callMethod(QQmlEngine *engine, const QByteArray &method, int argc, QJSValue **argv) const
+{
+    QScopedPointer<const QJSValue> result(mHandlers.call_method(qobject_cast<Engine *>(engine), mObject, method, argc, argv));
     return *result;
 }
 
-QJSValue Interface::getProperty(QQmlEngine *engine, qmlbind_client_object *object, const QByteArray &property) const
+QJSValue Interface::getProperty(QQmlEngine *engine, const QByteArray &property) const
 {
-    QScopedPointer<const QJSValue> result(mHandlers.get_property(qobject_cast<Engine *>(engine), object, property));
+    QScopedPointer<const QJSValue> result(mHandlers.get_property(qobject_cast<Engine *>(engine), mObject, property));
     return *result;
 }
 
-void Interface::setProperty(QQmlEngine *engine, qmlbind_client_object *object, const QByteArray &property, const QJSValue &value) const
+void Interface::setProperty(QQmlEngine *engine, const QByteArray &property, const QJSValue &value) const
 {
     QJSValue val = value;
-    mHandlers.set_property(qobject_cast<Engine *>(engine), object, property, &val);
+    mHandlers.set_property(qobject_cast<Engine *>(engine), mObject, property, &val);
 }
 
-qmlbind_client_object *Interface::newObject(qmlbind_client_class *classObject, SignalEmitter *signalEmitter)
-{
-    return mHandlers.new_object(classObject, signalEmitter);
-}
-
-void Interface::retainObject(qmlbind_client_object *object)
-{
-    QMutexLocker locker(&mRefCountMutex);
-
-    if (mRefCount.contains(object)) {
-        ++mRefCount[object];
-    }
-    else {
-        mRefCount[object] = 1;
-    }
-}
-
-void Interface::releaseObject(qmlbind_client_object *object)
-{
-    QMutexLocker locker(&mRefCountMutex);
-
-    Q_ASSERT(mRefCount.contains(object));
-    if (--mRefCount[object] == 0) {
-        mHandlers.delete_object(object);
-        mRefCount.remove(object);
-    }
-}
 
 }
-
