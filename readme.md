@@ -31,8 +31,8 @@ libqmlbind is a C library for creating QML bindings for other languages easily t
 
 ## How to build
 ### Requirements
-* A C++11-capable compiler: libqmlbind is tested against `clang 3.4`.
-* Qt5: libqmlbind is tested against `Qt 5.5.1`. Everything `>= 5.2` might work, too.
+* A C++11-capable compiler: libqmlbind is tested against `gcc 4.8.4`.
+* Qt5: libqmlbind is tested against `Qt 5.6` and `Qt 5.2.1`.
 
 libqmlbind uses Qt's private headers. To quote the qmake warning:
 
