@@ -4,7 +4,7 @@
 
 namespace QmlBind {
 
-Wrapper::Wrapper(const QSharedPointer<const MetaObject> &metaObject, const Backref &ref) :
+Wrapper::Wrapper(const std::shared_ptr<const MetaObject> &metaObject, const Backref &ref) :
     mMetaObject(metaObject),
     mRef(ref)
 {
@@ -12,7 +12,7 @@ Wrapper::Wrapper(const QSharedPointer<const MetaObject> &metaObject, const Backr
 
 const QMetaObject *Wrapper::metaObject() const
 {
-    return mMetaObject.data();
+    return mMetaObject.get();
 }
 
 int Wrapper::qt_metacall(QMetaObject::Call call, int index, void **argv)

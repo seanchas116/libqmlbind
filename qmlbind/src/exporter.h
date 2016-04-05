@@ -25,7 +25,7 @@ public:
     void addMethod(const char *name, int arity);
     void addSignal(const char *name, const QList<QByteArray> &args);
     void addProperty(const char *name, const char *notifier);
-    QSharedPointer<Interface> interface() const { return mClassRef.interface(); }
+    std::shared_ptr<Interface> interface() const { return mClassRef.interface(); }
 
     Backref classRef() const { return mClassRef; }
     const QMetaObjectBuilder &metaObjectBuilder() const { return mBuilder; }

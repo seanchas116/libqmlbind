@@ -10,9 +10,9 @@
 
 namespace QmlBind {
 
-MetaObject::MetaObject(const QSharedPointer<const Exporter> &exporter) :
+MetaObject::MetaObject(const std::shared_ptr<const Exporter> &exporter) :
     mExporter(exporter),
-    mPrototype(exporter->metaObjectBuilder().toMetaObject())
+    mPrototype(exporter->metaObjectBuilder().toMetaObject(), free)
 {
     d = mPrototype->d;
 }
@@ -33,8 +33,8 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
     QQmlContext *context = QQmlEngine::contextForObject(object);
     QQmlEngine *engine = context ? context->engine() : 0;
 
-    QSharedPointer<const Exporter> exporter = mExporter;
-    QSharedPointer<Interface> interface = ref.interface();
+    std::shared_ptr<const Exporter> exporter = mExporter;
+    std::shared_ptr<Interface> interface = ref.interface();
 
     switch(call) {
     case QMetaObject::ReadProperty:

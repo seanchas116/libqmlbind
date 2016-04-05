@@ -14,16 +14,16 @@ class Wrapper;
 class MetaObject : public QMetaObject
 {
 public:
-    MetaObject(const QSharedPointer<const Exporter> &exporter);
+    MetaObject(const std::shared_ptr<const Exporter> &exporter);
     ~MetaObject();
 
-    QSharedPointer<const Exporter> exporter() const { return mExporter; }
+    std::shared_ptr<const Exporter> exporter() const { return mExporter; }
     int metaCall(QObject *object, Call call, int index, void **argv) const;
 
 private:
 
-    QSharedPointer<const Exporter> mExporter;
-    QScopedPointer<QMetaObject, QScopedPointerPodDeleter> mPrototype;
+    std::shared_ptr<const Exporter> mExporter;
+    std::shared_ptr<QMetaObject> mPrototype;
 };
 
 } // namespace QmlBind
