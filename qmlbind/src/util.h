@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QSharedPointer>
+#include <memory>
 
 namespace QmlBind {
 
