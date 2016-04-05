@@ -182,7 +182,7 @@ qmlbind_client_object *qmlbind_value_unwrap(const qmlbind_value *self)
     if (!obj) {
         return nullptr;
     }
-    return obj->interface().clientObject();
+    return obj->clientObject();
 }
 
 static QJSValueList pack_args(int argc, const qmlbind_value *const *argv)

@@ -1,5 +1,4 @@
 #include "exporter.h"
-#include "interface.h"
 #include <stdexcept>
 #include <QVector>
 #include <QDebug>

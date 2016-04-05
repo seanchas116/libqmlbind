@@ -495,6 +495,8 @@ QMLBIND_API qmlbind_value *qmlbind_value_call_with_instance(
 /*!
  * \brief If this `qmlbind_value` is a wrapper, returns the `qmlbind_client_object` inside the wrapper; otherwise, returns 0.
  *
+ * Does not transfer ownership of the unwrapped `qmlbind_client_object`.
+ *
  * libqmlbind's rough equivalent of [QJSValue::toQObject()](https://doc.qt.io/qt-5/qjsvalue.html#toQObject).
  */
 QMLBIND_API qmlbind_client_object *qmlbind_value_unwrap(const qmlbind_value *self);

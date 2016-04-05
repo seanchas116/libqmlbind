@@ -24,7 +24,6 @@ SOURCES += \
     src/api_register.cpp \
     src/exporter.cpp \
     src/api_exporter.cpp \
-    src/interface.cpp \
     src/signalemitter.cpp \
     src/api_signal_emitter.cpp \
     src/engine.cpp \
@@ -51,7 +50,6 @@ PRIVATE_HEADERS += \
     src/typeregisterer.h \
     src/util.h \
     src/exporter.h \
-    src/interface.h \
     src/signalemitter.h \
     src/engine.h
 
