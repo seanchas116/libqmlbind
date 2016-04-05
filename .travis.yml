@@ -1,15 +1,17 @@
+sudo: required
+dist: trusty
 language: cpp
 compiler:
-  - clang
+  - gcc
 
 before_install:
   # doxygen binary install based on https://github.com/gadomski/fgt/blob/master/scripts/gh-pages.sh
   - export DOXYGEN_VER=doxygen-1.8.11
   - export DOXYGEN_TAR=${DOXYGEN_VER}.linux.bin.tar.gz
   - export DOXYGEN_URL="http://ftp.stack.nl/pub/users/dimitri/${DOXYGEN_TAR}"
-  - sudo apt-add-repository -y ppa:beineri/opt-qt551
+  - sudo apt-add-repository -y ppa:beineri/opt-qt56-trusty
   - sudo apt-get update
-  - sudo apt-get install -y qt55base qt55declarative
+  - sudo apt-get install -y qt56base qt56declarative
 
 script:
   - source /opt/qt55/bin/qt55-env.sh
