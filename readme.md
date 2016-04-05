@@ -70,7 +70,8 @@ and then build it:
 From the main directory:
 
 ```
-> ./test/test -platform offscreen
+> cd test
+> ./test -platform offscreen
 ```
 
 ### Build the Documentation
