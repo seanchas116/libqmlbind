@@ -20,6 +20,8 @@ public:
 
     Exporter(const char *className, qmlbind_client_class* classObject, qmlbind_interface_handlers interfaceHandlers);
 
+    static QByteArray methodSignature(const char *name, int arity);
+
     void addMethod(const char *name, int arity);
     void addSignal(const char *name, const QList<QByteArray> &args);
     void addProperty(const char *name, const char *notifier);
@@ -27,7 +29,7 @@ public:
     qmlbind_client_class *classObject() const { return mClassObject; }
     qmlbind_interface_handlers interfaceHandlers() const { return mInterfaceHandlers; }
 
-    const QMetaObjectBuilder &metaObjectBuilder() const { return mBuilder; }
+    std::unique_ptr<QMetaObject, decltype(&free)> toMetaObject() const;
     QHash<int, Method> methodMap() const { return mMethodMap; }
     QHash<int, Property> propertyMap() const { return mPropertyMap; }
     QHash<QByteArray, int> signalIndexMap() const { return mSignalIndexMap; }

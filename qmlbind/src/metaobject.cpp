@@ -9,16 +9,13 @@
 
 namespace QmlBind {
 
-MetaObject::MetaObject(const std::shared_ptr<const Exporter> &exporter) :
-    mExporter(exporter),
-    mPrototype(exporter->metaObjectBuilder().toMetaObject(), free)
+MetaObject::MetaObject(std::unique_ptr<const Exporter> &&exporter, std::unique_ptr<QMetaObject, decltype(&free)> prototype) :
+    mExporter(std::move(exporter)),
+    mPrototype(std::move(prototype))
 {
     d = mPrototype->d;
 }
 
-MetaObject::~MetaObject()
-{
-}
 
 Wrapper *MetaObject::newWrapper(qmlbind_client_object *object) const {
     // TODO: does this really work without doing some signal emmiting?
@@ -28,6 +25,10 @@ Wrapper *MetaObject::newWrapper(qmlbind_client_object *object) const {
 
 Wrapper *MetaObject::newObject(void *memory) const {
     return new (memory) Wrapper(shared_from_this(), mExporter->classObject(), mExporter->interfaceHandlers());
+}
+
+int MetaObject::indexOfSignalName(const char *name) const {
+    return mExporter->signalIndexMap().value(name, -1);
 }
 
 int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) const

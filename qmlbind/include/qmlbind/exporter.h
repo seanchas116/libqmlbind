@@ -18,10 +18,10 @@ extern "C" {
 /*!
  * \brief Creates a new `qmlbind_exporter`.
  *
- * \param classObject will be given as parameter to the `new_object` function of the interface. You can use it to hand over
- * the equivalent of class objects in your language to implement a generic `new_object` function. If you don't need it,
- * just hand over a nullpointer. This function does not take ownership of the classObject, but it still needs to be valid
- * for as long as new objects are created (i.e. the whole application lifetime).
+ * \param classObject will be given as parameter to the `new_object` function of the interface. You can use it to hand
+ * over the equivalent of class objects in your language to implement a generic `new_object` function. If you don't need
+ * it, just hand over a nullpointer. This function does not take ownership of the classObject, but it still needs to be
+ * valid for as long as new objects are created (i.e. the whole application lifetime).
  *
  * \param className is used for registering the metaobject created with this exporter in the metaobject system.
  *
@@ -36,9 +36,14 @@ QMLBIND_API qmlbind_exporter *qmlbind_exporter_new(
 );
 
 /*!
- * \brief Destroys this `qmlbind_exporter`.
+ * \brief Finalizes and transforms this `qmlbind_exporter` to create a new `qmlbind_metaobject`.
+ *
+ * Because the calling code does not own the exporter anymore, no new methods etc. can be added after this call.
+ *
+ * Takes ownership of the given `qmlbind_exporter`.
+ * Ownership of the returned `qmlbind_metaobject` is transfered to the caller.
  */
-QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter *exporter);
+QMLBIND_API qmlbind_metaobject *qmlbind_exporter_into_metaobject(qmlbind_exporter *self);
 
 /*!
  * \brief Adds a new method `name` for the resulting metaobject with `arity` number of parameters.
@@ -49,7 +54,7 @@ QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter *exporter);
  * libqmlbind's equivalent of [QObject's Q_INVOKABLE](https://doc.qt.io/qt-5/qobject.html#Q_INVOKABLE).
  */
 QMLBIND_API void qmlbind_exporter_add_method(
-    qmlbind_exporter *exporter,
+    qmlbind_exporter *self,
     const char *name,
     int arity
 );
@@ -64,10 +69,10 @@ QMLBIND_API void qmlbind_exporter_add_method(
  * [Signal and Handler Event System](https://doc.qt.io/qt-5/qtqml-syntax-signals.html).
  */
 QMLBIND_API void qmlbind_exporter_add_signal(
-    qmlbind_exporter *exporter,
+    qmlbind_exporter *self,
     const char *name,
     int arity,
-    const char **params
+    const char *const *params
 );
 
 /*!
@@ -87,7 +92,7 @@ QMLBIND_API void qmlbind_exporter_add_signal(
  * libqmlbind's equivalent of [Q_PROPERTY](https://doc.qt.io/qt-5/properties.html), always using READ, WRITE and NOTIFY.
  */
 QMLBIND_API void qmlbind_exporter_add_property(
-    qmlbind_exporter *exporter,
+    qmlbind_exporter *self,
     const char *name,
     const char *notifierSignal
 );

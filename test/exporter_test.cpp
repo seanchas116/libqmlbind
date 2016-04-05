@@ -144,8 +144,7 @@ TEST_CASE("exporter")
     qmlbind_exporter_add_method(exporter, "incrementBy", 1);
     qmlbind_exporter_add_property(exporter, "value", "valueChanged");
 
-    auto metaobject = qmlbind_metaobject_new(exporter);
-    qmlbind_exporter_release(exporter);
+    auto metaobject = qmlbind_exporter_into_metaobject(exporter);
 
     SECTION("generated metaobject")
     {

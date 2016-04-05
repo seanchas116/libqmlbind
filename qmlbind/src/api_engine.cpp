@@ -2,7 +2,6 @@
 #include "engine.h"
 #include "metaobject.h"
 #include "wrapper.h"
-#include "util.h"
 #include <QQmlEngine>
 #include <QDebug>
 #include <QApplication>

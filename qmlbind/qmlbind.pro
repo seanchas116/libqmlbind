@@ -48,7 +48,6 @@ PRIVATE_HEADERS += \
     src/metaobject.h \
     src/wrapper.h \
     src/typeregisterer.h \
-    src/util.h \
     src/exporter.h \
     src/signalemitter.h \
     src/engine.h

@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.2.0] - Unreleased ##
 ### Added ###
+- Add `qmlbind_exporter_into_metaobject()` function transform an exporter directly into a metaobject.
 
 ### Changed ###
 - Rename `qmlbind_value_get_backref()` to `qmlbind_value_unwrap()`, as it's the opposite operation of
@@ -20,6 +21,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   `qmlbind_exporter`.
 - Interface and its atomic reference counting mechanism is also removed from the internals, which might speed
   things up a little as no synchronization is needed anymore.
+- Remove `qmlbind_exporter_release()` and `qmlbind_metaobject_new()`. Use `qmlbind_exporter_into_metaobject()` instead,
+  which take ownership of the exporter.
 
 ### Fixed ###
 

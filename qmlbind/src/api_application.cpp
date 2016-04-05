@@ -1,5 +1,4 @@
 #include "qmlbind/application.h"
-#include "util.h"
 #include <QApplication>
 #include <QTimer>
 #include <QVector>

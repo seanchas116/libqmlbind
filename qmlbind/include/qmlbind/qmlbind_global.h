@@ -50,9 +50,9 @@ typedef QJSValue qmlbind_value;
 typedef QJSValueIterator qmlbind_iterator;
 typedef QByteArray qmlbind_string;
 
-// Use shared pointer for widely referenced classes
+typedef QmlBind::Exporter qmlbind_exporter;
+// Use shared pointer as metaobjects are widely-referenced classes
 typedef std::shared_ptr<QmlBind::MetaObject> qmlbind_metaobject;
-typedef std::shared_ptr<QmlBind::Exporter> qmlbind_exporter;
 
 typedef QmlBind::SignalEmitter qmlbind_signal_emitter;
 

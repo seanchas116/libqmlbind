@@ -12,7 +12,7 @@ SignalEmitter::SignalEmitter()
 void SignalEmitter::emitSignal(const QByteArray &name, int argc, const QJSValue *const *argv) const
 {
     std::shared_ptr<const MetaObject> metaObj = mWrapper->qmlbindMetaObject();
-    int index = metaObj->indexOfSignal(name);
+    int index = metaObj->indexOfSignalName(name);
 
     if (index == -1) {
         qWarning() << "no such signal found:" << name;
