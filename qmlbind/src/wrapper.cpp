@@ -15,7 +15,7 @@ Wrapper::Wrapper(const std::shared_ptr<const MetaObject> &metaObject,
 {
 }
 
-Wrapper::Wrapper(const QSharedPointer<const MetaObject> &metaObject,
+Wrapper::Wrapper(const std::shared_ptr<const MetaObject> &metaObject,
                  qmlbind_client_class *classObject, qmlbind_interface_handlers handlers) :
     mMetaObject(metaObject),
     mClientObject(nullptr),

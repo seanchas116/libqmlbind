@@ -1,7 +1,6 @@
 #include "qmlbind/application.h"
 #include "util.h"
 #include <QApplication>
-#include <QSharedPointer>
 #include <QTimer>
 #include <QVector>
 #include <functional>

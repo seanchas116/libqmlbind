@@ -5,7 +5,6 @@
 #include <QMetaMethod>
 #include <QByteArray>
 #include <QDebug>
-#include <QSharedPointer>
 #include <string.h>
 #include <functional>
 
@@ -150,7 +149,7 @@ TEST_CASE("exporter")
 
     SECTION("generated metaobject")
     {
-        auto metaobj = *reinterpret_cast<QSharedPointer<QMetaObject> *>(metaobject);
+        auto metaobj = *reinterpret_cast<std::shared_ptr<QMetaObject> *>(metaobject);
 
         auto methodCount = metaobj->methodCount() - metaobj->methodOffset();
         auto propertyCount = metaobj->propertyCount() - metaobj->propertyOffset();

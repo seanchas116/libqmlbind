@@ -1,8 +1,6 @@
 #pragma once
 
 #include "qmlbind/qmlbind_global.h"
-#include <QScopedPointer>
-#include <QSharedPointer>
 #include <private/qobject_p.h>
 
 namespace QmlBind {

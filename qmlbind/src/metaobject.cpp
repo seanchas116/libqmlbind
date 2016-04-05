@@ -27,7 +27,7 @@ Wrapper *MetaObject::newWrapper(qmlbind_client_object *object) const {
 }
 
 Wrapper *MetaObject::newObject(void *memory) const {
-    return new (memory) Wrapper(sharedFromThis(), mExporter->classObject(), mExporter->interfaceHandlers());
+    return new (memory) Wrapper(shared_from_this(), mExporter->classObject(), mExporter->interfaceHandlers());
 }
 
 int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) const

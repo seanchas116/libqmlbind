@@ -2,7 +2,6 @@
 
 #include "qmlbind/qmlbind_global.h"
 #include <private/qmetaobjectbuilder_p.h>
-#include <QSharedPointer>
 
 namespace QmlBind {
 
@@ -36,11 +35,7 @@ public:
 private:
 
     qmlbind_client_class *mClassObject;
-<<<<<<< HEAD
-    std::shared_ptr<Interface> mInterface;
-=======
     qmlbind_interface_handlers mInterfaceHandlers;
->>>>>>> 33e9708... Remove qmlbind_interface from the public interface.
     QHash<int, Method> mMethodMap;
     QHash<int, Property> mPropertyMap;
     QHash<QByteArray, int> mSignalIndexMap;

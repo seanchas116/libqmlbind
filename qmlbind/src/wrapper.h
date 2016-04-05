@@ -2,7 +2,6 @@
 
 #include "qmlbind/qmlbind_global.h"
 #include <QObject>
-#include <QSharedPointer>
 
 class QQmlEngine;
 
