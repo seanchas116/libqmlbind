@@ -12,14 +12,14 @@ class Wrapper;
 class Backref;
 class SignalEmitter;
 
-class MetaObject : public QMetaObject, public QEnableSharedFromThis<MetaObject>
+class MetaObject : public QMetaObject, public std::enable_shared_from_this<MetaObject>
 {
 public:
     MetaObject(const std::shared_ptr<const Exporter> &exporter);
     ~MetaObject();
 
     Wrapper *newWrapper(qmlbind_client_object *object) const;
-    Backref newObject(SignalEmitter *emitter) const;
+    Wrapper *newObject(void *memory) const;
 
     int metaCall(QObject *object, Call call, int index, void **argv) const;
 

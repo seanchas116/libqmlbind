@@ -1,7 +1,6 @@
 #pragma once
 
 #include "qmlbind/qmlbind_global.h"
-#include "backref.h"
 #include <private/qmetaobjectbuilder_p.h>
 #include <QSharedPointer>
 

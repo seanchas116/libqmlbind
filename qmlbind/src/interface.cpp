@@ -43,9 +43,9 @@ void Interface::setProperty(QQmlEngine *engine, qmlbind_client_object *object, c
     mHandlers.set_property(qobject_cast<Engine *>(engine), object, property, &val);
 }
 
-Backref Interface::newObject(qmlbind_client_class *classObject, SignalEmitter *signalEmitter)
+qmlbind_client_object *Interface::newObject(qmlbind_client_class *classObject, SignalEmitter *signalEmitter)
 {
-    return Backref(mHandlers.new_object(classObject, signalEmitter), shared_from_this());
+    return mHandlers.new_object(classObject, signalEmitter);
 }
 
 void Interface::retainObject(qmlbind_client_object *object)

@@ -1,6 +1,7 @@
 #include "signalemitter.h"
 #include "metaobject.h"
 #include <QDebug>
+#include <QMetaMethod>
 
 namespace QmlBind {
 

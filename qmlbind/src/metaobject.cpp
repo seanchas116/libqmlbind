@@ -3,6 +3,7 @@
 #include "interface.h"
 #include "wrapper.h"
 #include "backref.h"
+#include "signalemitter.h"
 #include <QJSValue>
 #include <QMetaMethod>
 #include <QDebug>
@@ -23,11 +24,18 @@ MetaObject::~MetaObject()
 }
 
 Wrapper *MetaObject::newWrapper(qmlbind_client_object *object) const {
-    return new Wrapper(sharedFromThis(), Backref(object, mExporter->interface()));
+    // TODO: does this really work without doing some signal emmiting?
+    // I think the only use case for this is setting context properties e.g. on the global object to these values.
+    return new Wrapper(shared_from_this(), Backref(object, mExporter->interface()));
 }
 
-Backref MetaObject::newObject(SignalEmitter *emitter) const {
-    return mExporter->interface()->newObject(mExporter->classObject(), emitter);
+Wrapper *MetaObject::newObject(void *memory) const {
+    SignalEmitter *emitter = new SignalEmitter();
+    qmlbind_client_object *object = mExporter->interface()->newObject(mExporter->classObject(), emitter);
+
+    Wrapper *wrapper = new (memory) Wrapper(sharedFromThis(), Backref(object, mExporter->interface()));
+    emitter->setWrapper(wrapper);
+    return wrapper;
 }
 
 int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) const
