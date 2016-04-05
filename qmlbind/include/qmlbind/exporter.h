@@ -73,14 +73,18 @@ QMLBIND_API void qmlbind_exporter_add_signal(
 /*!
  * \brief Adds a new property `name` for the resulting metaobject, which should emit `notifierSignal` on changes.
  *
- * Properties are always configured as readable and writable. Read & write operations will be executed through
+ * Properties in libqmlbind are always readable and writable from QML code, and must have a notifierSignal for changes.
+ * Other possibilities, like a read-only or a constant proprerty, are not yet explicitly supported. But of course you
+ * could can use a signal that is never emitted and refrain from writing to the properties…
+ *
+ * Read & write operations will be executed through
  * `qmlbind_interface_handlers`' `read_property` & `write_property` functions.
  *
  * \param notifySignal has to be a valid signal name, which means neither a nullptr nor an empty string. The
  * signal should be added with `qmlbind_exporter_add_signal` in advance, or else a warning will be issued.
  * Notify signals are usually named `<propertyname>Changed` in Qt.
  *
- * libqmlbind's equivalent of [Q_PROPERTY](https://doc.qt.io/qt-5/properties.html).
+ * libqmlbind's equivalent of [Q_PROPERTY](https://doc.qt.io/qt-5/properties.html), always using READ, WRITE and NOTIFY.
  */
 QMLBIND_API void qmlbind_exporter_add_property(
     qmlbind_exporter *exporter,
