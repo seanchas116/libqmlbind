@@ -21,7 +21,8 @@
 // but use opaque structs if this is another project and only libqmlbind's header files are included.
 #ifdef QMLBIND_LIBRARY
 
-template <typename T> class QSharedPointer;
+#include <memory>
+
 class QApplication;
 class QQmlComponent;
 class QJSValue;
@@ -50,9 +51,9 @@ typedef QJSValueIterator qmlbind_iterator;
 typedef QByteArray qmlbind_string;
 
 // Use shared pointer for widely referenced classes
-typedef QSharedPointer<QmlBind::Interface> qmlbind_interface;
-typedef QSharedPointer<QmlBind::MetaObject> qmlbind_metaobject;
-typedef QSharedPointer<QmlBind::Exporter> qmlbind_exporter;
+typedef std::shared_ptr<QmlBind::Interface> qmlbind_interface;
+typedef std::shared_ptr<QmlBind::MetaObject> qmlbind_metaobject;
+typedef std::shared_ptr<QmlBind::Exporter> qmlbind_exporter;
 
 typedef QmlBind::SignalEmitter qmlbind_signal_emitter;
 

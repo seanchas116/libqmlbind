@@ -7,7 +7,7 @@ Backref::Backref()
 {
 }
 
-Backref::Backref(qmlbind_backref *backref, const QSharedPointer<Interface> &interface) :
+Backref::Backref(qmlbind_backref *backref, const std::shared_ptr<Interface> &interface) :
     mBackref(backref),
     mInterface(interface)
 {

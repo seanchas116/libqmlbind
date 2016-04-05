@@ -12,17 +12,17 @@ class MetaObject;
 class Wrapper : public QObject
 {
 public:
-    Wrapper(const QSharedPointer<const MetaObject> &metaObject, const Backref &ref);
+    Wrapper(const std::shared_ptr<const MetaObject> &metaObject, const Backref &ref);
 
     const QMetaObject *metaObject() const Q_DECL_OVERRIDE;
     int qt_metacall(QMetaObject::Call call, int index, void **argv) Q_DECL_OVERRIDE;
 
     Backref backref() { return mRef; }
-    const QSharedPointer<const MetaObject> qmlbindMetaObject() const { return mMetaObject; }
+    const std::shared_ptr<const MetaObject> qmlbindMetaObject() const { return mMetaObject; }
 
 private:
 
-    QSharedPointer<const MetaObject> mMetaObject;
+    std::shared_ptr<const MetaObject> mMetaObject;
     Backref mRef;
 };
 

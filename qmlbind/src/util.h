@@ -5,9 +5,9 @@
 namespace QmlBind {
 
 template <typename T>
-QSharedPointer<T> *newSharedPointer(T *ptr)
+std::shared_ptr<T> *newSharedPointer(T *ptr)
 {
-    return new QSharedPointer<T>(ptr);
+    return new std::shared_ptr<T>(ptr);
 }
 
 }
