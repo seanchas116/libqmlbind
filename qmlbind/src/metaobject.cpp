@@ -196,8 +196,7 @@ void MetaObject::setupData(const QByteArray &className)
     // methods
     QList<MetadataBuilder::Placeholder> paramPlaceholders;
 
-    for (auto i = 0; i < mMethods.size(); ++i) {
-        const auto &method = mMethods[i];
+    for (const auto &method : mMethods) {
         metadata << strData.add(method.name); // name
         metadata << method.params.size(); // argc
         paramPlaceholders << metadata.makePlaceholder(); // offset of parameters
