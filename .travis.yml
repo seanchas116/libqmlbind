@@ -4,15 +4,13 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
-      compiler: gcc
     - os: osx
-      compiler: clang
 
 before_install:
   - ./travis/install-deps.sh
 
 script:
-  - qmake -r QMAKE_CC=$CC QMAKE_CXX=$CXX
+  - qmake -r
   - make
   - cd ./test
   - ./test -platform offscreen
