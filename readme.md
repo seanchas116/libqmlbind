@@ -44,13 +44,6 @@ You can install libqmlbind via [Homebrew](http://brew.sh/) on Mac. (using [a cus
 * A C++11-capable compiler: libqmlbind is tested against `gcc 4.8.4`.
 * Qt5: libqmlbind is tested against `Qt 5.6` and `Qt 5.2.1`.
 
-libqmlbind uses Qt's private headers. To quote the qmake warning:
-
-> This project is using private headers and will therefore be tied to this specific Qt module build version.
-> Running this project against other versions of the Qt modules may crash at any arbitrary point.
-> This is not a bug, but a result of using Qt internals. You have been warned!
-
-
 ### Build the Code
 First, clone the repository with all its submodules:
 ```
