@@ -30,7 +30,10 @@ extern "C" {
  */
 
 /*!
- * \brief Creates a new `qmlbind_metaobject` from `exporter`.
+ * \brief Creates a new `qmlbind_metaobject` as specified by the given `exporter`.
+ *
+ * The content of the `exporter` is copied, so it does not need to outlive this `qmlbind_metaobject` and should
+ * be destroyed directly afterwards, as there is nothing left to do with it.
  */
 QMLBIND_API qmlbind_metaobject *qmlbind_metaobject_new(
     const qmlbind_exporter *exporter
