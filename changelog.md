@@ -4,7 +4,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.2.0] - Unreleased ##
 ### Added ###
-- Add `qmlbind_exporter_into_metaobject()` function transform an exporter directly into a metaobject.
 - Add `qmlbind_signal_emitter_new(wrapper)` to create new signal emitters for wrappers created via
   `qmlbind_engine_new_wrapper()`. Previously, such wrappers could not emit signals.
 
@@ -26,8 +25,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   `qmlbind_exporter`.
 - Interface and its atomic reference counting mechanism is also removed from the internals, which might speed
   things up a little as no synchronization is needed anymore.
-- Remove `qmlbind_exporter_release()` and `qmlbind_metaobject_new()`. Use `qmlbind_exporter_into_metaobject()` instead,
-  which take ownership of the exporter.
 
 ### Fixed ###
 
