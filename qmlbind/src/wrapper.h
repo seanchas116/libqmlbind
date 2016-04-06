@@ -3,17 +3,17 @@
 #include "qmlbind/qmlbind_global.h"
 #include <QObject>
 
-class QQmlEngine;
 
 namespace QmlBind {
 
+class Engine;
 class MetaObject;
 
 class Wrapper : public QObject
 {
 public:
-    Wrapper(const std::shared_ptr<const MetaObject> &metaObject, qmlbind_client_object *clientObject, qmlbind_interface_handlers handlers);
-    Wrapper(const std::shared_ptr<const MetaObject> &metaObject, qmlbind_client_class *classObject, qmlbind_interface_handlers handlers);
+    Wrapper(const std::shared_ptr<const MetaObject> &metaObject, qmlbind_client_class *classObject, qmlbind_client_callbacks callbacks);
+    Wrapper(const std::shared_ptr<const MetaObject> &metaObject, qmlbind_client_object *object, qmlbind_client_callbacks callbacks);
     ~Wrapper();
 
     const QMetaObject *metaObject() const Q_DECL_OVERRIDE;
@@ -22,16 +22,18 @@ public:
     qmlbind_client_object *clientObject() const { return mClientObject; }
     const std::shared_ptr<const MetaObject> qmlbindMetaObject() const { return mMetaObject; }
 
-    QJSValue callMethod(QQmlEngine *engine, const QByteArray &method, int argc, QJSValue **argv) const;
-    QJSValue getProperty(QQmlEngine *engine, const QByteArray &property) const;
-    void setProperty(QQmlEngine *engine, const QByteArray &property, const QJSValue &value) const;
+    Engine *getEngine() const;
+
+    QJSValue callMethod(const QByteArray &method, int argc, QJSValue **argv) const;
+    QJSValue getProperty(const QByteArray &property) const;
+    void setProperty(const QByteArray &property, const QJSValue &value) const;
 
 
 private:
 
     std::shared_ptr<const MetaObject> mMetaObject;
     qmlbind_client_object *mClientObject;
-    qmlbind_interface_handlers mHandlers;
+    qmlbind_client_callbacks mCallbacks;
 };
 
 } // namespace QmlBind

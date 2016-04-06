@@ -7,7 +7,6 @@ namespace QmlBind {
 
 class Exporter;
 class Wrapper;
-class Backref;
 class SignalEmitter;
 
 class MetaObject : public QMetaObject, public std::enable_shared_from_this<MetaObject>

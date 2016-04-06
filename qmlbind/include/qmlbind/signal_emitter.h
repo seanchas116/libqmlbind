@@ -24,6 +24,13 @@ extern "C" {
  */
 
 /*!
+ * \brief Creates a new emitter that emits signals via the provided `wrapper`.
+ *
+ * Passing `qmlbind_value`s that are not wrappers, i.e. `qmlbind_value_is_wrapper()` returns false, is an error here.
+ */
+QMLBIND_API qmlbind_signal_emitter *qmlbind_signal_emitter_new(qmlbind_value *wrapper);
+
+/*!
  * \brief emits the signal `signal_name` with `argc` arguments in `argv`.
  */
 QMLBIND_API void qmlbind_signal_emitter_emit(qmlbind_signal_emitter *self,

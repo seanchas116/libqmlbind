@@ -29,7 +29,7 @@ extern "C" {
  * \brief Creates a new `qmlbind_exporter`.
  *
  * \param classObject will be given as parameter to the `new_object` function of the provided
- * `qmlbind_interface_handlers`. You can use it to hand over the equivalent of class objects in your language to
+ * `qmlbind_client_callbacks`. You can use it to hand over the equivalent of class objects in your language to
  * implement a generic `new_object` function. If you don't need it, just hand over a nullpointer. This function does not
  * take ownership of the classObject, but it still needs to be valid for as long as new objects are created (i.e. the
  * whole application lifetime).
@@ -43,7 +43,7 @@ extern "C" {
 QMLBIND_API qmlbind_exporter *qmlbind_exporter_new(
     qmlbind_client_class *classObject,
     const char *className,
-    qmlbind_interface_handlers interfaceHandlers
+    qmlbind_client_callbacks callbacks
 );
 
 /*!
@@ -95,7 +95,7 @@ QMLBIND_API void qmlbind_exporter_add_signal(
  * could can use a signal that is never emitted and refrain from writing to the properties…
  *
  * Read & write operations will be executed through
- * `qmlbind_interface_handlers`' `read_property` & `write_property` functions.
+ * `qmlbind_client_callbacks`' `read_property` & `write_property` functions.
  *
  * \param notifierSignal has to be a valid signal name, which means neither a nullptr nor an empty string. The
  * signal should be added with `qmlbind_exporter_add_signal` in advance, or else a warning will be issued.

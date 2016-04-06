@@ -5,8 +5,13 @@
 
 namespace QmlBind {
 
-SignalEmitter::SignalEmitter()
+SignalEmitter::SignalEmitter(Wrapper *wrapper) :
+    mWrapper(wrapper)
 {
+}
+
+Engine *SignalEmitter::getEngine() const {
+    return mWrapper->getEngine();
 }
 
 void SignalEmitter::emitSignal(const QByteArray &name, int argc, const QJSValue *const *argv) const

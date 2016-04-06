@@ -18,7 +18,7 @@ public:
         QByteArray name;
     };
 
-    Exporter(const char *className, qmlbind_client_class* classObject, qmlbind_interface_handlers interfaceHandlers);
+    Exporter(const char *className, qmlbind_client_class* classObject, qmlbind_client_callbacks callbacks);
 
     static QByteArray methodSignature(const char *name, int arity);
 
@@ -27,7 +27,7 @@ public:
     void addProperty(const char *name, const char *notifier);
 
     qmlbind_client_class *classObject() const { return mClassObject; }
-    qmlbind_interface_handlers interfaceHandlers() const { return mInterfaceHandlers; }
+    qmlbind_client_callbacks callbacks() const { return mCallbacks; }
 
     std::unique_ptr<QMetaObject, decltype(&free)> toMetaObject() const;
     QHash<int, Method> methodMap() const { return mMethodMap; }
@@ -37,7 +37,7 @@ public:
 private:
 
     qmlbind_client_class *mClassObject;
-    qmlbind_interface_handlers mInterfaceHandlers;
+    qmlbind_client_callbacks mCallbacks;
     QHash<int, Method> mMethodMap;
     QHash<int, Property> mPropertyMap;
     QHash<QByteArray, int> mSignalIndexMap;

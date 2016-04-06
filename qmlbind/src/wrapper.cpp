@@ -1,36 +1,42 @@
 #include "wrapper.h"
 #include <QJSValue>
 #include <QQmlEngine>
+#include <QQmlContext>
 #include "metaobject.h"
 #include "signalemitter.h"
 #include "engine.h"
 
 namespace QmlBind {
 
+
 Wrapper::Wrapper(const std::shared_ptr<const MetaObject> &metaObject,
-                 qmlbind_client_object *clientObject, qmlbind_interface_handlers handlers) :
+                 qmlbind_client_class *classObject, qmlbind_client_callbacks callbacks) :
     mMetaObject(metaObject),
-    mClientObject(clientObject),
-    mHandlers(handlers)
+    mClientObject(nullptr),
+    mCallbacks(callbacks)
 {
+    SignalEmitter *emitter = new SignalEmitter(this);
+    mClientObject = mCallbacks.new_object(classObject, emitter);
 }
 
 Wrapper::Wrapper(const std::shared_ptr<const MetaObject> &metaObject,
-                 qmlbind_client_class *classObject, qmlbind_interface_handlers handlers) :
+                 qmlbind_client_object *object, qmlbind_client_callbacks callbacks) :
     mMetaObject(metaObject),
-    mClientObject(nullptr),
-    mHandlers(handlers)
+    mClientObject(object),
+    mCallbacks(callbacks)
 {
-    SignalEmitter *emitter = new SignalEmitter();
-    mClientObject = mHandlers.new_object(classObject, emitter);
-    emitter->setWrapper(this);
 }
+
 
 Wrapper::~Wrapper()
 {
-    mHandlers.delete_object(mClientObject);
+    mCallbacks.delete_object(mClientObject);
 }
 
+Engine *Wrapper::getEngine() const {
+    QQmlContext *context = QQmlEngine::contextForObject(this);
+    return context ? qobject_cast<Engine *>(context->engine()) : nullptr;
+}
 
 const QMetaObject *Wrapper::metaObject() const
 {
@@ -44,22 +50,22 @@ int Wrapper::qt_metacall(QMetaObject::Call call, int index, void **argv)
 
 
 
-QJSValue Wrapper::callMethod(QQmlEngine *engine, const QByteArray &method, int argc, QJSValue **argv) const
+QJSValue Wrapper::callMethod(const QByteArray &method, int argc, QJSValue **argv) const
 {
-    QScopedPointer<const QJSValue> result(mHandlers.call_method(qobject_cast<Engine *>(engine), mClientObject, method, argc, argv));
+    QScopedPointer<const QJSValue> result(mCallbacks.call_method(getEngine(), mClientObject, method, argc, argv));
     return *result;
 }
 
-QJSValue Wrapper::getProperty(QQmlEngine *engine, const QByteArray &property) const
+QJSValue Wrapper::getProperty(const QByteArray &property) const
 {
-    QScopedPointer<const QJSValue> result(mHandlers.get_property(qobject_cast<Engine *>(engine), mClientObject, property));
+    QScopedPointer<const QJSValue> result(mCallbacks.get_property(getEngine(), mClientObject, property));
     return *result;
 }
 
-void Wrapper::setProperty(QQmlEngine *engine, const QByteArray &property, const QJSValue &value) const
+void Wrapper::setProperty(const QByteArray &property, const QJSValue &value) const
 {
     QJSValue val = value;
-    mHandlers.set_property(qobject_cast<Engine *>(engine), mClientObject, property, &val);
+    mCallbacks.set_property(getEngine(), mClientObject, property, &val);
 }
 
 } // namespace QmlBind

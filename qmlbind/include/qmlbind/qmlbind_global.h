@@ -87,9 +87,9 @@ typedef struct qmlbind_signal_emitter {} qmlbind_signal_emitter;
 /*!
  * \brief an opaque struct to represent a client-side object exposed to the metaobject system to libqmlbind.
  *
- * In the client's implementation of `qmlbind_interface_handlers`' `new_object()`, you need to return a
+ * In the client's implementation of `qmlbind_client_callbacks`' `new_object()`, you need to return a
  * `qmlbind_client_object` pointer, which is then given back to you as `object` parameter in `call_method()`,
- * `get_property()` and `set_property()`.  With the `qmlbind_interface_handlers`, `qmlbind_client_object`s can be
+ * `get_property()` and `set_property()`.  With the `qmlbind_client_callbacks`, `qmlbind_client_object`s can be
  * created, used and deleted from QML.
  *
  * A `qmlbind_client_object` therefore is the rough equivalent of an instance of a
@@ -105,13 +105,13 @@ typedef struct qmlbind_client_object {} qmlbind_client_object;
  *
  * This is intended to be used in languages where classes are first-class objects, i.e. that have the concept of a class
  * object with which you can generically construct new objects. Examples are python's `type` class or ruby's `Class`
- * class. If you have this feautre, you can implement generic `qmlbind_interface_handlers` for all classes.
+ * class. If you have this feautre, you can implement generic `qmlbind_client_callbacks` for all classes.
  *
  * In `qmlbind_exporter_new()`, a `qmlbind_client_class` pointer can be provided which is forwarded to
- * `qmlbind_interface_handlers`' `new_object()` for that purpose. You could use it to transfer an arbitrary object,
+ * `qmlbind_client_callbacks`' `new_object()` for that purpose. You could use it to transfer an arbitrary object,
  * though.
  *
- * In other languages, you can ignore this and implement multiple `qmlbind_interface_handlers`.
+ * In other languages, you can ignore this and implement multiple `qmlbind_client_callbacks`.
  *
  * A `qmlbind_client_class` is the rough equivalent of a class inheriting
  * [QObject](http://doc.qt.io/qt-5/qobject.html#QObject) located in code using libqmlbind.
@@ -128,11 +128,11 @@ typedef struct qmlbind_client_class {} qmlbind_client_class;
  * This struct is needed to construct new `qmlbind_exporter`s. All function pointers need to be defined, a nullptr is
  * not a valid value here.
  */
-typedef struct qmlbind_interface_handlers {
+typedef struct qmlbind_client_callbacks {
     /*!
      * \brief creates a new `qmlbind_client_object` to be used in QML.
      *
-     * `qmlbind_interface_handlers` hands over the `qmlbind_client_object` returned from this function as `object` to
+     * `qmlbind_client_callbacks` hands over the `qmlbind_client_object` returned from this function as `object` to
      * `call_method()`, `get_property()` and `set_property()`.
      *
      * \param classRef the `qmlbind_client_class` value that was given to `qmlbind_exporter_new`.
@@ -179,6 +179,6 @@ typedef struct qmlbind_interface_handlers {
      */
     void (*set_property)(qmlbind_engine *engine, qmlbind_client_object *object, const char *name, const qmlbind_value *value);
 
-} qmlbind_interface_handlers;
+} qmlbind_client_callbacks;
 
 /** @} */

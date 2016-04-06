@@ -5,23 +5,23 @@
 
 namespace QmlBind {
 
-Exporter::Exporter(const char *className, qmlbind_client_class *classObject, qmlbind_interface_handlers interfaceHandlers) :
+Exporter::Exporter(const char *className, qmlbind_client_class *classObject, qmlbind_client_callbacks callbacks) :
     mClassObject(classObject),
-    mInterfaceHandlers(interfaceHandlers)
+    mCallbacks(callbacks)
 {
-    if (!interfaceHandlers.call_method) {
+    if (!mCallbacks.call_method) {
         qFatal("qmlbind: call_method handler not specified");
     }
-    if (!interfaceHandlers.set_property) {
+    if (!mCallbacks.set_property) {
         qFatal("qmlbind: set_property handler not specified");
     }
-    if (!interfaceHandlers.get_property) {
+    if (!mCallbacks.get_property) {
         qFatal("qmlbind: get_property handler not specified");
     }
-    if (!interfaceHandlers.new_object) {
+    if (!mCallbacks.new_object) {
         qFatal("qmlbind: new_object handler not specified");
     }
-    if (!interfaceHandlers.delete_object) {
+    if (!mCallbacks.delete_object) {
         qFatal("qmlbind: delete_object handler not specified");
     }
     mBuilder.setClassName(className);

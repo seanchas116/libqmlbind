@@ -13,6 +13,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   `qmlbind_client_object` and `qmlbind_client_class`. `qmlbind_client_object` is used for references exposed to the
   metaobject system located in the client code, and `qmlbind_client_class` is used for references to class objects
   located in the client code.
+- Rename `qmlbind_interface_handlers` to `qmlbind_client_callbacks` because there is no `qmlbind_interface` anymore
+  and to reflect it is implemented by the user of libqmlbind. This fits the theme that all client-defined types are
+  called `qmlbind_client_*` now (namely `qmlbind_client_object` and `qmlbind_client_class`).
 
 ### Deprecated ###
 

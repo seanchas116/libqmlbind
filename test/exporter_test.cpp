@@ -67,7 +67,7 @@ private:
 using TestSP = std::shared_ptr<Test>;
 Q_DECLARE_METATYPE(TestSP)
 
-namespace Handlers {
+namespace Callbacks {
 
 qmlbind_client_object *variantToClientObject(const QVariant &variant)
 {
@@ -129,15 +129,15 @@ TEST_CASE("exporter")
 {
     auto engine = qmlbind_engine_new();
 
-    qmlbind_interface_handlers handlers;
+    qmlbind_client_callbacks callbacks;
 
-    handlers.new_object = &Handlers::newObject;
-    handlers.call_method = &Handlers::invokeMethod;
-    handlers.set_property = &Handlers::invokeSetter;
-    handlers.get_property = &Handlers::invokeGetter;
-    handlers.delete_object = &Handlers::deleteObject;
+    callbacks.new_object = &Callbacks::newObject;
+    callbacks.call_method = &Callbacks::invokeMethod;
+    callbacks.set_property = &Callbacks::invokeSetter;
+    callbacks.get_property = &Callbacks::invokeGetter;
+    callbacks.delete_object = &Callbacks::deleteObject;
 
-    auto exporter = qmlbind_exporter_new(reinterpret_cast<qmlbind_client_class *>(new QString("class:Test")), "Test", handlers);
+    auto exporter = qmlbind_exporter_new(reinterpret_cast<qmlbind_client_class *>(new QString("class:Test")), "Test", callbacks);
 
     const char *notifierparams[] = { "value" };
     qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
@@ -194,7 +194,7 @@ TEST_CASE("exporter")
                 destroyed = true;
             }, nullptr);
 
-            auto value = qmlbind_engine_new_wrapper(engine, metaobject, Handlers::variantToClientObject(QVariant::fromValue(test)));
+            auto value = qmlbind_engine_new_wrapper(engine, metaobject, Callbacks::variantToClientObject(QVariant::fromValue(test)));
 
             REQUIRE(qmlbind_value_is_wrapper(value));
 
@@ -264,7 +264,7 @@ TEST_CASE("exporter")
         }
 
         auto obj = qmlbind_component_create(component);
-        auto test = Handlers::clientObjectToVariant(qmlbind_value_unwrap(obj)).value<TestSP>();
+        auto test = Callbacks::clientObjectToVariant(qmlbind_value_unwrap(obj)).value<TestSP>();
         test->setEngine(engine);
 
         {

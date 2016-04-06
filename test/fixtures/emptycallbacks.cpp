@@ -1,4 +1,4 @@
-#include "emptyhandlers.h"
+#include "emptycallbacks.h"
 
 qmlbind_client_object *newObject(qmlbind_client_class *, qmlbind_signal_emitter *)
 {
@@ -23,13 +23,13 @@ void deleteObject(qmlbind_client_object *)
 {
 }
 
-qmlbind_interface_handlers emptyHandlers()
+qmlbind_client_callbacks emptyCallbacks()
 {
-    qmlbind_interface_handlers handlers {};
-    handlers.new_object = &newObject;
-    handlers.call_method = &invokeMethod;
-    handlers.set_property = &invokeSetter;
-    handlers.get_property = &invokeGetter;
-    handlers.delete_object = &deleteObject;
-    return handlers;
+    qmlbind_client_callbacks callbacks {};
+    callbacks.new_object = &newObject;
+    callbacks.call_method = &invokeMethod;
+    callbacks.set_property = &invokeSetter;
+    callbacks.get_property = &invokeGetter;
+    callbacks.delete_object = &deleteObject;
+    return callbacks;
 }

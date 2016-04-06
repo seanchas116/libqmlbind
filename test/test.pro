@@ -13,7 +13,7 @@ SOURCES += \
     component_test.cpp \
     exporter_test.cpp \
     application_test.cpp \
-    fixtures/emptyhandlers.cpp \
+    fixtures/emptycallbacks.cpp \
     plugin_test.cpp
 
 
@@ -24,4 +24,4 @@ DEPENDPATH += $$PWD/../qmlbind
 
 HEADERS += \
     test_helper.h \
-    fixtures/emptyhandlers.h
+    fixtures/emptycallbacks.h
