@@ -5,7 +5,8 @@
 
 namespace QmlBind {
 
-Exporter::Exporter(const char *className, qmlbind_client_class *classObject, qmlbind_client_callbacks callbacks) :
+Exporter::Exporter(const QByteArray &className, qmlbind_client_class *classObject, qmlbind_client_callbacks callbacks) :
+    mClassName(className),
     mClassObject(classObject),
     mCallbacks(callbacks)
 {
@@ -24,63 +25,37 @@ Exporter::Exporter(const char *className, qmlbind_client_class *classObject, qml
     if (!mCallbacks.delete_object) {
         qFatal("qmlbind: delete_object handler not specified");
     }
-    mBuilder.setClassName(className);
 }
 
-std::unique_ptr<QMetaObject, decltype(&free)> Exporter::toMetaObject() const {
-    return std::unique_ptr<QMetaObject, decltype(&free)>(mBuilder.toMetaObject(), free);
-}
-
-QByteArray Exporter::methodSignature(const char *name, int arity)
+void Exporter::addMethod(const QByteArray &name, int argc)
 {
-    QByteArray sig;
-    sig += name;
-    sig += "(";
-    for (int i = 0; i < arity; ++i) {
-        if (i != 0) {
-            sig += ",";
-        }
-        sig += "QJSValue";
+    QList<QByteArray> params;
+    for (int i = 0; i < argc; ++i) {
+        params << "";
     }
-    sig += ")";
-    return sig;
+
+    Method method;
+    method.name = name;
+    method.params = params;
+    method.type = MethodType::Method;
+    mMethods << method;
 }
 
-
-
-void Exporter::addMethod(const char *name, int arity)
+void Exporter::addSignal(const QByteArray &name, const QList<QByteArray> &params)
 {
-    QMetaMethodBuilder method = mBuilder.addMethod(Exporter::methodSignature(name, arity), "QJSValue");
-
-    Method methodInfo;
-    methodInfo.arity = arity;
-    methodInfo.name = name;
-
-    mMethodMap[method.index()] = methodInfo;
+    Method method;
+    method.name = name;
+    method.params = params;
+    method.type = MethodType::Signal;
+    mMethods << method;
 }
 
-void Exporter::addSignal(const char *name, const QList<QByteArray> &args)
+void Exporter::addProperty(const QByteArray &name, const QByteArray &notifySignalName)
 {
-    QMetaMethodBuilder method = mBuilder.addSignal(Exporter::methodSignature(name, args.size()));
-    method.setParameterNames(args);
-
-    mSignalIndexMap[name] = method.index();
-}
-
-void Exporter::addProperty(const char *name, const char *notifier)
-{
-    if (!mSignalIndexMap.contains(notifier)) {
-        qWarning() << "signal" << notifier << "not yet added";
-    }
-    QMetaPropertyBuilder property = mBuilder.addProperty(name, "QJSValue", mSignalIndexMap[notifier]);
-
-    property.setReadable(true);
-    property.setWritable(true);
-
-    Property propertyInfo;
-    propertyInfo.name = name;
-
-    mPropertyMap[property.index()] = propertyInfo;
+    Property prop;
+    prop.name = name;
+    prop.notifySignalName = notifySignalName;
+    mProperties << prop;
 }
 
 } // namespace QmlBind

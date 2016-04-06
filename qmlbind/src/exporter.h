@@ -1,7 +1,7 @@
 #pragma once
 
 #include "qmlbind/qmlbind_global.h"
-#include <private/qmetaobjectbuilder_p.h>
+#include <QList>
 
 namespace QmlBind {
 
@@ -9,40 +9,42 @@ class Exporter
 {
 public:
 
+    enum class MethodType {
+        Method, Signal
+    };
+
     struct Method {
+        MethodType type;
         QByteArray name;
-        int arity;
+        QList<QByteArray> params;
     };
 
     struct Property {
         QByteArray name;
+        QByteArray notifySignalName;
     };
 
-    Exporter(const char *className, qmlbind_client_class* classObject, qmlbind_client_callbacks callbacks);
+    Exporter(const QByteArray &className, qmlbind_client_class* classObject, qmlbind_client_callbacks callbacks);
 
     static QByteArray methodSignature(const char *name, int arity);
 
-    void addMethod(const char *name, int arity);
-    void addSignal(const char *name, const QList<QByteArray> &args);
-    void addProperty(const char *name, const char *notifier);
+    void addMethod(const QByteArray &name, int argc);
+    void addSignal(const QByteArray &name, const QList<QByteArray> &params);
+    void addProperty(const QByteArray &name, const QByteArray &notifySignalName);
 
+    QByteArray className() const { return mClassName; }
     qmlbind_client_class *classObject() const { return mClassObject; }
     qmlbind_client_callbacks callbacks() const { return mCallbacks; }
-
-    std::unique_ptr<QMetaObject, decltype(&free)> toMetaObject() const;
-    QHash<int, Method> methodMap() const { return mMethodMap; }
-    QHash<int, Property> propertyMap() const { return mPropertyMap; }
-    QHash<QByteArray, int> signalIndexMap() const { return mSignalIndexMap; }
+    QList<Method> methods() const { return mMethods; }
+    QList<Property> properties() const { return mProperties; }
 
 private:
 
+    QByteArray mClassName;
     qmlbind_client_class *mClassObject;
     qmlbind_client_callbacks mCallbacks;
-    QHash<int, Method> mMethodMap;
-    QHash<int, Property> mPropertyMap;
-    QHash<QByteArray, int> mSignalIndexMap;
-
-    QMetaObjectBuilder mBuilder;
+    QList<Method> mMethods;
+    QList<Property> mProperties;
 };
 
 } // namespace QmlBind

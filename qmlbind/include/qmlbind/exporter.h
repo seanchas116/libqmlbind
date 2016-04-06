@@ -47,11 +47,12 @@ QMLBIND_API qmlbind_exporter *qmlbind_exporter_new(
 );
 
 /*!
+ * \brief Destroys the `qmlbind_exporter`.
+ */
+QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter *self);
+
+/*!
  * \brief Finalizes this `qmlbind_exporter` and transforms it into a new `qmlbind_metaobject`.
- *
- * Takes ownership of the given `qmlbind_exporter`.
- * Because the calling code does not own the exporter anymore after this call, no new methods etc. can be added
- * afterwards.
  *
  * Ownership of the returned `qmlbind_metaobject` is transfered to the caller.
  */

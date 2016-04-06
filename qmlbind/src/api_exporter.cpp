@@ -15,10 +15,7 @@ qmlbind_exporter *qmlbind_exporter_new(qmlbind_client_class *classObject, const 
 
 qmlbind_metaobject *qmlbind_exporter_into_metaobject(qmlbind_exporter *self)
 {
-    auto qMetaObject(self->toMetaObject());
-    return new std::shared_ptr<MetaObject>(new MetaObject(std::unique_ptr<const Exporter>(self), std::move(qMetaObject)));
-    // exporter is owned by the MetaObject now, so we should delete the empty unique_ptr on the heap now.
-    delete self;
+    return new std::shared_ptr<MetaObject>(new MetaObject(*self));
 }
 
 void qmlbind_exporter_add_method(
@@ -50,6 +47,11 @@ void qmlbind_exporter_add_property(qmlbind_exporter *self,
 )
 {
     self->addProperty(name, notifierSignal);
+}
+
+void qmlbind_exporter_release(qmlbind_exporter *self)
+{
+    delete self;
 }
 
 }
