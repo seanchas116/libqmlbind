@@ -1,8 +1,6 @@
 #include "qmlbind/exporter.h"
 #include "exporter.h"
 #include "metaobject.h"
-#include <private/qmetaobjectbuilder_p.h>
-#include <private/qobject_p.h>
 
 using namespace QmlBind;
 

@@ -1,4 +1,4 @@
-QT += widgets qml quick core-private
+QT += widgets qml quick
 
 TARGET = qmlbind
 TEMPLATE = lib
