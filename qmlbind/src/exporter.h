@@ -2,6 +2,7 @@
 
 #include "qmlbind/qmlbind_global.h"
 #include <QList>
+#include <QByteArray>
 
 namespace QmlBind {
 
