@@ -235,14 +235,18 @@ void MetaObject::setupData(const QByteArray &className)
     // properties
     propertyOffsetPlaceholder.setCurrentPos();
     for (const auto &prop : mProperties) {
-        metadata << strData.add(prop.name) << jsValueType << 0x0049510b; // flags comes from moc output
+        metadata << strData.add(prop.name) << jsValueType;
+        auto signalIndex = mSignalIndexMap.value(prop.notifySignalName, -1);
+        if (signalIndex == -1) {
+            qWarning() << "qmlbind: no such notify signal" << prop.notifySignalName << "in class" << className;
+            metadata << 0x0009510b;
+        } else {
+            metadata << 0x0049510b;
+        }
     }
     // notify signal ids
     for (const auto &prop : mProperties) {
-        auto signalIndex = mSignalIndexMap[prop.notifySignalName];
-        if (signalIndex < 0) {
-            qWarning() << "qmlbind: no such notify signal" << prop.notifySignalName << "in class" << className;
-        }
+        auto signalIndex = mSignalIndexMap.value(prop.notifySignalName, 0);
         metadata << signalIndex;
     }
 
