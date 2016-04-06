@@ -66,13 +66,17 @@ macx {
 }
 
 unix {
+    isEmpty(INSTALL_PREFIX) {
+        INSTALL_PREFIX=/usr
+    }
+
     for(header, PUBLIC_HEADERS) {
-       path = $${INSTALL_PREFIX}/usr/$${dirname(header)}
+       path = $${INSTALL_PREFIX}/$${dirname(header)}
        eval(headers_$${path}.files += $$header)
        eval(headers_$${path}.path = $$path)
        eval(INSTALLS *= headers_$${path})
     }
 
-    target.path = /usr/lib
+    target.path = $${INSTALL_PREFIX}/lib
     INSTALLS += target
 }
