@@ -145,6 +145,7 @@ TEST_CASE("exporter")
     qmlbind_exporter_add_property(exporter, "value", "valueChanged");
 
     auto metaobject = qmlbind_exporter_into_metaobject(exporter);
+    qmlbind_exporter_release(exporter);
 
     SECTION("generated metaobject")
     {
