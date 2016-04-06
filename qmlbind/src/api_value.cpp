@@ -84,7 +84,7 @@ int qmlbind_value_is_error(const qmlbind_value *self)
 
 int qmlbind_value_is_wrapper(const qmlbind_value *self)
 {
-    return qmlbind_value_get_backref(self) != 0;
+    return qmlbind_value_unwrap(self) != nullptr;
 }
 
 qmlbind_value *qmlbind_value_new_boolean(int value)
@@ -176,13 +176,13 @@ void qmlbind_value_set_array_item(qmlbind_value *self, int index, const qmlbind_
     obj.setProperty(index, *property);
 }
 
-qmlbind_backref *qmlbind_value_get_backref(const qmlbind_value *self)
+qmlbind_client_object *qmlbind_value_unwrap(const qmlbind_value *self)
 {
     Wrapper *obj = dynamic_cast<Wrapper *>(self->toQObject());
     if (!obj) {
         return nullptr;
     }
-    return obj->backref().backref();
+    return obj->clientObject();
 }
 
 static QJSValueList pack_args(int argc, const qmlbind_value *const *argv)

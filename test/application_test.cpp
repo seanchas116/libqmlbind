@@ -1,5 +1,5 @@
 #include "test_helper.h"
-#include "fixtures/emptyhandlers.h"
+#include "fixtures/emptycallbacks.h"
 #include <qmlbind.h>
 
 TEST_CASE("next_tick")

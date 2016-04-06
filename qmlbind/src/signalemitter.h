@@ -12,10 +12,9 @@ class Wrapper;
 class SignalEmitter
 {
 public:
-    SignalEmitter();
+    SignalEmitter(Wrapper *wrapper);
 
-    void setWrapper(Wrapper *wrapper) { mWrapper = wrapper; }
-    const Wrapper *wrapper() const { return mWrapper; }
+    Engine *getEngine() const;
     void emitSignal(const QByteArray &name, int argc, const QJSValue *const *argv) const;
 
 private:

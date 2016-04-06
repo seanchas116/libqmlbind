@@ -1,8 +1,6 @@
 #include "typeregisterer.h"
 #include "metaobject.h"
 #include "wrapper.h"
-#include "interface.h"
-#include "signalemitter.h"
 #include <QVector>
 #include <QtQml>
 
@@ -14,12 +12,7 @@ template <int Index>
 void TypeRegisterer::create(void *memory)
 {
     std::shared_ptr<const MetaObject> metaobj = TypeRegisterer::instance().mMetaObjects[Index];
-    Backref classRef = metaobj->exporter()->classRef();
-    SignalEmitter *emitter = new SignalEmitter();
-    Backref ref = classRef.interface()->newObject(classRef, emitter);
-
-    Wrapper *wrapper = new (memory) Wrapper(metaobj, ref);
-    emitter->setWrapper(wrapper);
+    metaobj->newObject(memory);
 }
 
 // statically generates callback array

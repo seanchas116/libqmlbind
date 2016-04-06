@@ -1,18 +1,24 @@
 #include "signalemitter.h"
 #include "metaobject.h"
-#include "exporter.h"
 #include <QDebug>
+#include <QMetaMethod>
 
 namespace QmlBind {
 
-SignalEmitter::SignalEmitter()
+SignalEmitter::SignalEmitter(Wrapper *wrapper) :
+    mWrapper(wrapper)
 {
+}
+
+Engine *SignalEmitter::getEngine() const {
+    return mWrapper->getEngine();
 }
 
 void SignalEmitter::emitSignal(const QByteArray &name, int argc, const QJSValue *const *argv) const
 {
     std::shared_ptr<const MetaObject> metaObj = mWrapper->qmlbindMetaObject();
-    int index = metaObj->exporter()->signalIndexMap().value(name, -1);
+    int index = metaObj->indexOfSignalName(name);
+
     if (index == -1) {
         qWarning() << "no such signal found:" << name;
         return;

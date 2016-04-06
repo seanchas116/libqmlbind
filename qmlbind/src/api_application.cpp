@@ -1,8 +1,5 @@
 #include "qmlbind/application.h"
-#include "util.h"
-#include "backref.h"
 #include <QApplication>
-#include <QSharedPointer>
 #include <QTimer>
 #include <QVector>
 #include <functional>

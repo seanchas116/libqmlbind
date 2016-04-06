@@ -5,7 +5,6 @@
 #include <QMetaMethod>
 #include <QByteArray>
 #include <QDebug>
-#include <QSharedPointer>
 #include <string.h>
 #include <functional>
 
@@ -68,29 +67,29 @@ private:
 using TestSP = std::shared_ptr<Test>;
 Q_DECLARE_METATYPE(TestSP)
 
-namespace Handlers {
+namespace Callbacks {
 
-qmlbind_backref *variantToBackref(const QVariant variant)
+qmlbind_client_object *variantToClientObject(const QVariant &variant)
 {
-    return reinterpret_cast<qmlbind_backref *>(new QVariant(variant));
+    return reinterpret_cast<qmlbind_client_object *>(new QVariant(variant));
 }
 
-QVariant backrefToVariant(qmlbind_backref *ref)
+QVariant clientObjectToVariant(qmlbind_client_object *object)
 {
-    return *reinterpret_cast<QVariant *>(ref);
+    return *reinterpret_cast<QVariant *>(object);
 }
 
-qmlbind_backref *newObject(qmlbind_backref *klass, qmlbind_signal_emitter *emitter)
+qmlbind_client_object *newObject(qmlbind_client_class *classObject, qmlbind_signal_emitter *emitter)
 {
-    REQUIRE(backrefToVariant(klass).toString() == "class:Test");
+    REQUIRE(reinterpret_cast<QString*>(classObject) == QString("class:Test"));
     auto variant = QVariant::fromValue(std::make_shared<Test>([] {}, emitter));
-    return variantToBackref(variant);
+    return variantToClientObject(variant);
 }
 
-qmlbind_value *invokeMethod(qmlbind_engine *engine, qmlbind_backref *obj,
+qmlbind_value *invokeMethod(qmlbind_engine *engine, qmlbind_client_object *object,
                             const char *method, int argc, const qmlbind_value *const *argv)
 {
-    auto test = backrefToVariant(obj).value<TestSP>();
+    auto test = clientObjectToVariant(object).value<TestSP>();
     REQUIRE(test);
     REQUIRE(test->engine() == engine);
     REQUIRE(QString(method) == "incrementBy");
@@ -100,9 +99,9 @@ qmlbind_value *invokeMethod(qmlbind_engine *engine, qmlbind_backref *obj,
     return qmlbind_value_new_number(test->value());
 }
 
-qmlbind_value *invokeGetter(qmlbind_engine *engine, qmlbind_backref *obj, const char *property)
+qmlbind_value *invokeGetter(qmlbind_engine *engine, qmlbind_client_object *object, const char *property)
 {
-    auto test = backrefToVariant(obj).value<TestSP>();
+    auto test = clientObjectToVariant(object).value<TestSP>();
     REQUIRE(test);
     REQUIRE(test->engine() == engine);
     REQUIRE(QString(property) == "value");
@@ -110,9 +109,9 @@ qmlbind_value *invokeGetter(qmlbind_engine *engine, qmlbind_backref *obj, const 
     return qmlbind_value_new_number(test->value());
 }
 
-void invokeSetter(qmlbind_engine *engine, qmlbind_backref *obj, const char *property, const qmlbind_value *value)
+void invokeSetter(qmlbind_engine *engine, qmlbind_client_object *object, const char *property, const qmlbind_value *value)
 {
-    auto test = backrefToVariant(obj).value<TestSP>();
+    auto test = clientObjectToVariant(object).value<TestSP>();
     REQUIRE(test);
     REQUIRE(test->engine() == engine);
     REQUIRE(QString(property) == "value");
@@ -120,9 +119,9 @@ void invokeSetter(qmlbind_engine *engine, qmlbind_backref *obj, const char *prop
     test->setValue(qmlbind_value_get_number(value));
 }
 
-void deleteObject(qmlbind_backref *obj)
+void deleteObject(qmlbind_client_object *object)
 {
-    delete reinterpret_cast<QVariant *>(obj);
+    delete reinterpret_cast<QVariant *>(object);
 }
 }
 
@@ -130,30 +129,26 @@ TEST_CASE("exporter")
 {
     auto engine = qmlbind_engine_new();
 
-    qmlbind_interface_handlers handlers;
+    qmlbind_client_callbacks callbacks;
 
-    handlers.new_object = &Handlers::newObject;
-    handlers.call_method = &Handlers::invokeMethod;
-    handlers.set_property = &Handlers::invokeSetter;
-    handlers.get_property = &Handlers::invokeGetter;
-    handlers.delete_object = &Handlers::deleteObject;
+    callbacks.new_object = &Callbacks::newObject;
+    callbacks.call_method = &Callbacks::invokeMethod;
+    callbacks.set_property = &Callbacks::invokeSetter;
+    callbacks.get_property = &Callbacks::invokeGetter;
+    callbacks.delete_object = &Callbacks::deleteObject;
 
-    auto interface = qmlbind_interface_new(handlers);
-
-    auto exporter = qmlbind_exporter_new(Handlers::variantToBackref("class:Test"), "Test", interface);
+    auto exporter = qmlbind_exporter_new(reinterpret_cast<qmlbind_client_class *>(new QString("class:Test")), "Test", callbacks);
 
     const char *notifierparams[] = { "value" };
     qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
     qmlbind_exporter_add_method(exporter, "incrementBy", 1);
     qmlbind_exporter_add_property(exporter, "value", "valueChanged");
 
-    auto metaobject = qmlbind_metaobject_new(exporter);
-    qmlbind_exporter_release(exporter);
-    qmlbind_interface_release(interface);
+    auto metaobject = qmlbind_exporter_into_metaobject(exporter);
 
     SECTION("generated metaobject")
     {
-        auto metaobj = *reinterpret_cast<QSharedPointer<QMetaObject> *>(metaobject);
+        auto metaobj = *reinterpret_cast<std::shared_ptr<QMetaObject> *>(metaobject);
 
         auto methodCount = metaobj->methodCount() - metaobj->methodOffset();
         auto propertyCount = metaobj->propertyCount() - metaobj->propertyOffset();
@@ -199,7 +194,7 @@ TEST_CASE("exporter")
                 destroyed = true;
             }, nullptr);
 
-            auto value = qmlbind_engine_new_wrapper(engine, metaobject, Handlers::variantToBackref(QVariant::fromValue(test)));
+            auto value = qmlbind_engine_new_wrapper(engine, metaobject, Callbacks::variantToClientObject(QVariant::fromValue(test)));
 
             REQUIRE(qmlbind_value_is_wrapper(value));
 
@@ -269,7 +264,7 @@ TEST_CASE("exporter")
         }
 
         auto obj = qmlbind_component_create(component);
-        auto test = Handlers::backrefToVariant(qmlbind_value_get_backref(obj)).value<TestSP>();
+        auto test = Callbacks::clientObjectToVariant(qmlbind_value_unwrap(obj)).value<TestSP>();
         test->setEngine(engine);
 
         {

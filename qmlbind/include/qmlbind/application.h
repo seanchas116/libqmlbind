@@ -6,22 +6,29 @@
 extern "C" {
 #endif
 
-/*! \class qmlbind_application
+/*!
+ * \defgroup application_module qmlbind_application
  * \brief manages the GUI application's control flow and main settings.
- *
- * Its methods are defined in \ref application.h.
  *
  * libqmlbind's equivalent of [QApplication](https://doc.qt.io/qt-5/qapplication.html).
  */
 
+/** \addtogroup application_module
+ *  @{
+ */
+
+/*! \struct qmlbind_application
+ * \brief an opaque struct to be used as `self` argument in the methods defined in \ref application_module.
+ */
+
 /*! \file application.h
- * \brief Contains all methods defined on `qmlbind_application`.
+ * \brief Contains all methods defined on \ref application_module.
  */
 
 
 /*!
  * \brief Initializes the window system and constructs an application object
- * with `argc` command line arguments in * `argv`.
+ * with `argc` command line arguments in `argv`.
  *
  * Does not take ownership of the passed `argv`.
  * Only one application object should be created.
@@ -79,6 +86,7 @@ QMLBIND_API void qmlbind_process_events();
  */
 QMLBIND_API void qmlbind_next_tick(void (*callback)(void *), void *data);
 
+/** @}*/
 #ifdef __cplusplus
 }
 #endif

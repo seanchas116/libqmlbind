@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QVector>
-#include <QSharedPointer>
 #include <memory>
 
 namespace QmlBind {

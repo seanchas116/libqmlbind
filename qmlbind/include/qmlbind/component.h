@@ -6,21 +6,29 @@
 extern "C" {
 #endif
 
-
-/*! \class qmlbind_component
+/*!
+ * \defgroup component_module qmlbind_component
  * \brief encapsulates a QML component definition.
  *
  * Components are reusable, encapsulated QML types with well-defined interfaces.
  *
- * Its methods are defined in \ref component.h.
  *
  * You can find a simple usage example in `examples/hello_world_window`.
  *
  * libqmlbind's equivalent of [QQmlComponent](https://doc.qt.io/qt-5/qqmlcomponent.html).
+
+ */
+
+/** \addtogroup component_module
+ *  @{
+ */
+
+/*! \struct qmlbind_component
+ * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref component_module.
  */
 
 /*! \file component.h
- * \brief Contains all methods defined on `qmlbind_component`.
+ * \brief Contains all methods defined on \ref component_module.
  */
 
 
@@ -84,6 +92,7 @@ QMLBIND_API qmlbind_string *qmlbind_component_get_error_string(qmlbind_component
  */
 QMLBIND_API qmlbind_value *qmlbind_component_create(qmlbind_component *self);
 
+/** @}*/
 #ifdef __cplusplus
 }
 #endif

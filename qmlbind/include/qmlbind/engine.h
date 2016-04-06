@@ -6,18 +6,25 @@
 extern "C" {
 #endif
 
-/*! \class qmlbind_engine
- * \brief provides an environment for instantiating QML components.
+/*!
+ * \defgroup engine_module qmlbind_engine
+ * \brief Provides an environment for instantiating QML components.
  *
  * libqmlbind only supports creation of components in each engine's root context.
- *
- * Its methods are defined in \ref engine.h.
  *
  * libqmlbind's equivalent of [QQmlEngine](https://doc.qt.io/qt-5/qqmlengine.html).
  */
 
+/** \addtogroup engine_module
+ *  @{
+ */
+
+/*! \struct qmlbind_engine
+ * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref engine_module.
+ */
+
 /*! \file engine.h
- * \brief Contains all methods defined on `qmlbind_engine`.
+ * \brief Contains all methods defined on \ref engine_module.
  */
 
 /*!
@@ -97,8 +104,15 @@ QMLBIND_API qmlbind_value *qmlbind_engine_new_object(qmlbind_engine *self);
 QMLBIND_API qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *self, int length);
 
 /*!
- * \brief Creates a JavaScript object that wraps the given `object`, using JavaScriptOwnership.
+ * \brief Creates a JavaScript object that wraps the given `object`.
  *
+ * This is intended to be used to expose `qmlbind_client_object` instances that were created by the client code directly
+ * to QML via `qmlbind_value_set_properties()`, e.g. on the Global Object returned by
+ * `qmlbind_engine_get_global_object()`. In that case, the metaobjects don't need to be registered via
+ * `qmlbind_register_type` and don't need to be created inside QML.
+ *
+ * If the `object` should be able to send signals, you must create a `qmlbind_signal_emitter` for it afterwards by
+ * calling `qmlbind_signal_emitter_new()` with the returned value.
  *
  * Transfers ownership of the returned qmlbind_value to the caller.
  * Takes ownership of `object`.
@@ -113,7 +127,7 @@ QMLBIND_API qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *self, int le
 QMLBIND_API qmlbind_value *qmlbind_engine_new_wrapper(
     qmlbind_engine *self,
     const qmlbind_metaobject *metaobj,
-    qmlbind_backref *object
+    qmlbind_client_object *object
 );
 
 /*!
@@ -143,6 +157,7 @@ QMLBIND_API void qmlbind_engine_add_import_path(qmlbind_engine *self, const char
  */
 QMLBIND_API void qmlbind_engine_collect_garbage(qmlbind_engine *self);
 
+/** @}*/
 #ifdef __cplusplus
 }
 #endif

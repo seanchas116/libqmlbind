@@ -5,10 +5,20 @@
 extern "C" {
 #endif
 
-/*! \class qmlbind_exporter
- * \brief provides a builder-style API for creating new `qmlbind_metaobject`s.
+/*!
+ * \defgroup exporter_module qmlbind_exporter
+ * \brief provides a builder-style API for creating a new \ref metaobject_module .
  *
- * Its methods are defined in \ref exporter.h.
+ * After adding all wanted methods, signals and properties, an exporter should be transformed into a \ref
+ * `metaobject_module` by using `qmlbind_exporter_into_metaobject()`.
+ */
+
+/** \addtogroup exporter_module
+ *  @{
+ */
+
+/*! \struct qmlbind_exporter
+ * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref exporter_module.
  */
 
 /*! \file exporter.h
@@ -18,27 +28,34 @@ extern "C" {
 /*!
  * \brief Creates a new `qmlbind_exporter`.
  *
- * \param classRef will be given as parameter to the `new_object` function of the interface. You can use it to hand over
- * the equivalent of class objects in your language to implement a generic `new_object` function. If you don't need it,
- * just hand over a nullpointer. This function does not take ownership of the classRef, but it still needs to be valid
- * for as long as new objects are created (i.e. the whole application lifetime).
+ * \param classObject will be given as parameter to the `new_object` function of the provided
+ * `qmlbind_client_callbacks`. You can use it to hand over the equivalent of class objects in your language to
+ * implement a generic `new_object` function. If you don't need it, just hand over a nullpointer. This function does not
+ * take ownership of the classObject, but it still needs to be valid for as long as new objects are created (i.e. the
+ * whole application lifetime).
  *
  * \param className is used for registering the metaobject created with this exporter in the metaobject system.
  *
- * \param qmlbind_interface is copied, so it does not need to outlive `qmlbind_exporter`s created with it and can
- * be destroyed as soon as all exporters are created.
- *
+ * \param interfaceHandlers is used to create, use and delete instances of the metaobject to build.
+ * You can either create a single, generic one and pass that to every new \ref qmlbind_exporter_new, or create specific
+ * ones for each exporter.
  */
 QMLBIND_API qmlbind_exporter *qmlbind_exporter_new(
-    qmlbind_backref *classRef,
+    qmlbind_client_class *classObject,
     const char *className,
-    const qmlbind_interface *interface
+    qmlbind_client_callbacks callbacks
 );
 
 /*!
- * \brief Destroys this `qmlbind_exporter`.
+ * \brief Finalizes this `qmlbind_exporter` and transforms it into a new `qmlbind_metaobject`.
+ *
+ * Takes ownership of the given `qmlbind_exporter`.
+ * Because the calling code does not own the exporter anymore after this call, no new methods etc. can be added
+ * afterwards.
+ *
+ * Ownership of the returned `qmlbind_metaobject` is transfered to the caller.
  */
-QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter *exporter);
+QMLBIND_API qmlbind_metaobject *qmlbind_exporter_into_metaobject(qmlbind_exporter *self);
 
 /*!
  * \brief Adds a new method `name` for the resulting metaobject with `arity` number of parameters.
@@ -49,7 +66,7 @@ QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter *exporter);
  * libqmlbind's equivalent of [QObject's Q_INVOKABLE](https://doc.qt.io/qt-5/qobject.html#Q_INVOKABLE).
  */
 QMLBIND_API void qmlbind_exporter_add_method(
-    qmlbind_exporter *exporter,
+    qmlbind_exporter *self,
     const char *name,
     int arity
 );
@@ -64,10 +81,10 @@ QMLBIND_API void qmlbind_exporter_add_method(
  * [Signal and Handler Event System](https://doc.qt.io/qt-5/qtqml-syntax-signals.html).
  */
 QMLBIND_API void qmlbind_exporter_add_signal(
-    qmlbind_exporter *exporter,
+    qmlbind_exporter *self,
     const char *name,
     int arity,
-    const char **params
+    const char *const *params
 );
 
 /*!
@@ -78,20 +95,21 @@ QMLBIND_API void qmlbind_exporter_add_signal(
  * could can use a signal that is never emitted and refrain from writing to the properties…
  *
  * Read & write operations will be executed through
- * `qmlbind_interface_handlers`' `read_property` & `write_property` functions.
+ * `qmlbind_client_callbacks`' `read_property` & `write_property` functions.
  *
- * \param notifySignal has to be a valid signal name, which means neither a nullptr nor an empty string. The
+ * \param notifierSignal has to be a valid signal name, which means neither a nullptr nor an empty string. The
  * signal should be added with `qmlbind_exporter_add_signal` in advance, or else a warning will be issued.
  * Notify signals are usually named `<propertyname>Changed` in Qt.
  *
  * libqmlbind's equivalent of [Q_PROPERTY](https://doc.qt.io/qt-5/properties.html), always using READ, WRITE and NOTIFY.
  */
 QMLBIND_API void qmlbind_exporter_add_property(
-    qmlbind_exporter *exporter,
+    qmlbind_exporter *self,
     const char *name,
     const char *notifierSignal
 );
 
+/** @}*/
 #ifdef __cplusplus
 }
 #endif

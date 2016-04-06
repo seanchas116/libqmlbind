@@ -7,10 +7,9 @@
 extern "C" {
 #endif
 
-/*! \class qmlbind_value
+/*!
+ * \defgroup value_module qmlbind_value
  * \brief acts as a container for Qt/JavaScript data types.
- *
- * Its methods are defined in \ref value.h.
  *
  * `qmlbind_value` supports the types defined in the
  * [ECMA-262 standard](https://www.ecma-international.org/publications/standards/Ecma-262.htm):
@@ -62,10 +61,19 @@ extern "C" {
  * you can do so with the help of a for-in statement in QML script code, or `qmlbind_iterator` in C.
  *
  * libqmlbind's equivalent of a [QJSValue](https://doc.qt.io/qt-5/qjsvalue.html).
+ *
+ */
+
+/** \addtogroup value_module
+ *  @{
+ */
+
+/*! \struct qmlbind_value
+ * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref value_module.
  */
 
 /*! \file value.h
- * \brief Contains all methods defined on `qmlbind_value`.
+ * \brief Contains all methods defined on \ref value_module.
  */
 
 
@@ -493,11 +501,13 @@ QMLBIND_API qmlbind_value *qmlbind_value_call_with_instance(
 );
 
 /*!
- * \brief If this `qmlbind_value` is a wrapper, returns the backref the wrapper represents; otherwise, returns 0.
+ * \brief If this `qmlbind_value` is a wrapper, returns the `qmlbind_client_object` inside the wrapper; otherwise, returns 0.
+ *
+ * Does not transfer ownership of the unwrapped `qmlbind_client_object`.
  *
  * libqmlbind's rough equivalent of [QJSValue::toQObject()](https://doc.qt.io/qt-5/qjsvalue.html#toQObject).
  */
-QMLBIND_API qmlbind_backref *qmlbind_value_get_backref(const qmlbind_value *self);
+QMLBIND_API qmlbind_client_object *qmlbind_value_unwrap(const qmlbind_value *self);
 
 #ifdef __cplusplus
 }

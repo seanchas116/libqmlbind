@@ -1,9 +1,7 @@
 #pragma once
 
 #include "qmlbind/qmlbind_global.h"
-#include "backref.h"
 #include <private/qmetaobjectbuilder_p.h>
-#include <QSharedPointer>
 
 namespace QmlBind {
 
@@ -20,22 +18,26 @@ public:
         QByteArray name;
     };
 
-    Exporter(const char *className, const Backref &classRef);
+    Exporter(const char *className, qmlbind_client_class* classObject, qmlbind_client_callbacks callbacks);
+
+    static QByteArray methodSignature(const char *name, int arity);
 
     void addMethod(const char *name, int arity);
     void addSignal(const char *name, const QList<QByteArray> &args);
     void addProperty(const char *name, const char *notifier);
-    std::shared_ptr<Interface> interface() const { return mClassRef.interface(); }
 
-    Backref classRef() const { return mClassRef; }
-    const QMetaObjectBuilder &metaObjectBuilder() const { return mBuilder; }
+    qmlbind_client_class *classObject() const { return mClassObject; }
+    qmlbind_client_callbacks callbacks() const { return mCallbacks; }
+
+    std::unique_ptr<QMetaObject, decltype(&free)> toMetaObject() const;
     QHash<int, Method> methodMap() const { return mMethodMap; }
     QHash<int, Property> propertyMap() const { return mPropertyMap; }
     QHash<QByteArray, int> signalIndexMap() const { return mSignalIndexMap; }
 
 private:
 
-    Backref mClassRef;
+    qmlbind_client_class *mClassObject;
+    qmlbind_client_callbacks mCallbacks;
     QHash<int, Method> mMethodMap;
     QHash<int, Property> mPropertyMap;
     QHash<QByteArray, int> mSignalIndexMap;

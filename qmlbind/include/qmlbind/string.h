@@ -6,17 +6,24 @@
 extern "C" {
 #endif
 
-/*! \class qmlbind_string
+/*!
+ * \defgroup string_module qmlbind_string
  * \brief Acts as string wrapper for libqmlbind's api.
- *
- * Its methods are defined in \ref string.h.
  *
  * This is equivalent to a QString stored as a [QByteArray](https://doc.qt.io/qt-5/qbytearray.html),
  * encoded with [QString::toUtf8](https://doc.qt.io/qt-5/qstring.html#fromUtf8).
  */
 
+/** \addtogroup string_module
+ *  @{
+ */
+
+/*! \struct qmlbind_string
+ * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref string_module.
+ */
+
 /*! \file string.h
- * \brief Contains all methods defined on `qmlbind_string`.
+ * \brief Contains all methods defined on \ref string_module.
  */
 
 
@@ -47,6 +54,7 @@ QMLBIND_API int qmlbind_string_get_length(const qmlbind_string *self);
  */
 QMLBIND_API void qmlbind_string_release(qmlbind_string *self);
 
+/** @}*/
 #ifdef __cplusplus
 }
 #endif

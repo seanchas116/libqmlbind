@@ -1,18 +1,37 @@
 #include "exporter.h"
-#include "interface.h"
 #include <stdexcept>
 #include <QVector>
 #include <QDebug>
 
 namespace QmlBind {
 
-Exporter::Exporter(const char *className, const Backref &classRef) :
-    mClassRef(classRef)
+Exporter::Exporter(const char *className, qmlbind_client_class *classObject, qmlbind_client_callbacks callbacks) :
+    mClassObject(classObject),
+    mCallbacks(callbacks)
 {
+    if (!mCallbacks.call_method) {
+        qFatal("qmlbind: call_method handler not specified");
+    }
+    if (!mCallbacks.set_property) {
+        qFatal("qmlbind: set_property handler not specified");
+    }
+    if (!mCallbacks.get_property) {
+        qFatal("qmlbind: get_property handler not specified");
+    }
+    if (!mCallbacks.new_object) {
+        qFatal("qmlbind: new_object handler not specified");
+    }
+    if (!mCallbacks.delete_object) {
+        qFatal("qmlbind: delete_object handler not specified");
+    }
     mBuilder.setClassName(className);
 }
 
-static QByteArray methodSignature(const char *name, int arity)
+std::unique_ptr<QMetaObject, decltype(&free)> Exporter::toMetaObject() const {
+    return std::unique_ptr<QMetaObject, decltype(&free)>(mBuilder.toMetaObject(), free);
+}
+
+QByteArray Exporter::methodSignature(const char *name, int arity)
 {
     QByteArray sig;
     sig += name;
@@ -31,7 +50,7 @@ static QByteArray methodSignature(const char *name, int arity)
 
 void Exporter::addMethod(const char *name, int arity)
 {
-    QMetaMethodBuilder method = mBuilder.addMethod(methodSignature(name, arity), "QJSValue");
+    QMetaMethodBuilder method = mBuilder.addMethod(Exporter::methodSignature(name, arity), "QJSValue");
 
     Method methodInfo;
     methodInfo.arity = arity;
@@ -42,7 +61,7 @@ void Exporter::addMethod(const char *name, int arity)
 
 void Exporter::addSignal(const char *name, const QList<QByteArray> &args)
 {
-    QMetaMethodBuilder method = mBuilder.addSignal(methodSignature(name, args.size()));
+    QMetaMethodBuilder method = mBuilder.addSignal(Exporter::methodSignature(name, args.size()));
     method.setParameterNames(args);
 
     mSignalIndexMap[name] = method.index();
