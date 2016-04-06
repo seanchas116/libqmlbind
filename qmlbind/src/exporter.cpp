@@ -69,6 +69,9 @@ void Exporter::addSignal(const char *name, const QList<QByteArray> &args)
 
 void Exporter::addProperty(const char *name, const char *notifier)
 {
+    if (notifier == nullptr || strcmp(notifier, "") == 0) {
+        qFatal("property %s was not given a valid notifier signal name.", name);
+    }
     if (!mSignalIndexMap.contains(notifier)) {
         qWarning() << "signal" << notifier << "not yet added";
     }
