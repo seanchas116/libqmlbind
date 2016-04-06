@@ -29,6 +29,12 @@ extern "C" {
  *
  */
 
+/*!
+ * \brief Creates a new `qmlbind_metaobject` from `exporter`.
+ */
+QMLBIND_API qmlbind_metaobject *qmlbind_metaobject_new(
+    const qmlbind_exporter *exporter
+);
 
 /*!
  * \brief Destroys this `qmlbind_metaobject`.

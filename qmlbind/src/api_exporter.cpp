@@ -13,11 +13,6 @@ qmlbind_exporter *qmlbind_exporter_new(qmlbind_client_class *classObject, const 
     return new Exporter(className, classObject, callbacks);
 }
 
-qmlbind_metaobject *qmlbind_exporter_into_metaobject(qmlbind_exporter *self)
-{
-    return new std::shared_ptr<MetaObject>(new MetaObject(*self));
-}
-
 void qmlbind_exporter_add_method(
     qmlbind_exporter *self,
     const char *name,

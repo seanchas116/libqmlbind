@@ -52,13 +52,6 @@ QMLBIND_API qmlbind_exporter *qmlbind_exporter_new(
 QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter *self);
 
 /*!
- * \brief Finalizes this `qmlbind_exporter` and transforms it into a new `qmlbind_metaobject`.
- *
- * Ownership of the returned `qmlbind_metaobject` is transfered to the caller.
- */
-QMLBIND_API qmlbind_metaobject *qmlbind_exporter_into_metaobject(qmlbind_exporter *self);
-
-/*!
  * \brief Adds a new method `name` for the resulting metaobject with `arity` number of parameters.
  *
  * Such methods can either directly be called from QML or be used as QML signal handlers, as described in [Signal and
