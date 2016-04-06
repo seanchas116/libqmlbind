@@ -29,6 +29,16 @@ libqmlbind is a C library for creating QML bindings for other languages easily t
 * All remaining functions with `self` as first parameter are methods on `self`, they never take ownership of it.
 * In all other cases, ownership of parameters and return value is explicitly stated in the comments.
 
+## How to install
+### Mac + Homebrew
+
+You can install libqmlbind via [Homebrew](http://brew.sh/) on Mac.
+
+```
+> brew tap seanchas116/libqmlbind
+> brew install libqmlbind
+```
+
 ## How to build
 ### Requirements
 * A C++11-capable compiler: libqmlbind is tested against `gcc 4.8.4`.
