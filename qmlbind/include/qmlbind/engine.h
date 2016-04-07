@@ -123,6 +123,9 @@ QMLBIND_API qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *self, int le
  *
  * After creating a wrapper, metaclass changes such as method addition will not be reflected in the created wrapper.
  *
+ * You can destroy the metaclass just after calling this function,
+ * but you should keep around the metaclass if you are going to use `qmlbind_engine_new_wrapper` again for the same class.
+ *
  * libqmlbind's equivalent of [QJSEngine::newQObject](https://doc.qt.io/qt-5/qjsengine.html#newQObject) plus the
  * additional wrapper logic to create a QObject for `object` with `metaclass`.
  */
