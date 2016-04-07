@@ -35,7 +35,7 @@ namespace QmlBind {
 class Engine;
 class Interface;
 class MetaObject;
-class Exporter;
+class MetaClass;
 class SignalEmitter;
 
 }
@@ -50,10 +50,7 @@ typedef QJSValue qmlbind_value;
 typedef QJSValueIterator qmlbind_iterator;
 typedef QByteArray qmlbind_string;
 
-typedef QmlBind::Exporter qmlbind_exporter;
-// Use shared pointer as metaobjects are widely-referenced classes
-typedef std::shared_ptr<QmlBind::MetaObject> qmlbind_metaobject;
-
+typedef QmlBind::MetaClass qmlbind_metaclass;
 typedef QmlBind::SignalEmitter qmlbind_signal_emitter;
 
 #else
@@ -68,9 +65,7 @@ typedef struct qmlbind_value {} qmlbind_value;
 typedef struct qmlbind_iterator {} qmlbind_iterator;
 typedef struct qmlbind_string {} qmlbind_string;
 
-typedef struct qmlbind_metaobject {} qmlbind_metaobject;
-typedef struct qmlbind_exporter {} qmlbind_exporter;
-
+typedef struct qmlbind_metaclass {} qmlbind_metaclass;
 typedef struct qmlbind_signal_emitter {} qmlbind_signal_emitter;
 
 #endif

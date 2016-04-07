@@ -1,4 +1,4 @@
-QT += widgets qml quick core-private
+QT += widgets qml quick
 
 TARGET = qmlbind
 TEMPLATE = lib
@@ -16,18 +16,16 @@ SOURCES += \
     src/api_iterator.cpp \
     src/api_value.cpp \
     src/metaobject.cpp \
-    src/api_metaobject.cpp \
     src/wrapper.cpp \
     src/api_string.cpp \
     src/api_component.cpp \
     src/typeregisterer.cpp \
-    src/api_register.cpp \
-    src/exporter.cpp \
-    src/api_exporter.cpp \
     src/signalemitter.cpp \
     src/api_signal_emitter.cpp \
     src/engine.cpp \
-    src/api_plugin.cpp
+    src/api_plugin.cpp \
+    src/api_metaclass.cpp \
+    src/metaclass.cpp
 
 PUBLIC_HEADERS += \
     include/qmlbind/application.h \
@@ -35,24 +33,21 @@ PUBLIC_HEADERS += \
     include/qmlbind/iterator.h \
     include/qmlbind/qmlbind_global.h \
     include/qmlbind/value.h \
-    include/qmlbind/metaobject.h \
     include/qmlbind/string.h \
     include/qmlbind/component.h \
     include/qmlbind.h \
-    include/qmlbind/register.h \
-    include/qmlbind/exporter.h \
+    include/qmlbind/metaclass.h \
     include/qmlbind/signal_emitter.h \
     include/qmlbind/plugin.h \
 
-PRIVATE_HEADERS += \
+HEADERS = $$PUBLIC_HEADERS \
     src/metaobject.h \
     src/wrapper.h \
     src/typeregisterer.h \
-    src/exporter.h \
+    src/metaclass.h \
     src/signalemitter.h \
-    src/engine.h
-
-HEADERS = $$PUBLIC_HEADERS $$PRIVATE_HEADERS
+    src/engine.h \
+    src/classinfo.h
 
 macx {
     QMAKE_SONAME_PREFIX = @rpath

@@ -108,8 +108,8 @@ QMLBIND_API qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *self, int le
  *
  * This is intended to be used to expose `qmlbind_client_object` instances that were created by the client code directly
  * to QML via `qmlbind_value_set_properties()`, e.g. on the Global Object returned by
- * `qmlbind_engine_get_global_object()`. In that case, the metaobjects don't need to be registered via
- * `qmlbind_register_type` and don't need to be created inside QML.
+ * `qmlbind_engine_get_global_object()`. In that case, the metaclasses don't need to be registered via
+ * `qmlbind_metaclass_register` and don't need to be created inside QML.
  *
  * If the `object` should be able to send signals, you must create a `qmlbind_signal_emitter` for it afterwards by
  * calling `qmlbind_signal_emitter_new()` with the returned value.
@@ -121,12 +121,17 @@ QMLBIND_API qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *self, int le
  *
  * If `object` is a null pointer, this function returns a null value.
  *
+ * After creating a wrapper, metaclass changes such as method addition will not be reflected in the created wrapper.
+ *
+ * You can destroy the metaclass just after calling this function,
+ * but you should keep around the metaclass if you are going to use `qmlbind_engine_new_wrapper` again for the same class.
+ *
  * libqmlbind's equivalent of [QJSEngine::newQObject](https://doc.qt.io/qt-5/qjsengine.html#newQObject) plus the
- * additional wrapper logic to create a QObject for `object` with `metaobj`.
+ * additional wrapper logic to create a QObject for `object` with `metaclass`.
  */
 QMLBIND_API qmlbind_value *qmlbind_engine_new_wrapper(
     qmlbind_engine *self,
-    const qmlbind_metaobject *metaobj,
+    const qmlbind_metaclass *metaclass,
     qmlbind_client_object *object
 );
 

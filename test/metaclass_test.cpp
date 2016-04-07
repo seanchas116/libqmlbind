@@ -1,6 +1,7 @@
 #include "test_helper.h"
 #include <catch.hpp>
 #include <qmlbind.h>
+#include <QJSValue>
 #include <QMetaObject>
 #include <QMetaMethod>
 #include <QByteArray>
@@ -125,7 +126,7 @@ void deleteObject(qmlbind_client_object *object)
 }
 }
 
-TEST_CASE("exporter")
+TEST_CASE("metaclass")
 {
     auto engine = qmlbind_engine_new();
 
@@ -137,18 +138,17 @@ TEST_CASE("exporter")
     callbacks.get_property = &Callbacks::invokeGetter;
     callbacks.delete_object = &Callbacks::deleteObject;
 
-    auto exporter = qmlbind_exporter_new(reinterpret_cast<qmlbind_client_class *>(new QString("class:Test")), "Test", callbacks);
+    auto metaclass = qmlbind_metaclass_new(reinterpret_cast<qmlbind_client_class *>(new QString("class:Test")), "Test", callbacks);
 
     const char *notifierparams[] = { "value" };
-    qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
-    qmlbind_exporter_add_method(exporter, "incrementBy", 1);
-    qmlbind_exporter_add_property(exporter, "value", "valueChanged");
-
-    auto metaobject = qmlbind_exporter_into_metaobject(exporter);
+    qmlbind_metaclass_add_signal(metaclass, "valueChanged", 1, notifierparams);
+    qmlbind_metaclass_add_method(metaclass, "incrementBy", 1);
+    qmlbind_metaclass_add_property(metaclass, "value", "valueChanged");
 
     SECTION("generated metaobject")
     {
-        auto metaobj = *reinterpret_cast<std::shared_ptr<QMetaObject> *>(metaobject);
+        auto value = qmlbind_engine_new_wrapper(engine, metaclass, nullptr);
+        auto metaobj = reinterpret_cast<QJSValue *>(value)->toQObject()->metaObject();
 
         auto methodCount = metaobj->methodCount() - metaobj->methodOffset();
         auto propertyCount = metaobj->propertyCount() - metaobj->propertyOffset();
@@ -193,8 +193,7 @@ TEST_CASE("exporter")
             auto test = std::make_shared<Test>([&] {
                 destroyed = true;
             }, nullptr);
-
-            auto value = qmlbind_engine_new_wrapper(engine, metaobject, Callbacks::variantToClientObject(QVariant::fromValue(test)));
+            auto value = qmlbind_engine_new_wrapper(engine, metaclass, Callbacks::variantToClientObject(QVariant::fromValue(test)));
 
             REQUIRE(qmlbind_value_is_wrapper(value));
 
@@ -252,7 +251,7 @@ TEST_CASE("exporter")
             }
         )QML";
 
-        qmlbind_register_type(metaobject, "test", 1, 0, "Test");
+        qmlbind_metaclass_register(metaclass, "test", 1, 0, "Test");
 
         auto component = qmlbind_component_new(engine);
         qmlbind_component_set_data(component, data, "");
@@ -309,6 +308,6 @@ TEST_CASE("exporter")
         qmlbind_component_release(component);
     }
 
-    qmlbind_metaobject_release(metaobject);
+    qmlbind_metaclass_release(metaclass);
     qmlbind_engine_release(engine);
 }
