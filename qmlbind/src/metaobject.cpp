@@ -120,7 +120,7 @@ void MetaObject::setupData(const QByteArray &className)
     {
         QList<QByteArray> strs;
 
-        int add(const QByteArray &str) {
+        uint add(const QByteArray &str) {
             strs << str;
             return strs.size() - 1;
         }
@@ -207,7 +207,7 @@ void MetaObject::setupData(const QByteArray &className)
             metadata << 0x02; // flags
         }
     }
-    uint jsValueType = 0x80000000 | (uint)strData.add("QJSValue");
+    auto jsValueType = 0x80000000 | strData.add("QJSValue");
 
     // params
     for (auto i = 0; i < mMethods.size(); ++i) {
