@@ -32,12 +32,18 @@ libqmlbind is a C library for creating QML bindings for other languages easily t
 ## How to install
 ### Mac + Homebrew
 
-You can install libqmlbind via [Homebrew](http://brew.sh/) on Mac. (using [a custom tap](https://github.com/seanchas116/homebrew-libqmlbind))
+You can install libqmlbind via [Homebrew](http://brew.sh/) on Mac.
+(using [a custom tap](https://github.com/seanchas116/homebrew-libqmlbind))
 
 ```
 > brew tap seanchas116/libqmlbind
 > brew install libqmlbind
 ```
+
+### Arch Linux via AUR
+
+For Arch Linux, you can find the [latest release](https://aur.archlinux.org/packages/libqmlbind) and the
+[git master](https://aur.archlinux.org/packages/libqmlbind-git/) version of libqmlbind in the AUR.
 
 ## How to build
 ### Requirements
