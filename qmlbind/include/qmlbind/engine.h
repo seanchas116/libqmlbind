@@ -121,6 +121,8 @@ QMLBIND_API qmlbind_value *qmlbind_engine_new_array(qmlbind_engine *self, int le
  *
  * If `object` is a null pointer, this function returns a null value.
  *
+ * After creating a wrapper, metaclass changes such as method addition will not be reflected in the created wrapper.
+ *
  * libqmlbind's equivalent of [QJSEngine::newQObject](https://doc.qt.io/qt-5/qjsengine.html#newQObject) plus the
  * additional wrapper logic to create a QObject for `object` with `metaclass`.
  */
