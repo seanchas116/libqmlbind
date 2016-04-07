@@ -30,12 +30,14 @@ MetaClass::MetaClass(const QByteArray &className, qmlbind_client_class *classObj
 
 void MetaClass::addMethod(const QByteArray &name, int argc)
 {
+    invalidiateMetaObject();
+
     QList<QByteArray> params;
     for (int i = 0; i < argc; ++i) {
         params << "";
     }
 
-    Method method;
+    MethodInfo method;
     method.name = name;
     method.params = params;
     method.type = MethodType::Method;
@@ -44,7 +46,9 @@ void MetaClass::addMethod(const QByteArray &name, int argc)
 
 void MetaClass::addSignal(const QByteArray &name, const QList<QByteArray> &params)
 {
-    Method method;
+    invalidiateMetaObject();
+
+    MethodInfo method;
     method.name = name;
     method.params = params;
     method.type = MethodType::Signal;
@@ -53,7 +57,9 @@ void MetaClass::addSignal(const QByteArray &name, const QList<QByteArray> &param
 
 void MetaClass::addProperty(const QByteArray &name, const QByteArray &notifySignalName)
 {
-    Property prop;
+    invalidiateMetaObject();
+
+    PropertyInfo prop;
     prop.name = name;
     prop.notifySignalName = notifySignalName;
     mProperties << prop;
@@ -62,7 +68,7 @@ void MetaClass::addProperty(const QByteArray &name, const QByteArray &notifySign
 std::shared_ptr<MetaObject> MetaClass::createMetaObject() const
 {
     if (!mMetaObject) {
-        mMetaObject = std::make_shared<MetaObject>(*this);
+        mMetaObject = std::make_shared<MetaObject>(mClassName, mMethods, mProperties, mClassObject, mCallbacks);
     }
     return mMetaObject;
 }

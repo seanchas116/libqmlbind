@@ -1,5 +1,4 @@
 #include "metaobject.h"
-#include "metaclass.h"
 #include "wrapper.h"
 #include <QJSValue>
 #include <QMetaMethod>
@@ -7,20 +6,21 @@
 
 namespace QmlBind {
 
-MetaObject::MetaObject(const MetaClass &metaclass) :
-    mMethods(metaclass.methods()),
-    mProperties(metaclass.properties()),
-    mClassObject(metaclass.classObject()),
-    mCallbacks(metaclass.callbacks())
+MetaObject::MetaObject(const QByteArray &className, const QList<MethodInfo> &methods, const QList<PropertyInfo> &properties,
+                       qmlbind_client_class *classObject, qmlbind_client_callbacks callbacks) :
+    mMethods(methods),
+    mProperties(properties),
+    mClassObject(classObject),
+    mCallbacks(callbacks)
 {
     for (int i = 0; i < mMethods.size(); ++i) {
         auto &&method = mMethods[i];
-        if (method.type == MetaClass::MethodType::Signal) {
+        if (method.type == MethodType::Signal) {
             mSignalIndexMap[method.name] = i;
         }
     }
 
-    setupData(metaclass.className());
+    setupData(className);
 }
 
 Wrapper *MetaObject::newWrapper(qmlbind_client_object *object) const {
@@ -71,7 +71,7 @@ int MetaObject::metaCall(QObject *object, Call call, int index, void **argv) con
                 QMetaObject::activate(object, this, index, argv);
             }
             else {
-                MetaClass::Method method = mMethods[index];
+                auto method = mMethods[index];
                 *static_cast<QJSValue *>(argv[0]) = wrapper->callMethod(method.name, method.params.size(), reinterpret_cast<QJSValue **>(argv + 1));
             }
         }
@@ -186,8 +186,8 @@ void MetaObject::setupData(const QByteArray &className)
     metadata << 0 << 0; // constructors
     metadata << 0; // flags
 
-    auto signalCount = std::count_if(mMethods.begin(), mMethods.end(), [](const MetaClass::Method &method) {
-        return method.type == MetaClass::MethodType::Signal;
+    auto signalCount = std::count_if(mMethods.begin(), mMethods.end(), [](const MethodInfo &method) {
+        return method.type == MethodType::Signal;
     });
     metadata << signalCount; // signal count
 
@@ -201,7 +201,7 @@ void MetaObject::setupData(const QByteArray &className)
         metadata << method.params.size(); // argc
         paramPlaceholders << metadata.makePlaceholder(); // offset of parameters
         metadata << 2; // tag
-        if (method.type == MetaClass::MethodType::Signal) {
+        if (method.type == MethodType::Signal) {
             metadata << 0x06; // flags
         } else {
             metadata << 0x02; // flags
@@ -215,7 +215,7 @@ void MetaObject::setupData(const QByteArray &className)
         const auto &method = mMethods[i];
 
         // return type
-        if (method.type == MetaClass::MethodType::Signal) {
+        if (method.type == MethodType::Signal) {
             metadata << QMetaType::Void;
         } else {
             metadata << jsValueType;

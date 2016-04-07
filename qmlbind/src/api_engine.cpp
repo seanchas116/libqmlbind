@@ -1,5 +1,6 @@
 #include "qmlbind/engine.h"
 #include "engine.h"
+#include "metaclass.h"
 #include "metaobject.h"
 #include "wrapper.h"
 #include <QQmlEngine>

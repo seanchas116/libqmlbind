@@ -46,7 +46,8 @@ HEADERS = $$PUBLIC_HEADERS \
     src/typeregisterer.h \
     src/metaclass.h \
     src/signalemitter.h \
-    src/engine.h
+    src/engine.h \
+    src/classinfo.h
 
 macx {
     QMAKE_SONAME_PREFIX = @rpath
