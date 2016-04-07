@@ -125,7 +125,7 @@ void deleteObject(qmlbind_client_object *object)
 }
 }
 
-TEST_CASE("exporter")
+TEST_CASE("metaclass")
 {
     auto engine = qmlbind_engine_new();
 
@@ -137,15 +137,15 @@ TEST_CASE("exporter")
     callbacks.get_property = &Callbacks::invokeGetter;
     callbacks.delete_object = &Callbacks::deleteObject;
 
-    auto exporter = qmlbind_exporter_new(reinterpret_cast<qmlbind_client_class *>(new QString("class:Test")), "Test", callbacks);
+    auto meteclass = qmlbind_metaclass_new(reinterpret_cast<qmlbind_client_class *>(new QString("class:Test")), "Test", callbacks);
 
     const char *notifierparams[] = { "value" };
-    qmlbind_exporter_add_signal(exporter, "valueChanged", 1, notifierparams);
-    qmlbind_exporter_add_method(exporter, "incrementBy", 1);
-    qmlbind_exporter_add_property(exporter, "value", "valueChanged");
+    qmlbind_metaclass_add_signal(meteclass, "valueChanged", 1, notifierparams);
+    qmlbind_metaclass_add_method(meteclass, "incrementBy", 1);
+    qmlbind_metaclass_add_property(meteclass, "value", "valueChanged");
 
-    auto metaobject = qmlbind_metaobject_new(exporter);
-    qmlbind_exporter_release(exporter);
+    auto metaobject = qmlbind_metaobject_new(meteclass);
+    qmlbind_metaclass_release(meteclass);
 
     SECTION("generated metaobject")
     {

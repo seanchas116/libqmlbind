@@ -1,21 +1,21 @@
 #pragma once
 
 #include "qmlbind/qmlbind_global.h"
-#include "exporter.h"
+#include "metaclass.h"
 #include <QMetaObject>
 #include <QHash>
 #include <QVector>
 
 namespace QmlBind {
 
-class Exporter;
+class MetaClass;
 class Wrapper;
 class SignalEmitter;
 
 class MetaObject : public QMetaObject, public std::enable_shared_from_this<MetaObject>
 {
 public:
-    MetaObject(const Exporter &exporter);
+    MetaObject(const MetaClass &metaclass);
 
     Wrapper *newWrapper(qmlbind_client_object *object) const;
     Wrapper *newObject(void *memory) const;
@@ -31,8 +31,8 @@ private:
     QVector<uint8_t> mStringData;
     QVector<uint> mMetadata;
 
-    QList<Exporter::Method> mMethods;
-    QList<Exporter::Property> mProperties;
+    QList<MetaClass::Method> mMethods;
+    QList<MetaClass::Property> mProperties;
     QHash<QByteArray, int> mSignalIndexMap;
 
     qmlbind_client_class *mClassObject;

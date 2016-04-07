@@ -22,12 +22,12 @@ SOURCES += \
     src/api_component.cpp \
     src/typeregisterer.cpp \
     src/api_register.cpp \
-    src/exporter.cpp \
-    src/api_exporter.cpp \
     src/signalemitter.cpp \
     src/api_signal_emitter.cpp \
     src/engine.cpp \
-    src/api_plugin.cpp
+    src/api_plugin.cpp \
+    src/api_metaclass.cpp \
+    src/metaclass.cpp
 
 PUBLIC_HEADERS += \
     include/qmlbind/application.h \
@@ -40,19 +40,17 @@ PUBLIC_HEADERS += \
     include/qmlbind/component.h \
     include/qmlbind.h \
     include/qmlbind/register.h \
-    include/qmlbind/exporter.h \
+    include/qmlbind/metaclass.h \
     include/qmlbind/signal_emitter.h \
     include/qmlbind/plugin.h \
 
-PRIVATE_HEADERS += \
+HEADERS = $$PUBLIC_HEADERS \
     src/metaobject.h \
     src/wrapper.h \
     src/typeregisterer.h \
-    src/exporter.h \
+    src/metaclass.h \
     src/signalemitter.h \
     src/engine.h
-
-HEADERS = $$PUBLIC_HEADERS $$PRIVATE_HEADERS
 
 macx {
     QMAKE_SONAME_PREFIX = @rpath

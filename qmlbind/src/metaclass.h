@@ -6,7 +6,7 @@
 
 namespace QmlBind {
 
-class Exporter
+class MetaClass
 {
 public:
 
@@ -25,7 +25,7 @@ public:
         QByteArray notifySignalName;
     };
 
-    Exporter(const QByteArray &className, qmlbind_client_class* classObject, qmlbind_client_callbacks callbacks);
+    MetaClass(const QByteArray &className, qmlbind_client_class* classObject, qmlbind_client_callbacks callbacks);
 
     static QByteArray methodSignature(const char *name, int arity);
 

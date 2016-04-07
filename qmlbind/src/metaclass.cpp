@@ -1,11 +1,11 @@
-#include "exporter.h"
+#include "metaclass.h"
 #include <stdexcept>
 #include <QVector>
 #include <QDebug>
 
 namespace QmlBind {
 
-Exporter::Exporter(const QByteArray &className, qmlbind_client_class *classObject, qmlbind_client_callbacks callbacks) :
+MetaClass::MetaClass(const QByteArray &className, qmlbind_client_class *classObject, qmlbind_client_callbacks callbacks) :
     mClassName(className),
     mClassObject(classObject),
     mCallbacks(callbacks)
@@ -27,7 +27,7 @@ Exporter::Exporter(const QByteArray &className, qmlbind_client_class *classObjec
     }
 }
 
-void Exporter::addMethod(const QByteArray &name, int argc)
+void MetaClass::addMethod(const QByteArray &name, int argc)
 {
     QList<QByteArray> params;
     for (int i = 0; i < argc; ++i) {
@@ -41,7 +41,7 @@ void Exporter::addMethod(const QByteArray &name, int argc)
     mMethods << method;
 }
 
-void Exporter::addSignal(const QByteArray &name, const QList<QByteArray> &params)
+void MetaClass::addSignal(const QByteArray &name, const QList<QByteArray> &params)
 {
     Method method;
     method.name = name;
@@ -50,7 +50,7 @@ void Exporter::addSignal(const QByteArray &name, const QList<QByteArray> &params
     mMethods << method;
 }
 
-void Exporter::addProperty(const QByteArray &name, const QByteArray &notifySignalName)
+void MetaClass::addProperty(const QByteArray &name, const QByteArray &notifySignalName)
 {
     Property prop;
     prop.name = name;

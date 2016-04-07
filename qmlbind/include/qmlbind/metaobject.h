@@ -36,7 +36,7 @@ extern "C" {
  * be destroyed directly afterwards, as there is nothing left to do with it.
  */
 QMLBIND_API qmlbind_metaobject *qmlbind_metaobject_new(
-    const qmlbind_exporter *exporter
+    const qmlbind_metaclass *metaclass
 );
 
 /*!

@@ -7,7 +7,7 @@
 #include "qmlbind/application.h"
 #include "qmlbind/component.h"
 #include "qmlbind/engine.h"
-#include "qmlbind/exporter.h"
+#include "qmlbind/metaclass.h"
 #include "qmlbind/iterator.h"
 #include "qmlbind/metaobject.h"
 #include "qmlbind/plugin.h"

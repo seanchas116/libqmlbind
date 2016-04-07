@@ -1,18 +1,18 @@
-#include "qmlbind/exporter.h"
-#include "exporter.h"
+#include "qmlbind/metaclass.h"
+#include "metaclass.h"
 #include "metaobject.h"
 
 using namespace QmlBind;
 
 extern "C" {
 
-qmlbind_exporter *qmlbind_exporter_new(qmlbind_client_class *classObject, const char *className, qmlbind_client_callbacks callbacks)
+qmlbind_metaclass *qmlbind_metaclass_new(qmlbind_client_class *classObject, const char *className, qmlbind_client_callbacks callbacks)
 {
-    return new Exporter(className, classObject, callbacks);
+    return new MetaClass(className, classObject, callbacks);
 }
 
-void qmlbind_exporter_add_method(
-    qmlbind_exporter *self,
+void qmlbind_metaclass_add_method(
+    qmlbind_metaclass *self,
     const char *name,
     int arity
 )
@@ -20,8 +20,8 @@ void qmlbind_exporter_add_method(
     self->addMethod(name, arity);
 }
 
-void qmlbind_exporter_add_signal(
-    qmlbind_exporter *self,
+void qmlbind_metaclass_add_signal(
+    qmlbind_metaclass *self,
     const char *name,
     int arity,
     const char *const *params
@@ -34,7 +34,7 @@ void qmlbind_exporter_add_signal(
     self->addSignal(name, paramList);
 }
 
-void qmlbind_exporter_add_property(qmlbind_exporter *self,
+void qmlbind_metaclass_add_property(qmlbind_metaclass *self,
     const char *name,
     const char *notifierSignal
 )
@@ -42,7 +42,7 @@ void qmlbind_exporter_add_property(qmlbind_exporter *self,
     self->addProperty(name, notifierSignal);
 }
 
-void qmlbind_exporter_release(qmlbind_exporter *self)
+void qmlbind_metaclass_release(qmlbind_metaclass *self)
 {
     delete self;
 }

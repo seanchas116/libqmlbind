@@ -6,27 +6,26 @@ extern "C" {
 #endif
 
 /*!
- * \defgroup exporter_module qmlbind_exporter
- * \brief provides a builder-style API for creating a new \ref metaobject_module .
+ * \defgroup metaclass_module qmlbind_metaclass
+ * \brief provides APIs for defining class information for objects.
  *
- * After adding all wanted methods, signals and properties, an exporter should be transformed into a \ref
- * `metaobject_module` by using `qmlbind_exporter_into_metaobject()`.
+ * Internally, information that is defined in `qmlbind_metaclass` is used to create [QMetaObject](https://doc.qt.io/qt-5/qmetaobject.html)s for wrappers.
  */
 
-/** \addtogroup exporter_module
+/** \addtogroup metaclass_module
  *  @{
  */
 
-/*! \struct qmlbind_exporter
- * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref exporter_module.
+/*! \struct qmlbind_metaclass
+ * \brief an opaque struct mainly used as `self` argument in the methods defined in \ref metaclass_module.
  */
 
-/*! \file exporter.h
- * \brief Contains all methods defined on `qmlbind_exporter`.
+/*! \file metaclass.h
+ * \brief Contains all methods defined on `qmlbind_metaclass`.
  */
 
 /*!
- * \brief Creates a new `qmlbind_exporter`.
+ * \brief Creates a new `qmlbind_metaclass`.
  *
  * \param classObject will be given as parameter to the `new_object` function of the provided
  * `qmlbind_client_callbacks`. You can use it to hand over the equivalent of class objects in your language to
@@ -34,22 +33,22 @@ extern "C" {
  * take ownership of the classObject, but it still needs to be valid for as long as new objects are created (i.e. the
  * whole application lifetime).
  *
- * \param className is used for registering the metaobject created with this exporter in the metaobject system.
+ * \param className is used for registering the metaobject created with this metaclass in the metaobject system.
  *
  * \param interfaceHandlers is used to create, use and delete instances of the metaobject to build.
- * You can either create a single, generic one and pass that to every new \ref qmlbind_exporter_new, or create specific
- * ones for each exporter.
+ * You can either create a single, generic one and pass that to every new \ref qmlbind_metaclass_new, or create specific
+ * ones for each metaclass.
  */
-QMLBIND_API qmlbind_exporter *qmlbind_exporter_new(
+QMLBIND_API qmlbind_metaclass *qmlbind_metaclass_new(
     qmlbind_client_class *classObject,
     const char *className,
     qmlbind_client_callbacks callbacks
 );
 
 /*!
- * \brief Destroys the `qmlbind_exporter`.
+ * \brief Destroys the `qmlbind_metaclass`.
  */
-QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter *self);
+QMLBIND_API void qmlbind_metaclass_release(qmlbind_metaclass *self);
 
 /*!
  * \brief Adds a new method `name` for the resulting metaobject with `arity` number of parameters.
@@ -59,8 +58,8 @@ QMLBIND_API void qmlbind_exporter_release(qmlbind_exporter *self);
  *
  * libqmlbind's equivalent of [QObject's Q_INVOKABLE](https://doc.qt.io/qt-5/qobject.html#Q_INVOKABLE).
  */
-QMLBIND_API void qmlbind_exporter_add_method(
-    qmlbind_exporter *self,
+QMLBIND_API void qmlbind_metaclass_add_method(
+    qmlbind_metaclass *self,
     const char *name,
     int arity
 );
@@ -74,8 +73,8 @@ QMLBIND_API void qmlbind_exporter_add_method(
  * Such signals can be received by QML signal handlers, as described in
  * [Signal and Handler Event System](https://doc.qt.io/qt-5/qtqml-syntax-signals.html).
  */
-QMLBIND_API void qmlbind_exporter_add_signal(
-    qmlbind_exporter *self,
+QMLBIND_API void qmlbind_metaclass_add_signal(
+    qmlbind_metaclass *self,
     const char *name,
     int arity,
     const char *const *params
@@ -92,13 +91,13 @@ QMLBIND_API void qmlbind_exporter_add_signal(
  * `qmlbind_client_callbacks`' `read_property` & `write_property` functions.
  *
  * \param notifierSignal has to be a valid signal name, which means neither a nullptr nor an empty string. The
- * signal should be added with `qmlbind_exporter_add_signal` in advance, or else a warning will be issued.
+ * signal should be added with `qmlbind_metaclass_add_signal` in advance, or else a warning will be issued.
  * Notify signals are usually named `<propertyname>Changed` in Qt.
  *
  * libqmlbind's equivalent of [Q_PROPERTY](https://doc.qt.io/qt-5/properties.html), always using READ, WRITE and NOTIFY.
  */
-QMLBIND_API void qmlbind_exporter_add_property(
-    qmlbind_exporter *self,
+QMLBIND_API void qmlbind_metaclass_add_property(
+    qmlbind_metaclass *self,
     const char *name,
     const char *notifierSignal
 );
