@@ -6,6 +6,25 @@
 
 namespace QmlBind {
 
+// See qmetaobject_p.h for flag details
+
+enum PropertyFlags {
+    Readable = 0x00000001,
+    Writable = 0x00000002,
+    Designable = 0x00001000,
+    Scriptable = 0x00004000,
+    Stored = 0x00010000,
+    Notify = 0x00400000,
+};
+
+enum MethodFlags {
+    Private = 0x00,
+    Protected = 0x01,
+    Public = 0x02,
+    Signal = 0x04,
+};
+
+
 MetaObject::MetaObject(const QByteArray &className, const QList<MethodInfo> &methods, const QList<PropertyInfo> &properties,
                        qmlbind_client_class *classObject, qmlbind_client_callbacks callbacks) :
     mMethods(methods),
@@ -202,9 +221,9 @@ void MetaObject::setupData(const QByteArray &className)
         paramPlaceholders << metadata.makePlaceholder(); // offset of parameters
         metadata << 2; // tag
         if (method.type == MethodType::Signal) {
-            metadata << 0x06; // flags
+            metadata << (Public | Signal);
         } else {
-            metadata << 0x02; // flags
+            metadata << Public;
         }
     }
     auto jsValueType = 0x80000000 | strData.add("QJSValue");
@@ -237,12 +256,13 @@ void MetaObject::setupData(const QByteArray &className)
     for (const auto &prop : mProperties) {
         metadata << strData.add(prop.name) << jsValueType;
         auto signalIndex = mSignalIndexMap.value(prop.notifySignalName, -1);
+        int flags = Readable | Writable | Designable | Scriptable | Stored;
         if (signalIndex == -1) {
             qWarning() << "qmlbind: no such notify signal" << prop.notifySignalName << "in class" << className;
-            metadata << 0x0009510b;
         } else {
-            metadata << 0x0049510b;
+            flags |= Notify;
         }
+        metadata << flags;
     }
     // notify signal ids
     for (const auto &prop : mProperties) {
