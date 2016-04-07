@@ -40,7 +40,7 @@ extern "C" {
  *
  * \param className is used for registering the metaobject created with this metaclass in the metaobject system.
  *
- * \param interfaceHandlers is used to create, use and delete instances of the metaobject to build.
+ * \param callbacks is used to create, use and delete instances of the metaobject to build.
  * You can either create a single, generic one and pass that to every new \ref qmlbind_metaclass_new, or create specific
  * ones for each metaclass.
  */
