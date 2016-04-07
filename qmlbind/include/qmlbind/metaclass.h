@@ -38,7 +38,7 @@ extern "C" {
  * take ownership of the classObject, but it still needs to be valid for as long as new objects are created (i.e. the
  * whole application lifetime).
  *
- * \param className is used for registering the metaobject created with this metaclass in the metaobject system.
+ * \param className is used for registering this metaclass in the metaobject system.
  *
  * \param callbacks is used to create, use and delete instances of the metaobject to build.
  * You can either create a single, generic one and pass that to every new \ref qmlbind_metaclass_new, or create specific
