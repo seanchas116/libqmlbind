@@ -16,12 +16,10 @@ SOURCES += \
     src/api_iterator.cpp \
     src/api_value.cpp \
     src/metaobject.cpp \
-    src/api_metaobject.cpp \
     src/wrapper.cpp \
     src/api_string.cpp \
     src/api_component.cpp \
     src/typeregisterer.cpp \
-    src/api_register.cpp \
     src/signalemitter.cpp \
     src/api_signal_emitter.cpp \
     src/engine.cpp \
@@ -35,11 +33,9 @@ PUBLIC_HEADERS += \
     include/qmlbind/iterator.h \
     include/qmlbind/qmlbind_global.h \
     include/qmlbind/value.h \
-    include/qmlbind/metaobject.h \
     include/qmlbind/string.h \
     include/qmlbind/component.h \
     include/qmlbind.h \
-    include/qmlbind/register.h \
     include/qmlbind/metaclass.h \
     include/qmlbind/signal_emitter.h \
     include/qmlbind/plugin.h \

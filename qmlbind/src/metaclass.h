@@ -38,14 +38,17 @@ public:
     qmlbind_client_callbacks callbacks() const { return mCallbacks; }
     QList<Method> methods() const { return mMethods; }
     QList<Property> properties() const { return mProperties; }
+    std::shared_ptr<MetaObject> createMetaObject() const;
 
 private:
+    void invalidiateMetaObject();
 
     QByteArray mClassName;
     qmlbind_client_class *mClassObject;
     qmlbind_client_callbacks mCallbacks;
     QList<Method> mMethods;
     QList<Property> mProperties;
+    mutable std::shared_ptr<MetaObject> mMetaObject;
 };
 
 } // namespace QmlBind

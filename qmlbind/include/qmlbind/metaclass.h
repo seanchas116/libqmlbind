@@ -102,6 +102,28 @@ QMLBIND_API void qmlbind_metaclass_add_property(
     const char *notifierSignal
 );
 
+/*!
+ * \brief exposes the `metaclass` as `qmlName` component to QML.
+ *
+ * `uri`, `versionMajor` and `versionMinor` is the package uri and version under which this `metaclass` is made
+ * available to QML. After calling this function, you can import the component as:
+ *
+ * ```
+ * import <uri> <versionMajor>.<versionMinor>
+ * ```
+ *
+ * After registering, metaclass changes such as method addition will not be reflected in the QML type system.
+ *
+ * This is libqmlbind's rough equivalent of
+ * [QQmlEngine::registerType](https://doc.qt.io/qt-5/qqmlengine.html#qmlRegisterType).
+ */
+QMLBIND_API int qmlbind_metaclass_register(
+    qmlbind_metaclass *self,
+    const char *uri,
+    int versionMajor, int versionMinor,
+    const char *qmlName
+);
+
 /** @}*/
 #ifdef __cplusplus
 }

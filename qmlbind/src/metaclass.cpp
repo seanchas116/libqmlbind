@@ -1,4 +1,5 @@
 #include "metaclass.h"
+#include "metaobject.h"
 #include <stdexcept>
 #include <QVector>
 #include <QDebug>
@@ -56,6 +57,19 @@ void MetaClass::addProperty(const QByteArray &name, const QByteArray &notifySign
     prop.name = name;
     prop.notifySignalName = notifySignalName;
     mProperties << prop;
+}
+
+std::shared_ptr<MetaObject> MetaClass::createMetaObject() const
+{
+    if (!mMetaObject) {
+        mMetaObject = std::make_shared<MetaObject>(*this);
+    }
+    return mMetaObject;
+}
+
+void MetaClass::invalidiateMetaObject()
+{
+    mMetaObject = nullptr;
 }
 
 } // namespace QmlBind

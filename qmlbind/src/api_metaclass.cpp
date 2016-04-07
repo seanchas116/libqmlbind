@@ -1,6 +1,7 @@
 #include "qmlbind/metaclass.h"
 #include "metaclass.h"
 #include "metaobject.h"
+#include "typeregisterer.h"
 
 using namespace QmlBind;
 
@@ -45,6 +46,15 @@ void qmlbind_metaclass_add_property(qmlbind_metaclass *self,
 void qmlbind_metaclass_release(qmlbind_metaclass *self)
 {
     delete self;
+}
+
+int qmlbind_metaclass_register(
+    qmlbind_metaclass *self,
+    const char *uri,
+    int versionMajor, int versionMinor,
+    const char *qmlName)
+{
+    return TypeRegisterer::instance().registerType(self->createMetaObject(), uri, versionMajor, versionMinor, qmlName);
 }
 
 }
