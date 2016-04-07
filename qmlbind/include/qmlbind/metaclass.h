@@ -7,9 +7,14 @@ extern "C" {
 
 /*!
  * \defgroup metaclass_module qmlbind_metaclass
- * \brief provides APIs for defining class information for objects.
+ * \brief Defines an object type for use in QML type system.
  *
- * Internally, information that is defined in `qmlbind_metaclass` is used to create [QMetaObject](https://doc.qt.io/qt-5/qmetaobject.html)s for wrappers.
+ * It enables you to wrap client objects into a [QML object type](http://doc.qt.io/qt-5/qtqml-typesystem-objecttypes.html) and instantiate them in QML.
+ * It is also possible to create wrappers as `qmlbind_value` in `qmlbind_engine_new_wrapper`.
+ *
+ * Internally, the `qmlbind_metaclass` creates a [QMetaObject](https://doc.qt.io/qt-5/qmetaobject.html) for the wrapper Qt objects.
+ *
+ * libqmlbind's rough equivalent of [Meta-Object Compiler](http://doc.qt.io/qt-5/moc.html).
  */
 
 /** \addtogroup metaclass_module
