@@ -12,10 +12,10 @@ SOURCES += \
     value_test.cpp \
     iterator_test.cpp \
     component_test.cpp \
-    exporter_test.cpp \
     application_test.cpp \
     fixtures/emptycallbacks.cpp \
-    plugin_test.cpp
+    plugin_test.cpp \
+    metaclass_test.cpp
 
 
 QMAKE_RPATHDIR += $$OUT_PWD/../qmlbind
