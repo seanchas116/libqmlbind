@@ -14,6 +14,9 @@ extern "C" {
  *
  * Internally, the `qmlbind_metaclass` creates a [QMetaObject](https://doc.qt.io/qt-5/qmetaobject.html) for the wrapper Qt objects.
  *
+ * It is not recommended to use multiple `qmlbind_metaclass` instances for the same class name
+ * to prevent possible internal blow-up or strange side effects.
+ *
  * libqmlbind's rough equivalent of [Meta-Object Compiler](http://doc.qt.io/qt-5/moc.html).
  */
 
@@ -108,7 +111,7 @@ QMLBIND_API void qmlbind_metaclass_add_property(
 );
 
 /*!
- * \brief exposes the `metaclass` as `qmlName` component to QML.
+ * \brief exposes the metaclass as `qmlName` component to QML type system.
  *
  * `uri`, `versionMajor` and `versionMinor` is the package uri and version under which this `metaclass` is made
  * available to QML. After calling this function, you can import the component as:
@@ -117,13 +120,17 @@ QMLBIND_API void qmlbind_metaclass_add_property(
  * import <uri> <versionMajor>.<versionMinor>
  * ```
  *
+ * The content of the metaclass is copied when this function is called.
+ * You can destroy the metaclass just after calling this function,
+ * but you should keep around the metaclass if you are going to use `qmlbind_engine_new_wrapper` later on for the same class.
+ *
  * After registering, metaclass changes such as method addition will not be reflected in the QML type system.
  *
  * This is libqmlbind's rough equivalent of
  * [QQmlEngine::registerType](https://doc.qt.io/qt-5/qqmlengine.html#qmlRegisterType).
  */
 QMLBIND_API int qmlbind_metaclass_register(
-    qmlbind_metaclass *self,
+    const qmlbind_metaclass *self,
     const char *uri,
     int versionMajor, int versionMinor,
     const char *qmlName

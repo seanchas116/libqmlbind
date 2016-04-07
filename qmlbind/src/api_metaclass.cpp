@@ -49,7 +49,7 @@ void qmlbind_metaclass_release(qmlbind_metaclass *self)
 }
 
 int qmlbind_metaclass_register(
-    qmlbind_metaclass *self,
+    const qmlbind_metaclass *self,
     const char *uri,
     int versionMajor, int versionMinor,
     const char *qmlName)
