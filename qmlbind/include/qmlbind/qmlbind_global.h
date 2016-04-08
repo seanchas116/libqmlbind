@@ -146,6 +146,8 @@ typedef struct qmlbind_client_callbacks {
      * \brief executes the `name` method defined on the `qmlbind_client_object`, with `argc` parameters in `argv`, and returns
      * the result.
      *
+     * If the method does not return a value, `call_method()` should return `qmlbind_value_new_undefined()`.
+     *
      * Ownership of the result must be transfered to the caller.
      *
      * Ownership of `engine` and `object` is not transfered.
