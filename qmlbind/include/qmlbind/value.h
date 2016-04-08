@@ -287,6 +287,7 @@ QMLBIND_API qmlbind_value *qmlbind_value_new_string_cstr(const char *value);
 
 /*!
  * \brief Returns the string value of this `qmlbind_value`, as defined in ECMA-262 section 9.8, "ToString".
+ * Ownership is transfered to the caller.
  *
  * Note that if this `qmlbind_value` is an object, calling this function has side effects on the script engine, since
  * the engine will call the object's valueOf() function (and possibly toString()) in an attempt to convert the object to
