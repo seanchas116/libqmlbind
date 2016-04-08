@@ -4,7 +4,7 @@ TARGET = qmlbind
 TEMPLATE = lib
 CONFIG += c++11
 QMAKE_CFLAGS += "-std=c99"
-VERSION = 0.1.0
+VERSION = 0.2.0
 
 DEFINES += QMLBIND_LIBRARY
 
