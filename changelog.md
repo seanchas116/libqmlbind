@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.2.0 - 2016-04-08 ##
+## [0.2.0] - 2016-04-08 ##
 ### Added ###
 - Add `qmlbind_signal_emitter_new(wrapper)` to create new signal emitters for wrappers created via
   `qmlbind_engine_new_wrapper()`. Previously, such wrappers could not emit signals.
@@ -20,8 +20,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Rename `qmlbind_exporter` to `qmlbind_metaclass` to make its intent more obvious.
 - Change `qmlbind_register_type()` to `qmlbind_metaclass_register()`.
 
-### Deprecated ###
-
 ### Removed ###
 - Remove `qmlbind_metaobject` from public api. The metaobjects are now automatically created in `qmlbind_metaclass_register()` and `qmlbind_engine_new_wrapper()`.
 - Remove `qmlbind_interface` from public api. You can now directly hand `qmlbind_interface_handlers` to
@@ -29,9 +27,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Interface and its atomic reference counting mechanism is also removed from the internals, which might speed
   things up a little as no synchronization is needed anymore.
 
-### Fixed ###
-
-### Security ###
 
 ## 0.1.0 - 2016-04-05 ##
 ### Main Features ###
@@ -46,4 +41,4 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This uses [Keep a CHANGELOG](http://keepachangelog.com/) as a template.
 
 
-[0.2.0]: https://github.com/alacarte-maps/alacarte/compare/v0.1.0...HEAD
+[0.2.0]: https://github.com/seanchas116/libqmlbind/compare/v0.1.0...v0.2.0
