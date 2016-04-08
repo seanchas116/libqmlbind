@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.2.0] - Unreleased ##
+## 0.2.0 - 2016-04-08 ##
 ### Added ###
 - Add `qmlbind_signal_emitter_new(wrapper)` to create new signal emitters for wrappers created via
   `qmlbind_engine_new_wrapper()`. Previously, such wrappers could not emit signals.
