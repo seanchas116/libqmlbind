@@ -159,6 +159,8 @@ typedef struct qmlbind_client_callbacks {
      * \brief returns the value of the `name` property of the `object` C object.
      * Ownership must be transferred to the caller.
      *
+     * In case the `name` property does not exist, you should return a `qmlbind_value_new_undefined()`.
+     *
      * Ownership of `engine` and `object` is not transfered.
      *
      * `engine` is intended to be used to create new objects or arrays.
