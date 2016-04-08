@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased] ##
+
+### Added ###
+
+### Changed ###
+
+### Deprecated ###
+
+### Removed ###
+
+### Fixed ###
+
+### Security ###
+
+
 ## [0.2.0] - 2016-04-08 ##
 ### Added ###
 - Add `qmlbind_signal_emitter_new(wrapper)` to create new signal emitters for wrappers created via
@@ -40,5 +55,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 This uses [Keep a CHANGELOG](http://keepachangelog.com/) as a template.
 
-
+[Unreleased]: https://github.com/seanchas116/libqmlbind/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/seanchas116/libqmlbind/compare/v0.1.0...v0.2.0
