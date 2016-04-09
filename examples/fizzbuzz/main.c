@@ -24,6 +24,12 @@ typedef struct fizzbuzz
 
 void on_changed(fizzbuzz_t *fb, const qmlbind_value *input)
 {
+    qmlbind_string *inputStr = qmlbind_value_get_string(input);
+    int input_str_len = qmlbind_string_get_length(inputStr);
+    qmlbind_string_release(inputStr);
+    if (input_str_len == 0)
+        return; // Ignore empty textfield
+
     input_str_len++; // take '\0' into account
     if (input_str_len > fb->result_len) {
         fb->result_len =

@@ -14,7 +14,7 @@ ApplicationWindow {
         anchors.margins: 10
         TextField {
             placeholderText: "Input"
-            text: "0"
+            text: ""
             id: textField
         }
         Text {
