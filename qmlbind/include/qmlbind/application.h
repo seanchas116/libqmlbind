@@ -57,12 +57,28 @@ QMLBIND_API qmlbind_application *qmlbind_application_instance(void);
 QMLBIND_API void qmlbind_application_release(qmlbind_application *self);
 
 /*!
- * \brief Enters the main event loop and waits until exit() is called,
- * then returns the value that was set to exit() (which is 0 if exit() is called via quit()).
+ * \brief Enters the main event loop and waits until `qmlbind_application_exit()` is called,
+ * then returns the value that was set to `qmlbind_application_exit()`.
  *
- * libqmlbind's equivalent of [QApplication::exec](https://doc.qt.io/qt-5/qapplication.html#exec).
+ * libqmlbind's equivalent of [QApplication::exec()](https://doc.qt.io/qt-5/qapplication.html#exec).
  */
 QMLBIND_API int qmlbind_application_exec(qmlbind_application *self);
+
+/*!
+ * \brief Tells the application to exit with a return code.
+ *
+ * After this function has been called, the application leaves the main event loop and returns from the call to
+ * `qmlbind_application_exec()`.
+ * The `qmlbind_applicaton_exec()` function returns `returnCode`. If the event loop is not running, this function does
+ * nothing.
+ *
+ * By convention, a `returnCode` of 0 means success, and any non-zero value indicates an error.
+ *
+ * Note that unlike the C library function of the same name, this function does return to the caller -- it is event processing that stops.
+ *
+ * libqmlbind's equivalent of [QCoreApplication::exit()](http://doc.qt.io/qt-5/qcoreapplication.html#exit)
+ */
+QMLBIND_API void qmlbind_application_exit(int returnCode);
 
 /*!
  * \brief Processes all pending events for the calling thread until there are no more events to process.
@@ -70,8 +86,8 @@ QMLBIND_API int qmlbind_application_exec(qmlbind_application *self);
  * You can call this function occasionally when your program is busy performing a long operation (e.g. copying a file).
  * This also cleans up deferred deletes.
  *
- * libqmlbind's equivalent of [QCoreApplication::processEvents](https://doc.qt.io/qt-5/qcoreapplication.html#processEvents)
- * and [QCoreApplication::sendPostedEvents](https://doc.qt.io/qt-5/qcoreapplication.html#sendPostedEvents) for
+ * libqmlbind's equivalent of [QCoreApplication::processEvents()](https://doc.qt.io/qt-5/qcoreapplication.html#processEvents)
+ * and [QCoreApplication::sendPostedEvents()](https://doc.qt.io/qt-5/qcoreapplication.html#sendPostedEvents) for
  * processing deferred deletes.
  */
 QMLBIND_API void qmlbind_process_events();
@@ -82,7 +98,7 @@ QMLBIND_API void qmlbind_process_events();
  * This takes ownership from `data` and transfers it to `callback` later.
  * Therefore, `data` has to be created on the heap and freed by `callback` at the end of the function.
  *
- * Enqueuing is done via [QCoreApplication::postEvent](https://doc.qt.io/qt-5/qcoreapplication.html#postEvent).
+ * Enqueuing is done via [QCoreApplication::postEvent()](https://doc.qt.io/qt-5/qcoreapplication.html#postEvent).
  */
 QMLBIND_API void qmlbind_next_tick(void (*callback)(void *), void *data);
 
