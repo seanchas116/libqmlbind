@@ -274,14 +274,14 @@ QMLBIND_API double qmlbind_value_get_number(const qmlbind_value *self);
 /*!
  * \brief Constructs a new `qmlbind_value` with a the first `length` chars of string `value`.
  *
- * libqmlbind's equivalent of [QJSValue::QJSValue(bool)](https://doc.qt.io/qt-5/qjsvalue.html#QJSValue-3)
+ * libqmlbind's equivalent of [QJSValue::QJSValue(const QString &)](https://doc.qt.io/qt-5/qjsvalue.html#QJSValue-7)
  */
 QMLBIND_API qmlbind_value *qmlbind_value_new_string(int length, const char *value);
 
 /*!
  * \brief Constructs a new `qmlbind_value` with a \0-terminated string `value`.
  *
- * libqmlbind's equivalent of [QJSValue::QJSValue(bool)](https://doc.qt.io/qt-5/qjsvalue.html#QJSValue-3)
+ * libqmlbind's equivalent of [QJSValue::QJSValue(const QString &)](https://doc.qt.io/qt-5/qjsvalue.html#QJSValue-7)
  */
 QMLBIND_API qmlbind_value *qmlbind_value_new_string_cstr(const char *value);
 
