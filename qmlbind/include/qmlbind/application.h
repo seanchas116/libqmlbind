@@ -65,16 +65,17 @@ QMLBIND_API void qmlbind_application_release(qmlbind_application *self);
 QMLBIND_API int qmlbind_application_exec(qmlbind_application *self);
 
 /*!
- * \brief Tells the application to exit with a return code.
+ * \brief Tells the application to exit with a return code after the current event is processed.
  *
  * After this function has been called, the application leaves the main event loop and returns from the call to
  * `qmlbind_application_exec()`.
  * The `qmlbind_applicaton_exec()` function returns `returnCode`. If the event loop is not running, this function does
  * nothing.
  *
- * By convention, a `returnCode` of 0 means success, and any non-zero value indicates an error.
+ * Note that unlike the C library function of the same name, this function does return to the caller -- it is event
+ * processing that stops.
  *
- * Note that unlike the C library function of the same name, this function does return to the caller -- it is event processing that stops.
+ * By convention, a `returnCode` of 0 means success, and any non-zero value indicates an error.
  *
  * libqmlbind's equivalent of [QCoreApplication::exit()](http://doc.qt.io/qt-5/qcoreapplication.html#exit)
  */
