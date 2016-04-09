@@ -103,6 +103,11 @@ int qmlbind_application_exec(qmlbind_application *self)
     return self->exec();
 }
 
+void qmlbind_application_exit(int returnCode)
+{
+    qApp->exit(returnCode);
+}
+
 void qmlbind_process_events()
 {
     QCoreApplication::processEvents();

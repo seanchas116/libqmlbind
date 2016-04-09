@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased] ##
 
 ### Added ###
+- Add `qmlbind_application_exit(int returnCode)` to expose `QCoreApplication::exit(int returnCode)`. This enables the
+  user to stop the event loop processing from any point in the code.
 
 ### Changed ###
 
