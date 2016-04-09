@@ -32,6 +32,6 @@ ApplicationWindow {
     FizzBuzz {
         id: fizzBuzz
         input: textField.text
-        onInputWasFizzBuzz: lastFizzBuzz.text = "Last FizzBuzz: " + textField.text
+        onInputWasFizzBuzz: lastFizzBuzz.text = "Last FizzBuzz: " + fizzBuzz.input
     }
 }
