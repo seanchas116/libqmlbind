@@ -19,7 +19,7 @@ ApplicationWindow {
         }
         Text {
             id: text
-            text: fizzBuzz.result
+            text: "Last result: " + fizzBuzz.result
         }
         Button {
             text: 'Quit'
