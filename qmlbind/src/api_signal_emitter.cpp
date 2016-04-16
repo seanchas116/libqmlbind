@@ -6,7 +6,7 @@ using namespace QmlBind;
 
 extern "C" {
 
-qmlbind_signal_emitter *qmlbind_signal_emitter_new(qmlbind_value *wrapper) {
+qmlbind_signal_emitter *qmlbind_signal_emitter_new(const qmlbind_value *wrapper) {
     return new SignalEmitter(qobject_cast<Wrapper*>(wrapper->toQObject()));
 }
 

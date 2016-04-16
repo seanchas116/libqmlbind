@@ -28,7 +28,7 @@ extern "C" {
  *
  * Passing `qmlbind_value`s that are not wrappers, i.e. `qmlbind_value_is_wrapper()` returns false, is an error here.
  */
-QMLBIND_API qmlbind_signal_emitter *qmlbind_signal_emitter_new(qmlbind_value *wrapper);
+QMLBIND_API qmlbind_signal_emitter *qmlbind_signal_emitter_new(const qmlbind_value *wrapper);
 
 /*!
  * \brief emits the signal `signal_name` with `argc` arguments in `argv`.
