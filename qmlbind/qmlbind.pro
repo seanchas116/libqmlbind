@@ -4,6 +4,12 @@ TARGET = qmlbind
 TEMPLATE = lib
 CONFIG += c++11
 QMAKE_CFLAGS += "-std=c99"
+
+CONFIG += create_pc create_prl no_install_prl
+QMAKE_PKGCONFIG_PREFIX = $$INSTALL_PREFIX
+QMAKE_PKGCONFIG_DESTDIR = "pkgconfig"
+QMAKE_PKGCONFIG_NAME = "libqmlbind"
+QMAKE_PKGCONFIG_DESCRIPTION = "A C library for creating QML bindings for other languages easily through exporting objects to QML"
 VERSION = 0.2.0
 
 DEFINES += QMLBIND_LIBRARY
