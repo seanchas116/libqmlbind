@@ -23,6 +23,11 @@ void qmlbind_component_load_path(qmlbind_component *component, const char *path)
     component->loadUrl(QUrl::fromLocalFile(path));
 }
 
+void qmlbind_component_load_url(qmlbind_component *component, const char *url)
+{
+    component->loadUrl(QUrl(url));
+}
+
 void qmlbind_component_set_data(qmlbind_component *component, const char *data, const char *path)
 {
     component->setData(data, QUrl::fromLocalFile(path));
