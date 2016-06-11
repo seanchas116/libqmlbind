@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS = hello_world_window fizzbuzz
+SUBDIRS = hello_world_window fizzbuzz qtquickcontrols2

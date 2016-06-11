@@ -57,6 +57,13 @@ QMLBIND_API void qmlbind_component_release(qmlbind_component *self);
 QMLBIND_API void qmlbind_component_load_path(qmlbind_component *self, const char *path);
 
 /*!
+ * \brief Sets the `qmlbind_component` to use the QML code loaded from the provided URL.
+ *
+ * libqmlbind's equivalent of [QQmlComponent::loadUrl](https://doc.qt.io/qt-5/qqmlcomponent.html#loadUrl).
+ */
+QMLBIND_API void qmlbind_component_load_url(qmlbind_component *self, const char *url);
+
+/*!
  * Sets the `qmlbind_component` to use the given QML `data`.
  *
  * If `url` is provided, it is used to set the component name and to provide a base path for items resolved by this
