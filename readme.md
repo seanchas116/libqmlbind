@@ -90,3 +90,10 @@ Just run
 > doxygen
 ```
 from the project's main directory. You can then find the documentation in `doc/html/index.html`.
+
+
+## Alternatives
+If you're not happy with libqmlbind's interface or features, you might be interested in
+[DOtherSide](https://github.com/filcuc/DOtherSide), an alternative C library for creating QML bindings.
+While libqmlbind was designed with dynamic languages like ruby in mind, DOtherSide was designed for static languages
+like D. (You can use libqmlbind for static languages, too, though, you just won't need some parts of the API).
