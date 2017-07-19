@@ -136,6 +136,11 @@ void qmlbind_application_setname(const char *name)
 	qApp->setOrganizationName(name);
 }
 
+void qmlbind_application_exit(int returnCode)
+{
+    qApp->exit(returnCode);
+}
+
 void qmlbind_process_events()
 {
     QCoreApplication::processEvents();
