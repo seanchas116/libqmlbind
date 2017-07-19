@@ -65,6 +65,35 @@ QMLBIND_API void qmlbind_application_release(qmlbind_application *self);
 QMLBIND_API int qmlbind_application_exec(qmlbind_application *self);
 
 /*!
+ * \brief Sets the application's name.
+ *
+ * libqmlbind's equivalent of [QCoreApplication::setApplicationName()](https://doc.qt.io/qt-5/qcoreapplication.html#applicationName-prop).
+ */
+QMLBIND_API void qmlbind_application_setapplicationname(const char *name);
+
+/*!
+ * \brief Sets the application's organization name.
+ *
+ * libqmlbind's equivalent of [QCoreApplication::setOrganizationName()](https://doc.qt.io/qt-5/qcoreapplication.html#organizationName-prop).
+ */
+QMLBIND_API void qmlbind_application_setorganizationname(const char *name);
+
+/*!
+ * \brief Sets the application's organization domain.
+ *
+ * libqmlbind's equivalent of [QCoreApplication::setOrganizationDomain()](https://doc.qt.io/qt-5/qcoreapplication.html#organizationDomain-prop).
+ */
+QMLBIND_API void qmlbind_application_setorganizationdomain(const char *name);
+
+/*!
+ * \brief Sets the application's window icon.
+ *
+ * libqmlbind's equivalent of [QApplication::setWindowIcon()](https://doc.qt.io/qt-5/qapplication.html#windowIcon-prop).
+ */
+QMLBIND_API void qmlbind_application_seticon(const char *filename);
+
+
+/*!
  * \brief Tells the application to exit with a return code after the current event is processed.
  *
  * After this function has been called, the application leaves the main event loop and returns from the call to
