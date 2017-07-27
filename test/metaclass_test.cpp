@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <string.h>
 #include <functional>
+#include <memory>
 
 class Test
 {
