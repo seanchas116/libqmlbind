@@ -96,4 +96,8 @@ from the project's main directory. You can then find the documentation in `doc/h
 If you're not happy with libqmlbind's interface or features, you might be interested in
 [DOtherSide](https://github.com/filcuc/DOtherSide), an alternative C library for creating QML bindings.
 While libqmlbind was designed with dynamic languages like ruby in mind, DOtherSide was designed for static languages
-like D. (You can use libqmlbind for static languages, too, though, you just won't need some parts of the API).
+like D. (You can use libqmlbind for static languages, too, though, you just won't need some parts of the API.
+E.g. in dynamic languages, you can hand over a classObject pointer in `qmlbind_metaclass_new` to implement a single
+dynamic version of `qmlbind_client_callbacks` for all classes, while in static languages, you would probably use
+something like templates to generate many static variants of `qmlbind_client_callbacks` for each class and hand over
+them, not needing the classObject pointer at all).
