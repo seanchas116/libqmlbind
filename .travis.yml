@@ -1,34 +1,20 @@
-sudo: required
-dist: trusty
 language: cpp
-compiler:
-  - gcc
-env:
-  - QT_PPA=beineri/opt-qt56-trusty QT_VERSION=56
-  - QT_PPA=beineri/opt-qt521-trusty QT_VERSION=52
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+    - os: osx
 
 before_install:
-  # install doxygen 1.8.11 from binary, because older versions throw errors on markdown code with images inside links
-  # (like the build status in the readme) and it's the only way to get a newer doxygen in Ubuntu 14.04
-  # doxygen binary install based on https://github.com/gadomski/fgt/blob/master/scripts/gh-pages.sh
-  - export DOXYGEN_VER=doxygen-1.8.11
-  - export DOXYGEN_TAR=${DOXYGEN_VER}.linux.bin.tar.gz
-  - export DOXYGEN_URL="http://ftp.stack.nl/pub/users/dimitri/${DOXYGEN_TAR}"
-  - sudo apt-add-repository -y ppa:${QT_PPA}
-  - sudo apt-get update
-  - sudo apt-get install -y qt${QT_VERSION}base qt${QT_VERSION}declarative
+  - ./travis/install-deps.sh
 
 script:
-  - source /opt/qt${QT_VERSION}/bin/qt${QT_VERSION}-env.sh
-  - qmake -r QMAKE_CC=$CC QMAKE_CXX=$CXX
+  - qmake -r
   - make
   - cd ./test
   - ./test -platform offscreen
 
 after_success:
   - cd ..
-  - sudo pip install ghp-import
-  - wget -O - "${DOXYGEN_URL}" | tar xz -C ${TMPDIR-/tmp} ${DOXYGEN_VER}/bin/doxygen
-  - export PATH="${TMPDIR-/tmp}/${DOXYGEN_VER}/bin:$PATH"
-  - doxygen
-  - ./.travis-publish-docs.sh
+  - ./travis/publish-docs.sh
