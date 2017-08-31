@@ -3,6 +3,7 @@
 #include <QTimer>
 #include <QVector>
 #include <functional>
+#include <QIcon>
 
 using namespace QmlBind;
 
@@ -75,6 +76,7 @@ public:
 };
 
 static auto nextTickProcessor = new NextTickProcessor();
+static QIcon *appIcon = NULL;
 
 }
 
@@ -95,12 +97,43 @@ qmlbind_application *qmlbind_application_instance(void)
 
 void qmlbind_application_release(qmlbind_application *self)
 {
+	if (appIcon)
+		delete appIcon;
     delete self;
 }
 
 int qmlbind_application_exec(qmlbind_application *self)
 {
     return self->exec();
+}
+
+void qmlbind_application_setapplicationname(const char *name)
+{
+	qApp->setApplicationName(name);
+}
+
+void qmlbind_application_setorganizationname(const char *name)
+{
+	qApp->setOrganizationName(name);
+}
+
+void qmlbind_application_setorganizationdomain(const char *name)
+{
+	qApp->setOrganizationDomain(name);
+}
+
+void qmlbind_application_seticon(const char *filename)
+{
+	if (appIcon)
+		delete appIcon;
+	appIcon = new QIcon(filename);
+	if (appIcon)
+		qApp->setWindowIcon(*appIcon);
+}
+
+void qmlbind_application_setname(const char *name)
+{
+	qApp->setOrganizationName(name);
 }
 
 void qmlbind_application_exit(int returnCode)
